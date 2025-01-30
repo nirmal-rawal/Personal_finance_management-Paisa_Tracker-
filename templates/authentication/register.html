@@ -5,13 +5,13 @@
     .is-invalid {
         border: 1px solid red !important;
     }
-
+    
     .invalid-feedback {
         color: red !important;
         font-size: 12px;
         display: block !important;
     }
-
+    
     .showPasswordToggle:hover {
         transform: scale(1.2);
         cursor: pointer;
@@ -24,14 +24,22 @@
                 <div class="card-header text-center py-3">
                     <h4 class="card-title">Registration for a Free Account</h4>
                 </div>
-                <form action="" method="post">
+
+
+
+                <form action="{% url 'register' %}" method="post">
+
                     {% csrf_token %}
+
+                    {% include "partials/_messages.html" %}
+                    
                     <div class="form-group mb-3">
                         <input 
                         type="text"
                         name="username"
                         id="usernameField"
                         placeholder="Username"
+                        value="{{fieldValues.username}}"
                         class="form-control form-control-sm"
                         />
                     </div>
@@ -43,6 +51,7 @@
                         name="email"
                         id="emailField"
                         placeholder="Email"
+                        value="{{fieldValues.email}}"
                         class="form-control form-control-sm"
                         />
                     </div>
@@ -60,7 +69,7 @@
                     <input 
                     type="submit" 
                     value="Register" 
-                    class="btn btn-primary btn-block"
+                    class="btn btn-primary btn-block submit-btn"
                     />
                 </form>
             </div>

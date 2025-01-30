@@ -3,6 +3,7 @@ from django.views import View
 import json
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 class UsernameValidationView(View):
     def post(self, request):
@@ -27,3 +28,43 @@ class EmailValidationView(View):
 class RegistrationView(View):
     def get(self, request):
         return render(request, 'authentication/register.html')
+    
+    def post(self, request):
+        # GET USER DATA
+        username = request.POST.get('username')  # Use .get() to avoid KeyError
+        email = request.POST.get('email')        # Use .get() to avoid KeyError
+        password = request.POST.get('password')  # Use .get() to avoid KeyError
+
+        context={
+            'fieldValues':request.POST
+
+        }
+
+        # Validate the data
+        if not username or not email or not password:
+            messages.error(request, 'All fields are required.')
+            return render(request, 'authentication/register.html')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username is already taken.')
+            return render(request, 'authentication/register.html')
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Email is already registered.')
+            return render(request, 'authentication/register.html')
+
+        if len(password) < 5:
+            messages.error(request, 'Password is too short.')
+            return render(request, 'authentication/register.html',context)
+
+        # Create a new user
+        user = User.objects.create_user(username=username, email=email)
+        user.set_password(password)
+        user.save()
+        messages.success(request, 'Account successfully created.')
+        return render(request, 'authentication/register.html')
+
+
+        
+        return render(request, 'authentication/register.html')
+

@@ -5,6 +5,7 @@ const emailFeedBackArea = document.querySelector('.emailFeedBackArea');
 const passwordField = document.querySelector('#passwordField');
 const usernameSuccessOutput = document.querySelector('.usernameSuccessOutput');
 const showPasswordToggle = document.querySelector('.showPasswordToggle');
+const submitBtn = document.querySelector(".submit-btn");
 
 // Function to toggle password visibility
 const handleToggleInput = () => {
@@ -42,6 +43,7 @@ const csrfToken = getCookie('csrftoken');
 emailField.addEventListener('keyup', (e) => {
     const emailVal = e.target.value;
 
+    // Clear previous error messages
     emailField.classList.remove("is-invalid");
     emailFeedBackArea.style.display = 'none';
 
@@ -57,9 +59,13 @@ emailField.addEventListener('keyup', (e) => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.email_error) {
+                    submitBtn.setAttribute('disabled', "disabled");
+                    submitBtn.disabled = true;
                     emailField.classList.add("is-invalid");
                     emailFeedBackArea.style.display = 'block';
                     emailFeedBackArea.innerHTML = `<p>${data.email_error}</p>`;
+                } else {
+                    submitBtn.removeAttribute("disabled");
                 }
             });
     }
@@ -73,6 +79,7 @@ usernameField.addEventListener("keyup", (e) => {
     usernameField.classList.remove("is-invalid");
     feedBackArea.style.display = 'none';
 
+    // Clear previous error messages
     if (usernameVal.length > 0) {
         fetch("/authentication/validate-username/", {
             method: "POST",
@@ -89,6 +96,16 @@ usernameField.addEventListener("keyup", (e) => {
                     usernameField.classList.add("is-invalid");
                     feedBackArea.style.display = 'block';
                     feedBackArea.innerHTML = `<p>${data.username_error}</p>`;
+                    submitBtn.disabled = true;
+                } else {
+                    // Check if email is different from username
+                    if (emailField.value && emailField.value !== usernameVal) {
+                        emailFeedBackArea.style.display = 'block';
+                        emailFeedBackArea.innerHTML = `<p>Email and username should not be the same.</p>`;
+                        submitBtn.disabled = true;
+                    } else {
+                        submitBtn.removeAttribute("disabled");
+                    }
                 }
             });
     }
