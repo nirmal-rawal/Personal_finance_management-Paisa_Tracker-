@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'authentication',  # Add your authentication app if you have one
+    'expenses',  
 ]
 
 MIDDLEWARE = [
@@ -106,6 +108,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Django Authentication Settings
+LOGIN_URL = '/authentication/login/'  # Redirect non-logged-in users here
+LOGIN_REDIRECT_URL = '/'  # Redirect logged-in users here after login
+LOGOUT_REDIRECT_URL = '/authentication/login/'  # Redirect after logout
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -135,6 +142,7 @@ MESSAGE_TAGS={
     messages.ERROR:'danger'
 
 }
+
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
