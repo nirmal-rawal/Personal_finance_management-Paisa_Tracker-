@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',  # Add your authentication app if you have one
     'expenses',  
+    'user_preferences',
 ]
 
 MIDDLEWARE = [
