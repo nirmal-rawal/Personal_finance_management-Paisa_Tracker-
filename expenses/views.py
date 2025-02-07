@@ -2,11 +2,22 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Category, Expenses
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 @login_required(login_url='/authentication/login/')
 def index(request):
+    category = Category.objects.all()
     expenses = Expenses.objects.filter(owner=request.user)
-    return render(request, 'expenses/index.html', {"expenses": expenses})
+    
+    # Pagination
+    paginator = Paginator(expenses, 2)  # Show 5 expenses per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'expenses': page_obj,  # Use paginated object
+    }
+    return render(request, 'expenses/index.html', context)
 
 @login_required(login_url='/authentication/login/')
 def add_expense(request):
@@ -26,7 +37,7 @@ def add_expense(request):
             owner=request.user,
             amount=amount,
             date=date,
-            category=category_name,  # ✅ Store as a string (category name)
+            category=category_name,
             description=description
         )
         messages.success(request, 'Expense saved successfully')
@@ -43,13 +54,12 @@ def expense_edit(request, id):
         amount = request.POST.get('amount')
         description = request.POST.get('description')
         date = request.POST.get('expense_date')
-        category_name = request.POST.get('category')  # Get category name from form
+        category_name = request.POST.get('category')
 
         if not amount:
             messages.error(request, 'Amount is required')
             return render(request, 'expenses/edit-expense.html', {'expense': expense, 'categories': categories})
 
-        # ✅ Store category as a string (not a model instance)
         expense.amount = amount
         expense.date = date
         expense.category = category_name
