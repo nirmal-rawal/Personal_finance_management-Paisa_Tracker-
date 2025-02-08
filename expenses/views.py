@@ -30,7 +30,7 @@ def index(request):
     expenses = Expenses.objects.filter(owner=request.user)
     
     # Pagination
-    paginator = Paginator(expenses, 2)  # Show 5 expenses per page
+    paginator = Paginator(expenses, 5)  # Show 5 expenses per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     

@@ -1,0 +1,71 @@
+/* Breadcrumb Styling */
+.breadcrumb-container {
+    background-color: #dee2e6;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Search Box Styling */
+.search-box {
+    position: relative;
+    width: 100%;
+}
+
+.search-input {
+    padding-left: 35px;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid #ced4da;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 16px;
+}
+
+/* Table Styling */
+.app-table {
+    margin-top: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Pagination Styling */
+.pagination-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.page-item .page-link {
+    border-radius: 5px;
+    margin: 0 3px;
+}
+
+/* Button Styling */
+.btn-secondary {
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+.btn-secondary:hover {
+    background-color: #23272b;
+}

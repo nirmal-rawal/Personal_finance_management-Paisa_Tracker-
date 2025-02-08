@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+<!-- Load CSS -->
+<link rel="stylesheet" href="{% static 'css/expenses_search.css' %}">
 
 {% block content %}
 <div class="container mt-4">
@@ -23,13 +25,17 @@
         
         {% include 'partials/_messages.html' %}
         {% if expenses %}
-        <div class="row md-2">
+        <!-- Search Bar -->
+        <div class="row my-3">
             <div class="col-md-8"></div>
             <div class="col-md-4">
-              <div class="form-group">
-                <input type="text" class="form-control" id="searchField" placeholder="Search">
-              </div>
-
+                <!-- Update search form to send GET request -->
+                <form method="get" action="{% url 'expenses' %}">
+                    <div class="search-box">
+                        <input type="text" class="form-control search-input" id="searchField" name="search" placeholder="Search" value="{{ search_query }}">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                </form>
             </div>
         </div>
        
