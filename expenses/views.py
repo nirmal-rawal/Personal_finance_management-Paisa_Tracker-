@@ -7,18 +7,27 @@ import json
 from django.http import JsonResponse
 
 
-def search_expenses(request):
-    if request.method =="POST":
-        search_str=json.loads(request.body).get("searchText")
 
-        expenses =Expenses.objects.filter(
-            amount__istartswith=search_str,owner=request.user) | Expenses.objects.filter(
-            date__istartswith=search_str,owner=request.user) | Expenses.objects.filter(
-            description__icontains=search_str,owner=request.user) |Expenses.objects.filter(
-            category__icontains=search_str,owner=request.user)
-        
-        data=expenses.values()
-        return JsonResponse(list(data),safe=False)
+def search_expenses(request):
+    if request.method == "POST":
+        try:
+            search_str = json.loads(request.body).get("searchText", "")
+            expenses = Expenses.objects.filter(
+                amount__istartswith=search_str, owner=request.user
+            ) | Expenses.objects.filter(
+                date__istartswith=search_str, owner=request.user
+            ) | Expenses.objects.filter(
+                description__icontains=search_str, owner=request.user
+            ) | Expenses.objects.filter(
+                category__icontains=search_str, owner=request.user
+            )
+            
+            data = list(expenses.values())
+            return JsonResponse(data, safe=False)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
         
     
 
@@ -30,7 +39,7 @@ def index(request):
     expenses = Expenses.objects.filter(owner=request.user)
     
     # Pagination
-    paginator = Paginator(expenses, 5)  # Show 5 expenses per page
+    paginator = Paginator(expenses, 4)  # Show 5 expenses per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -38,7 +47,6 @@ def index(request):
         'expenses': page_obj,  # Use paginated object
     }
     return render(request, 'expenses/index.html', context)
-
 @login_required(login_url='/authentication/login/')
 def add_expense(request):
     categories = Category.objects.all()
@@ -47,12 +55,21 @@ def add_expense(request):
         amount = request.POST.get('amount')
         date = request.POST.get('expense_date')
         category_name = request.POST.get('category')
+        custom_category = request.POST.get('custom_category', '').strip()
         description = request.POST.get('description', '')
 
+        # If the user selects 'Other', use the custom category input
+        if category_name == "Other" and custom_category:
+            category_name = custom_category  # Use the custom category
+            # Save custom category to the database if not already present
+            Category.objects.get_or_create(name=custom_category)
+
+        # Validate input
         if not amount:
             messages.error(request, 'Amount is required')
             return render(request, 'expenses/add_expense.html', {'categories': categories})
 
+        # Save the expense
         Expenses.objects.create(
             owner=request.user,
             amount=amount,
