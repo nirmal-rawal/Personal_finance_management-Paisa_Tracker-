@@ -1,30 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-
 <div class="container mt-4">
-    <h5>Choose the Currency </h5>
-    {% include "partials/_messages.html" %}
-    <form action="{% url 'preferences' %}" method="post">
-        {% csrf_token %}
-        <div class="input-group">
-            <select name="currency" class="form-select" id="inputGroupSelect04">
-                {% if user_preference and user_preference.currency %}
-                    <option selected value="{{ user_preference.currency }}">{{ user_preference.currency }}</option>
-                {% endif %}
-
-                {% for currency in currencies %}
-                    <option value="{{ currency.name }} - {{ currency.value }}">
-                        {{ currency.name }} - {{ currency.value }}
-                    </option>
-                {% endfor %}
-            </select>
-            <div class="input-group-append">
-                <input class="btn btn-outline-secondary" type="submit" value="Save" />
-            </div>
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Choose Your Currency</h5>
         </div>
-    </form>
-</div>
+        <div class="card-body">
+            {% include "partials/_messages.html" %}
+            <form action="{% url 'preferences' %}" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <select name="currency" class="form-select" id="inputGroupSelect04">
+                        {% if user_preference and user_preference.currency %}
+                            <option selected value="{{ user_preference.currency }}">{{ user_preference.currency }}</option>
+                        {% endif %}
 
-<hr />
+                        {% for currency in currencies %}
+                            <option value="{{ currency.name }} - {{ currency.value }}">
+                                {{ currency.name }} - {{ currency.value }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock content %}

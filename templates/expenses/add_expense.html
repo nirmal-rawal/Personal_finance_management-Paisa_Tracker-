@@ -37,12 +37,28 @@
             </div>
             <div class="form-group">
                 <label for="expense_date">Date of Expense</label>
-                <input type="date" class="form-control form-control-sm" name="expense_date" required>
+                <input type="text" class="form-control form-control-sm" name="expense_date" id="expense_date" placeholder="Select Date" required>
             </div>
             <input type="submit" value="Submit" class="btn btn-primary btn-primary-sm">
         </form>
     </div>
 </div>
+
+<!-- Include flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Include flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- Initialize flatpickr -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        flatpickr("#expense_date", {
+            dateFormat: "Y-m-d",
+            defaultDate: "today",
+        });
+    });
+</script>
 
 <!-- Link the external JavaScript file -->
 <script src="{% static 'js/add_category.js' %}"></script>

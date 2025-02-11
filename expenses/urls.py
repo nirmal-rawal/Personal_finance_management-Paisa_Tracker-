@@ -7,4 +7,6 @@ urlpatterns = [
     path('edit-expense/<int:id>/', views.expense_edit, name="expense-edit"),
     path('expense-delete/<int:id>/', views.delete_expense, name="expense-delete"),
     path('search-expenses/', views.search_expenses, name="search_expenses"),  # ✅ Fixed
+    path('profile/', views.profile, name='profile'),
+    path('profile/edit/', views.edit_profile, name='edit-profile'),
 ]

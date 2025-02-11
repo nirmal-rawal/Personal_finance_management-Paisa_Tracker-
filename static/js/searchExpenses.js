@@ -8,7 +8,7 @@ searchField.addEventListener('keyup', (e) => {
     const searchValue = e.target.value;
 
     if (searchValue.trim().length > 0) {
-        paginationContainer.style.display="none";
+        paginationContainer.style.display="none";   
         tableBody.innerHTML="";
         console.log("searchValue", searchValue);
 

@@ -1,12 +1,39 @@
 .sidebar {
-    position: fixed; /* Fixes the sidebar in place */
-    top: 0;
-    left: 0;
-    height: 100vh; /* Full viewport height */
-    z-index: 1040; /* Ensure it's above other elements */
-    overflow-y: auto; /* Allow scrolling within the sidebar */
-  }
-  
-  main {
-    margin-left: 16.6667%; /* Adjust to match the sidebar width */
-  }
+  background: linear-gradient(135deg, #2a2a72, #009ffd);
+}
+
+.sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.8);
+  padding: 10px 15px;
+  transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 5px;
+}
+
+.sidebar .nav-link.active {
+  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-weight: bold;
+  border-left: 4px solid #ffcc00;
+}
+
+.sidebar-heading {
+  padding: 10px 15px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.sidebar .btn-outline-danger {
+  border-radius: 20px;
+  transition: 0.3s ease;
+}
+
+.sidebar .btn-outline-danger:hover {
+  background: red;
+  color: #fff;
+}

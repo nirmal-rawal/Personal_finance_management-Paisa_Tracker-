@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4>User Profile</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Preferred Currency:</strong> {{ user.userpreference.currency }}</p>
+
+            <a href="{% url 'edit-profile' %}" class="btn btn-warning">Edit Profile</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

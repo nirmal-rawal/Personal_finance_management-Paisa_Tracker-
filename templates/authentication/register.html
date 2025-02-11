@@ -1,5 +1,6 @@
 {% extends "base_auth.html" %}
 {% load static %}
+
 {% block content %}
 <style>
     .is-invalid {
@@ -17,64 +18,80 @@
         cursor: pointer;
     }
 </style>
+
 <div class="row justify-content-center">
-    <div class="col-md-4">
-        <div class="card mt-5 shadow-sm">
-            <div class="card-body">
-                <div class="card-header text-center py-3">
-                    <h4 class="card-title">Registration for a Free Account</h4>
+    <div class="col-md-5">
+        <div class="card mt-5 shadow-lg" style="border-radius: 15px; border: none;">
+            <div class="card-body p-4">
+                <div class="card-header text-center py-4" style="background: none; border: none;">
+                    <h2 class="card-title font-weight-bold" style="color: #2c3e50;">Create Your Account</h2>
+                    <p class="text-muted">Join us and start your journey</p>
                 </div>
 
-
-
                 <form action="{% url 'register' %}" method="post">
-
                     {% csrf_token %}
 
                     {% include "partials/_messages.html" %}
                     
-                    <div class="form-group mb-3">
+                    <!-- Username Field -->
+                    <div class="form-group mb-4">
                         <input 
-                        type="text"
-                        name="username"
-                        id="usernameField"
-                        placeholder="Username"
-                        value="{{fieldValues.username}}"
-                        class="form-control form-control-sm"
+                            type="text"
+                            name="username"
+                            id="usernameField"
+                            placeholder="Username"
+                            value="{{fieldValues.username}}"
+                            class="form-control form-control-lg"
+                            style="border-radius: 10px; border: 1px solid #ced4da;"
                         />
+                        <div class="invalid-feedback" style="display:none"></div>
+                        <p class="text-sm text-success usernameSuccessOutput mt-1"></p>
                     </div>
-                    <div class="invalid-feedback" style="display:none"></div>
-                    <p class="text-sm text-success usernameSuccessOutput"></p>
-                    <div class="form-group mb-3">
+
+                    <!-- Email Field -->
+                    <div class="form-group mb-4">
                         <input 
-                        type="email"
-                        name="email"
-                        id="emailField"
-                        placeholder="Email"
-                        value="{{fieldValues.email}}"
-                        class="form-control form-control-sm"
+                            type="email"
+                            name="email"
+                            id="emailField"
+                            placeholder="Email"
+                            value="{{fieldValues.email}}"
+                            class="form-control form-control-lg"
+                            style="border-radius: 10px; border: 1px solid #ced4da;"
                         />
+                        <div class="emailFeedBackArea invalid-feedback" style="display:none"></div>
                     </div>
-                    <div class="emailFeedBackArea invalid-feedback" style="display:none"></div>
-                    <div class="form-group mb-3">
+
+                    <!-- Password Field -->
+                    <div class="form-group mb-4 position-relative">
                         <input 
-                        type="password"
-                        name="password"
-                        id="passwordField"
-                        placeholder="Password"
-                        class="form-control form-control-sm"
+                            type="password"
+                            name="password"
+                            id="passwordField"
+                            placeholder="Password"
+                            class="form-control form-control-lg"
+                            style="border-radius: 10px; border: 1px solid #ced4da;"
                         />
-                        <small class="float-end py-3 showPasswordToggle">SHOW</small>
+                        <small class="position-absolute end-0 top-50 translate-middle-y me-3 showPasswordToggle" style="cursor: pointer; color: #3498db;">SHOW</small>
                     </div>
+
+                    <!-- Submit Button -->
                     <input 
-                    type="submit" 
-                    value="Register" 
-                    class="btn btn-primary btn-block submit-btn"
+                        type="submit" 
+                        value="Register" 
+                        class="btn btn-primary btn-block submit-btn py-2"
+                        style="border-radius: 10px; font-size: 1.1rem; background-color: #3498db; border: none;"
                     />
                 </form>
+
+                <!-- Login Link -->
+                <div class="text-center mt-4">
+                    <p class="text-muted">Already have an account? <a href="{% url 'login' %}" style="color: #3498db;">Login here</a></p>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 <script src="{% static 'js/register.js' %}"></script>
 {% endblock content %}

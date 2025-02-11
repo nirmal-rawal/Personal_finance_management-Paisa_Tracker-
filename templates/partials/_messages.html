@@ -1,10 +1,18 @@
 {% if messages %}
-<div class="messages">
+<div class="messages" id="message-box">
     {% for message in messages %}
     <div{% if message.tags %} class="alert alert-sm alert-{{ message.tags }}"{% endif %}>
-        
         {{ message }}
     </div>
     {% endfor %}
 </div>
+
+<script>
+    // Automatically hide success messages after 3 seconds
+    setTimeout(function() {
+        document.querySelectorAll('.alert-success').forEach(function(message) {
+            message.style.display = 'none';
+        });
+    }, 3000);
+</script>
 {% endif %}
