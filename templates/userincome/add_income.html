@@ -1,17 +1,17 @@
 {% extends "base.html" %}
-{% load static %} 
+{% load static %}
 
 {% block content %}
 <div class="container mt-5">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'expenses' %}">Expenses</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Add Expenses</li>
+            <li class="breadcrumb-item"><a href="{% url 'incomes' %}">Incomes</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add Income</li>
         </ol>
     </nav>
 
     <div class="card-body">
-        <form action="{% url 'add-expense' %}" method="post">
+        <form action="{% url 'add-income' %}" method="post">
             {% include "partials/_messages.html" %}
             {% csrf_token %}
             <div class="form-group">
@@ -23,21 +23,21 @@
                 <input type="text" class="form-control form-control-sm" name="description" value="{{ values.description }}" required>
             </div>
             <div class="form-group">
-                <label for="category">Category</label>
-                <select class="form-control" name="category" id="category-select" required>
-                    {% for category in categories %}
-                    <option value="{{ category.name }}">{{ category.name }}</option>
+                <label for="source">Source</label>
+                <select class="form-control" name="source" id="source-select" required>
+                    {% for source in sources %}
+                    <option value="{{ source.name }}">{{ source.name }}</option>
                     {% endfor %}
-                    <option value="Other">Add Other Expenses</option>
+                    <option value="Other">Add Other source </option>
                 </select>
             </div>
-            <div class="form-group d-none" id="custom-category-group">
-                <label for="custom-category">Enter Category</label>
-                <input type="text" class="form-control form-control-sm" name="custom_category" id="custom-category">
+            <div class="form-group d-none" id="custom-source-group">
+                <label for="custom-source">Enter Source</label>
+                <input type="text" class="form-control form-control-sm" name="custom_source" id="custom-source">
             </div>
             <div class="form-group">
-                <label for="expense_date">Date of Expense</label>
-                <input type="text" class="form-control form-control-sm" name="expense_date" id="expense_date" placeholder="Select Date" required>
+                <label for="income_date">Date of Income</label>
+                <input type="text" class="form-control form-control-sm" name="income_date" id="income_date" placeholder="Select Date" required>
             </div>
             <input type="submit" value="Submit" class="btn btn-primary btn-primary-sm">
         </form>
@@ -53,14 +53,13 @@
 <!-- Initialize flatpickr -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        flatpickr("#expense_date", {
+        flatpickr("#income_date", {
             dateFormat: "Y-m-d",
             defaultDate: "today",
         });
     });
 </script>
 
-<!-- Link the external JavaScript file -->
-<script src="{% static 'js/add_category.js' %}"></script>
-
+<!-- JavaScript to handle custom source field -->
+<script src="{% static 'js/add_source.js' %}"></script>
 {% endblock %}

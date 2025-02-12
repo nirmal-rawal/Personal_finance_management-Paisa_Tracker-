@@ -13,7 +13,7 @@ searchField.addEventListener('keyup', (e) => {
         paginationContainer.style.display = "none";
         tableBody.innerHTML = "";
 
-        fetch("/search-expenses/", {
+        fetch("/search-incomes/", {
             method: "POST",
             body: JSON.stringify({ searchText: searchValue }),
             headers: {
@@ -34,12 +34,12 @@ searchField.addEventListener('keyup', (e) => {
                     tableBody.innerHTML += `
                         <tr>
                             <td>${item.amount}</td>
-                            <td>${item.category}</td>
+                            <td>${item.source}</td>
                             <td>${item.description}</td>
                             <td>${item.date}</td>
                             <td>
-                                <a href="/expense-edit/${item.id}/" class="btn btn-secondary btn-sm">Edit</a>
-                                <a href="/expense-delete/${item.id}/" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this expense?')">Delete</a>
+                                <a href="/edit-income/${item.id}/" class="btn btn-secondary btn-sm">Edit</a>
+                                <a href="/income-delete/${item.id}/" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this income?')">Delete</a>
                             </td>
                         </tr>`;
                 });

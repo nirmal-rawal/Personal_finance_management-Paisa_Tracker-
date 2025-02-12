@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'authentication',  # Add your authentication app if you have one
     'expenses',  
     'user_preferences',
+    "userincome"
+    
 ]
 
 MIDDLEWARE = [
