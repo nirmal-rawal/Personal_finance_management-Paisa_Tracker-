@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import os
 import json
+import requests
 from django.conf import settings
 from .models import UserPreference
 from django.contrib import messages
@@ -9,12 +10,17 @@ def index(request):
     currency_data = []
     file_path = os.path.join(settings.BASE_DIR, 'currencies.json')
 
-    with open(file_path, 'r') as json_file:
+    # Open the file with UTF-8 encoding
+    with open(file_path, 'r', encoding='utf-8') as json_file:
         data = json.load(json_file)
-        for k, v in data.items():
-            currency_data.append({'name': k, 'value': v})
+        for code, details in data.items():
+            currency_data.append({
+                'code': code,
+                'name': details['name'],
+                'symbol': details['symbol']
+            })
 
-    user_preference = UserPreference.objects.filter(user=request.user).first()  # Use `.first()` to avoid errors
+    user_preference = UserPreference.objects.filter(user=request.user).first()
 
     if request.method == 'POST':
         currency = request.POST.get("currency")
@@ -26,4 +32,15 @@ def index(request):
 
         messages.success(request, 'Change saved')
 
-    return render(request, 'preferences/index.html', {'currencies': currency_data, 'user_preference': user_preference})
+    # Fetch real-time exchange rates
+    api_key = 'ab2319f80b0dff2da6530457'  # Replace with your API key
+    base_currency = 'USD'  # Base currency for conversion
+    url = f'https://v6.exchangerate-api.com/v6/ab2319f80b0dff2da6530457/latest/USD'
+    response = requests.get(url)
+    exchange_rates = response.json().get('conversion_rates', {}) if response.status_code == 200 else {}
+
+    return render(request, 'preferences/index.html', {
+        'currencies': currency_data,
+        'user_preference': user_preference,
+        'exchange_rates': exchange_rates,
+    })

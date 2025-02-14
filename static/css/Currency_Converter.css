@@ -1,0 +1,21 @@
+/* Currency Converter Styling */
+.card {
+    border-radius: 10px;
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0;
+}
+
+.form-control, .form-select {
+    border-radius: 5px;
+}
+
+.btn-primary, .btn-success {
+    border-radius: 5px;
+}
+
+#currencyConverterForm {
+    max-width: 500px;
+    margin: 0 auto;
+}

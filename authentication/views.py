@@ -146,3 +146,5 @@ class LogoutView(View):
         messages.success(request,"You have been logout")
         return redirect('login')
     
+
+    

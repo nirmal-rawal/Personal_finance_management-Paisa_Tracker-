@@ -76,6 +76,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'expenseswebsite.wsgi.application'
+EXCHANGE_RATE_API_KEY = os.getenv('https://v6.exchangerate-api.com/v6/ab2319f80b0dff2da6530457/latest/USD', 'ab2319f80b0dff2da6530457')
 
 
 # Database
