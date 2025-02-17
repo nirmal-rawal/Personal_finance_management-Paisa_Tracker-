@@ -26,6 +26,8 @@ def edit_profile(request):
         form = ProfileUpdateForm(instance=request.user)
 
     return render(request, 'edit_profile.html', {'form': form})
+
+
 def search_expenses(request):
     if request.method == "POST":
         try:

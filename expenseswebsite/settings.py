@@ -85,11 +85,11 @@ EXCHANGE_RATE_API_KEY = os.getenv('https://v6.exchangerate-api.com/v6/ab2319f80b
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # Use 'django.db.backends.postgresql' for PostgreSQL
-        'NAME': 'kharcha',                # Replace with your database name
-        'USER': 'postgres',                     # Replace with your database username
-        'PASSWORD': 'admin@123',                 # Replace with your database password
-        'HOST': 'localhost',                         # Set to 'localhost' or your database server IP
-        'PORT': 5433,                              # Default PostgreSQL port is 5432, change if needed
+        'NAME': 'kharcha',                
+        'USER': 'postgres',                     
+        'PASSWORD': 'admin@123',                
+        'HOST': 'localhost',                        
+        'PORT': 5433,                              
     }
 }
 
@@ -113,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Django Authentication Settings
-LOGIN_URL = '/authentication/login/'  # Redirect non-logged-in users here
+LOGIN_URL = '/authentication/login/'   # Redirect non-logged-in users here
 LOGIN_REDIRECT_URL = '/'  # Redirect logged-in users here after login
 LOGOUT_REDIRECT_URL = '/authentication/login/'  # Redirect after logout
 

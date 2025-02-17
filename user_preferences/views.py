@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 import os
 import json
 import requests
@@ -6,6 +7,7 @@ from django.conf import settings
 from .models import UserPreference
 from django.contrib import messages
 
+@login_required  # Add this decorator to enforce authentication
 def index(request):
     currency_data = []
     file_path = os.path.join(settings.BASE_DIR, 'currencies.json')
@@ -20,6 +22,7 @@ def index(request):
                 'symbol': details['symbol']
             })
 
+    # Get the user's preferences (only for authenticated users)
     user_preference = UserPreference.objects.filter(user=request.user).first()
 
     if request.method == 'POST':
@@ -33,7 +36,7 @@ def index(request):
         messages.success(request, 'Change saved')
 
     # Fetch real-time exchange rates
-    api_key = 'ab2319f80b0dff2da6530457'  # Replace with your API key
+    api_key = 'ab2319f80b0dff2da6530457'  
     base_currency = 'USD'  # Base currency for conversion
     url = f'https://v6.exchangerate-api.com/v6/ab2319f80b0dff2da6530457/latest/USD'
     response = requests.get(url)

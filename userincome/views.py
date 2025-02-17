@@ -14,7 +14,7 @@ from .models import Income
 
 @login_required
 def profile(request):
-    return render(request, 'userincome/profile.html')
+    return render(request, 'profile.html')
 
 @login_required
 def edit_profile(request):
@@ -27,7 +27,7 @@ def edit_profile(request):
     else:
         form = ProfileUpdateForm(instance=request.user)
 
-    return render(request, 'userincome/edit_profile.html', {'form': form})
+    return render(request, 'edit_profile.html', {'form': form})
 
 
 
