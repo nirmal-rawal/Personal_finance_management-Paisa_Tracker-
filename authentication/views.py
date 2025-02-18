@@ -13,27 +13,54 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from .utils import account_activation_token
 from django.contrib import auth
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+import threading
 
+# Thread class for sending emails in the background
+class EmailThread(threading.Thread):
+    def __init__(self, email_body):
+        self.email_body = email_body
+        threading.Thread.__init__(self)
+
+    def run(self):
+        self.email_body.send(fail_silently=False)
+
+# View for validating username
 class UsernameValidationView(View):
     def post(self, request):
         data = json.loads(request.body)
         username = data.get("username", "")
+
+        # Return early if the username is empty
+        if not username:
+            return JsonResponse({'username_valid': True})
+
+        # Check if the username contains only alphanumeric characters
         if not str(username).isalnum():
             return JsonResponse({'username_error': 'Username should only contain alphanumeric characters.'}, status=400)
+
+        # Check if the username is already taken
         if User.objects.filter(username=username).exists():
             return JsonResponse({'username_error': 'Sorry! Username is already taken, please choose another one.'}, status=409)
+
         return JsonResponse({'username_valid': True})
 
+# View for validating email
 class EmailValidationView(View):
     def post(self, request):
         data = json.loads(request.body)
         email = data.get("email", "")
+
+        # Return early if the email is empty
         if not email:
-            return JsonResponse({'email_error': 'Email is required.'}, status=400)
+            return JsonResponse({'email_valid': True})
+
+        # Check if the email is already registered
         if User.objects.filter(email=email).exists():
             return JsonResponse({'email_error': 'This email is already registered. Please use another one.'}, status=409)
-        return JsonResponse({'email_valid': True})
 
+        return JsonResponse({'email_valid': True})
+    
+# View for user registration
 class RegistrationView(View):
     def get(self, request):
         return render(request, 'authentication/register.html')
@@ -74,20 +101,20 @@ class RegistrationView(View):
         email_subject = "Activate your account"
         email_body = "Hi " + user.username + ", please use this link to verify your account\n" + activate_url
 
-        try:
-            email_message = EmailMessage(
-                email_subject,
-                email_body,
-                os.environ.get("EMAIL_HOST_USER"),
-                [email],
-            )
-            email_message.send(fail_silently=False)
-            messages.success(request, 'Account successfully created. Check your email for activation.')
-        except Exception as e:
-            messages.error(request, f'Email sending failed: {e}')
+        email_message = EmailMessage(
+            email_subject,
+            email_body,
+            os.environ.get("EMAIL_HOST_USER"),
+            [email],
+        )
+
+        # Use threading to send the email in the background
+        EmailThread(email_message).start()
+        messages.success(request, 'Account successfully created. Check your email for activation.')
 
         return render(request, 'authentication/register.html', context)
 
+# View for account verification
 class VerificationView(View):
     def get(self, request, uidb64, token):
         try:
@@ -109,6 +136,7 @@ class VerificationView(View):
 
         return redirect('login')
 
+# View for user login
 class LoginView(View):
     def get(self, request):
         return render(request, "authentication/login.html")
@@ -133,12 +161,14 @@ class LoginView(View):
         messages.error(request, "Please fill all fields")
         return render(request, "authentication/login.html")
 
+# View for user logout
 class LogoutView(View):
     def post(self, request):
         auth.logout(request)
         messages.success(request, "You have been logged out")
         return redirect('login')
 
+# View for requesting password reset email
 class RequestPasswordResetEmail(View):
     def get(self, request):
         return render(request, 'authentication/reset_password.html')
@@ -166,22 +196,23 @@ class RequestPasswordResetEmail(View):
             email_subject = "Password reset instructions"
             email_body = "Hi " + user[0].username + ", please use this link to reset your password\n" + reset_url
 
-            try:
-                email_message = EmailMessage(
-                    email_subject,
-                    email_body,
-                    os.environ.get("EMAIL_HOST_USER"),
-                    [user[0].email],
-                )
-                email_message.send(fail_silently=False)
-                messages.success(request, 'We have sent you an email to reset your password')
-            except Exception as e:
-                messages.error(request, f'Email sending failed: {e}')
+            email_message = EmailMessage(
+                email_subject,
+                email_body,
+                os.environ.get("EMAIL_HOST_USER"),
+                [user[0].email],
+            )
+
+            # Use threading to send the email in the background
+            EmailThread(email_message).start()
+            messages.success(request, 'We have sent you an email to reset your password')
 
             return render(request, 'authentication/reset_password.html', context)
 
         messages.error(request, 'No user found with this username or email')
         return render(request, 'authentication/reset_password.html', context)
+
+# View for completing password reset
 class CompletePasswordReset(View):
     def get(self, request, uidb64, token):
         context = {'uidb64': uidb64, 'token': token}
