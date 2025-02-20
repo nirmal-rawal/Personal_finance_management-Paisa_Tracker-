@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Breadcrumb Navigation -->
+    <div class="row">
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb" style="position: fixed; background-color: #2c3e50; padding: 10px; border-radius: 5px;">
+                <ol class="breadcrumb">
+                    <li class="  breadcrumb-item">
+                        <a href="" style="color: #1abc9c;">Expenses Summary</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page" style="color: #ecf0f1;">Summary</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-3">
+            <a href="{% url 'expenses' %}" class="btn btn-primary" style="position: fixed; background-color: #1abc9c; border: none;">BACK</a>
+        </div>
+    </div>
+
+    <!-- Centered Total Amount Spent -->
+    <div class="row mt-5">
+        <div class="col-md-12 text-center">
+            <h4 style="color: #1abc9c;">Expenses Summary</h4>
+            <p style="color: #ecf0f1;">Total Amount Spent: <strong id="totalAmount" style="color: #1abc9c;">$0.00</strong></p>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #1abc9c;">Expenses by Category</h5>
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #1abc9c;">Expense Distribution</h5>
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insights Section -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #1abc9c;">Expense Insights</h5>
+                    <div id="insightsContainer" class="row">
+                        <!-- Insights will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script src="{% static 'js/stats.js' %}"></script>
+{% endblock %}

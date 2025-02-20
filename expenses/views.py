@@ -5,10 +5,10 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 import json
 from django.http import JsonResponse
-from user_preferences.models import UserPreference 
-from .forms import ProfileUpdateForm 
-
-
+from user_preferences.models import UserPreference
+from .forms import ProfileUpdateForm
+import datetime
+from django.db.models import Max, Min
 
 @login_required
 def profile(request):
@@ -24,9 +24,7 @@ def edit_profile(request):
             return redirect('profile')
     else:
         form = ProfileUpdateForm(instance=request.user)
-
     return render(request, 'edit_profile.html', {'form': form})
-
 
 def search_expenses(request):
     if request.method == "POST":
@@ -41,28 +39,21 @@ def search_expenses(request):
             ) | Expenses.objects.filter(
                 category__icontains=search_str, owner=request.user
             )
-            
             data = list(expenses.values())
             return JsonResponse(data, safe=False)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
-
     return JsonResponse({"error": "Invalid request"}, status=400)
 
 @login_required(login_url='/authentication/login/')
 def index(request):
     category = Category.objects.all()
     expenses = Expenses.objects.filter(owner=request.user)
-    
-    # Pagination
-    paginator = Paginator(expenses, 4)  # Show 4 expenses per page
+    paginator = Paginator(expenses, 4)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
-    # Ensure UserPreference exists
     user_preference, created = UserPreference.objects.get_or_create(user=request.user, defaults={"currency": "USD"})
     currency = user_preference.currency
-
     context = {
         'expenses': page_obj,
         "currency": currency,
@@ -72,7 +63,6 @@ def index(request):
 @login_required(login_url='/authentication/login/')
 def add_expense(request):
     categories = Category.objects.all()
-
     if request.method == "POST":
         amount = request.POST.get('amount')
         date = request.POST.get('expense_date')
@@ -97,14 +87,12 @@ def add_expense(request):
         )
         messages.success(request, 'Expense saved successfully')
         return redirect('expenses')
-
     return render(request, 'expenses/add_expense.html', {'categories': categories})
 
 @login_required(login_url='/authentication/login/')
 def expense_edit(request, id):
     expense = get_object_or_404(Expenses, pk=id)
     categories = Category.objects.all()
-
     if request.method == 'POST':
         amount = request.POST.get('amount')
         description = request.POST.get('description')
@@ -120,10 +108,8 @@ def expense_edit(request, id):
         expense.category = category_name
         expense.description = description
         expense.save()
-
         messages.success(request, 'Expense updated successfully')
         return redirect('expenses')
-
     return render(request, 'expenses/edit-expense.html', {'expense': expense, 'categories': categories})
 
 @login_required(login_url='/authentication/login/')
@@ -132,3 +118,60 @@ def delete_expense(request, id):
     expense.delete()
     messages.success(request, 'Expense removed successfully')
     return redirect('expenses')
+
+@login_required(login_url='/authentication/login/')
+def expense_category_summary(request):
+    todays_date = datetime.date.today()
+    six_months_ago = todays_date - datetime.timedelta(days=30 * 6)
+    expenses = Expenses.objects.filter(owner=request.user, date__gte=six_months_ago, date__lte=todays_date)
+    finalrep = {}
+    dates_by_category = {}
+
+    def get_category(expense):
+        return expense.category
+
+    category_list = list(set(map(get_category, expenses)))
+
+    def get_expense_category_amount(category):
+        amount = 0
+        filtered_by_category = expenses.filter(category=category)
+        dates_by_category[category] = [expense.date.strftime("%Y-%m-%d") for expense in filtered_by_category]
+        for item in filtered_by_category:
+            amount += item.amount
+        return amount
+
+    for category in category_list:
+        finalrep[category] = get_expense_category_amount(category)
+
+    user_preference = UserPreference.objects.filter(user=request.user).first()
+    currency = user_preference.currency if user_preference else "USD"
+    total_amount = sum(finalrep.values())
+    percentages = {category: (amount / total_amount) * 100 for category, amount in finalrep.items()}
+    average_expenses = total_amount / len(category_list)
+    max_category = max(finalrep, key=finalrep.get)
+    min_category = min(finalrep, key=finalrep.get)
+    previous_period_start = six_months_ago - datetime.timedelta(days=30 * 6)
+    previous_period_expenses = Expenses.objects.filter(owner=request.user, date__gte=previous_period_start, date__lte=six_months_ago)
+    previous_total_amount = sum(exp.amount for exp in previous_period_expenses)
+    expense_trend = ((total_amount - previous_total_amount) / previous_total_amount) * 100 if previous_total_amount != 0 else 0
+    essential_categories = ["Rent", "Groceries", "Utilities"]
+    essential_amount = sum(finalrep.get(category, 0) for category in essential_categories)
+    non_essential_amount = total_amount - essential_amount
+
+    return JsonResponse({
+        'expense_category_data': finalrep,
+        'currency': currency,
+        'percentages': percentages,
+        'total_amount': total_amount,
+        'dates_by_category': dates_by_category,
+        'average_expenses': average_expenses,
+        'max_category': max_category,
+        'min_category': min_category,
+        'expense_trend': expense_trend,
+        'essential_amount': essential_amount,
+        'non_essential_amount': non_essential_amount,
+    }, safe=False)
+
+@login_required(login_url='/authentication/login/')
+def stats_view(request):
+    return render(request, 'expenses/stats.html')
