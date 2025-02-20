@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from user_preferences.models import UserPreference
 from .forms import ProfileUpdateForm
 import datetime
-from django.db.models import Max, Min
+from typing import Dict, Any, List
 
 @login_required
 def profile(request):
@@ -124,15 +124,15 @@ def expense_category_summary(request):
     todays_date = datetime.date.today()
     six_months_ago = todays_date - datetime.timedelta(days=30 * 6)
     expenses = Expenses.objects.filter(owner=request.user, date__gte=six_months_ago, date__lte=todays_date)
-    finalrep = {}
-    dates_by_category = {}
+    finalrep: Dict[str, float] = {}
+    dates_by_category: Dict[str, List[str]] = {}
 
-    def get_category(expense):
+    def get_category(expense: Expenses) -> str:
         return expense.category
 
     category_list = list(set(map(get_category, expenses)))
 
-    def get_expense_category_amount(category):
+    def get_expense_category_amount(category: str) -> float:
         amount = 0
         filtered_by_category = expenses.filter(category=category)
         dates_by_category[category] = [expense.date.strftime("%Y-%m-%d") for expense in filtered_by_category]
@@ -147,9 +147,12 @@ def expense_category_summary(request):
     currency = user_preference.currency if user_preference else "USD"
     total_amount = sum(finalrep.values())
     percentages = {category: (amount / total_amount) * 100 for category, amount in finalrep.items()}
-    average_expenses = total_amount / len(category_list)
-    max_category = max(finalrep, key=finalrep.get)
-    min_category = min(finalrep, key=finalrep.get)
+    average_expenses = total_amount / len(category_list) if category_list else 0
+
+    # Handle empty finalrep case
+    max_category = max(finalrep, key=lambda k: finalrep[k]) if finalrep else None
+    min_category = min(finalrep, key=lambda k: finalrep[k]) if finalrep else None
+
     previous_period_start = six_months_ago - datetime.timedelta(days=30 * 6)
     previous_period_expenses = Expenses.objects.filter(owner=request.user, date__gte=previous_period_start, date__lte=six_months_ago)
     previous_total_amount = sum(exp.amount for exp in previous_period_expenses)
