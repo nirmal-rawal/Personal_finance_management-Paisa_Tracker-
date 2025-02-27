@@ -26,21 +26,21 @@ insightsContainer.innerHTML = `
         <div class="card bg-secondary border-0 shadow-sm p-3">
             <h6 class="text-white mb-2">Average Expenses</h6>
             <p class="text-white fs-5">${currency} ${averageExpenses.toFixed(2)}</p>
-            <small class="text-white-50">${((averageExpenses / totalAmount) * 100).toFixed(2)}% of total</small>
+            <small class="text-white-50">${((averageExpenses / totalAmount) * 100).toFixed(2)}% of total amount amountc</small>
         </div>
     </div>
     <div class="col-md-6 mb-4">
         <div class="card bg-secondary border-0 shadow-sm p-3">
             <h6 class="text-white mb-2">Maximum Expense Category</h6>
             <p class="text-white fs-5">${maxCategory} (${currency} ${data[maxCategory].toFixed(2)})</p>
-            <small class="text-white-50">${((data[maxCategory] / totalAmount) * 100).toFixed(2)}% of total</small>
+            <small class="text-white-50">${((data[maxCategory] / totalAmount) * 100).toFixed(2)}% of total amount</small>
         </div>
     </div>
     <div class="col-md-6 mb-4">
         <div class="card bg-secondary border-0 shadow-sm p-3">
             <h6 class="text-white mb-2">Minimum Expense Category</h6>
             <p class="text-white fs-5">${minCategory} (${currency} ${data[minCategory].toFixed(2)})</p>
-            <small class="text-white-50">${((data[minCategory] / totalAmount) * 100).toFixed(2)}% of total</small>
+            <small class="text-white-50">${((data[minCategory] / totalAmount) * 100).toFixed(2)}% of total amount</small>
         </div>
     </div>
     <div class="col-md-6 mb-4">
@@ -61,7 +61,7 @@ insightsContainer.innerHTML = `
         <div class="card bg-secondary border-0 shadow-sm p-3">
             <h6 class="text-white mb-2">Non-Essential Expenses</h6>
             <p class="text-white fs-5">${currency} ${nonEssentialAmount.toFixed(2)}</p>
-            <small class="text-white-50">${((nonEssentialAmount / totalAmount) * 100).toFixed(2)}% of total</small>
+            <small class="text-white-50">${((nonEssentialAmount / totalAmount) * 100).toFixed(2)}% of total amount</small>
         </div>
     </div>
 `;

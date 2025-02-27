@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Income(models.Model):
     amount = models.FloatField()
     date = models.DateField(default=now)
-    description = models.TextField()
+    description = models.TextField(default="")  # Provide a default value
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     source = models.CharField(max_length=256)
 

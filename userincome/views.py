@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Source, Income
@@ -6,15 +5,17 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 import json
 from django.http import JsonResponse
-from user_preferences.models import UserPreference 
-from .forms import ProfileUpdateForm 
-from django.http import JsonResponse
-import json
-from .models import Income
+from user_preferences.models import UserPreference
+from .forms import ProfileUpdateForm
+from django.db.models import Sum
+from datetime import date, timedelta
+from typing import Dict, Any, List
+
 
 @login_required
 def profile(request):
     return render(request, 'profile.html')
+
 
 @login_required
 def edit_profile(request):
@@ -30,15 +31,10 @@ def edit_profile(request):
     return render(request, 'edit_profile.html', {'form': form})
 
 
-
-
 def search_incomes(request):
     if request.method == "POST":
         try:
-            # Parse the search text from the request body
             search_str = json.loads(request.body).get("searchText", "")
-
-            # Filter incomes based on the search text
             incomes = Income.objects.filter(
                 amount__istartswith=search_str, owner=request.user
             ) | Income.objects.filter(
@@ -48,8 +44,6 @@ def search_incomes(request):
             ) | Income.objects.filter(
                 source__icontains=search_str, owner=request.user
             )
-
-            # Convert the filtered incomes to a list of dictionaries
             data = list(incomes.values('id', 'amount', 'date', 'description', 'source'))
             return JsonResponse(data, safe=False)
         except json.JSONDecodeError:
@@ -57,11 +51,11 @@ def search_incomes(request):
     else:
         return JsonResponse({"error": "Invalid request method"}, status=400)
 
+
 @login_required(login_url='/authentication/login/')
 def index(request):
     sources = Source.objects.all()
     incomes = Income.objects.filter(owner=request.user)
-    
     paginator = Paginator(incomes, 4)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -75,6 +69,7 @@ def index(request):
     }
     return render(request, 'userincome/index.html', context)
 
+
 @login_required(login_url='/authentication/login/')
 def add_income(request):
     sources = Source.objects.all()
@@ -86,20 +81,15 @@ def add_income(request):
         custom_source = request.POST.get('custom_source', '').strip()
         description = request.POST.get('description', '')
 
-        # If "Other" is selected and a custom source is provided
         if source_name == "Other" and custom_source:
-            # Normalize the input (convert to lowercase for comparison)
             normalized_source = custom_source.lower()
-
-            # Check if a source with the same name (case-insensitive) exists
             existing_source = Source.objects.filter(name__iexact=custom_source).first()
 
             if existing_source:
-                source_name = existing_source.name  # Use the existing source
+                source_name = existing_source.name
             else:
-                # Create a new source with consistent capitalization
                 source_name = custom_source.capitalize()
-                Source.objects.create(name=source_name)  
+                Source.objects.create(name=source_name)
 
         if not amount:
             messages.error(request, 'Amount is required')
@@ -107,7 +97,7 @@ def add_income(request):
 
         Income.objects.create(
             owner=request.user,
-            amount=amount,
+            amount=float(amount),  # Ensure amount is a float
             date=date,
             source=source_name,
             description=description
@@ -116,6 +106,7 @@ def add_income(request):
         return redirect('incomes')
 
     return render(request, 'userincome/add_income.html', {'sources': sources})
+
 
 @login_required(login_url='/authentication/login/')
 def income_edit(request, id):
@@ -132,7 +123,7 @@ def income_edit(request, id):
             messages.error(request, 'Amount is required')
             return render(request, 'userincome/edit-income.html', {'income': income, 'sources': sources})
 
-        income.amount = amount
+        income.amount = float(amount)  # Ensure amount is a float
         income.date = date
         income.source = source_name
         income.description = description
@@ -143,9 +134,6 @@ def income_edit(request, id):
 
     return render(request, 'userincome/edit-income.html', {'income': income, 'sources': sources})
 
-from django.shortcuts import get_object_or_404, redirect
-from django.contrib import messages
-from .models import Income
 
 @login_required(login_url='/authentication/login/')
 def delete_income(request, id):
@@ -154,3 +142,54 @@ def delete_income(request, id):
     messages.success(request, 'Income deleted successfully')
     return redirect('incomes')
 
+
+
+
+
+@login_required(login_url='/authentication/login/')
+def income_category_summary(request):
+    todays_date = date.today()
+    six_months_ago = todays_date - timedelta(days=30 * 6)
+    incomes = Income.objects.filter(owner=request.user, date__gte=six_months_ago, date__lte=todays_date)
+    
+    # Data for Pie Chart (Income Distribution by Category)
+    finalrep: Dict[str, float] = {}
+    for income in incomes:
+        source = income.source
+        if source in finalrep:
+            finalrep[source] += float(income.amount)
+        else:
+            finalrep[source] = float(income.amount)
+
+    # Data for Bar Chart (Monthly Income Trends)
+    monthly_income: Dict[str, float] = {}
+    for income in incomes:
+        month = income.date.strftime("%Y-%m")  # Group by year and month
+        if month in monthly_income:
+            monthly_income[month] += float(income.amount)
+        else:
+            monthly_income[month] = float(income.amount)
+
+    # Data for Line Chart (Daily Income Growth)
+    daily_income: Dict[str, float] = {}
+    for income in incomes:
+        day = income.date.strftime("%Y-%m-%d")  # Group by day
+        if day in daily_income:
+            daily_income[day] += float(income.amount)
+        else:
+            daily_income[day] = float(income.amount)
+
+    # Get user's currency preference
+    user_preference = UserPreference.objects.filter(user=request.user).first()
+    currency = user_preference.currency if user_preference else "USD"
+
+    return JsonResponse({
+        'income_source_data': finalrep,  # For Pie Chart
+        'monthly_income_data': monthly_income,  # For Bar Chart
+        'daily_income_data': daily_income,  # For Line Chart
+        'currency': currency,
+    }, safe=False)
+
+@login_required(login_url='/authentication/login/')
+def income_summary(request):
+    return render(request, 'userincome/income_stats.html')
