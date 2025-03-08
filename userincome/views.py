@@ -143,9 +143,6 @@ def delete_income(request, id):
     return redirect('incomes')
 
 
-
-
-
 @login_required(login_url='/authentication/login/')
 def income_category_summary(request):
     todays_date = date.today()
@@ -161,6 +158,24 @@ def income_category_summary(request):
         else:
             finalrep[source] = float(income.amount)
 
+    # Calculate total income
+    total_income = sum(finalrep.values())
+
+    # Calculate percentages for each income source
+    income_percentages = {source: (amount / total_income) * 100 for source, amount in finalrep.items()}
+
+    # Get top 3 income sources
+    top_3_sources = sorted(finalrep.items(), key=lambda x: x[1], reverse=True)[:3]
+    top_3_sources_names = [source[0] for source in top_3_sources]
+    top_3_sources_amounts = [source[1] for source in top_3_sources]
+    top_3_sources_percentages = [income_percentages[source[0]] for source in top_3_sources]
+
+    # Get minimum income source
+    min_income_source = min(finalrep.items(), key=lambda x: x[1])
+    min_income_source_name = min_income_source[0]
+    min_income_source_amount = min_income_source[1]
+    min_income_source_percentage = income_percentages[min_income_source_name]
+
     # Data for Bar Chart (Monthly Income Trends)
     monthly_income: Dict[str, float] = {}
     for income in incomes:
@@ -169,6 +184,12 @@ def income_category_summary(request):
             monthly_income[month] += float(income.amount)
         else:
             monthly_income[month] = float(income.amount)
+
+    # Get maximum peaked month
+    max_peaked_month = max(monthly_income.items(), key=lambda x: x[1])
+    max_peaked_month_name = max_peaked_month[0]
+    max_peaked_month_amount = max_peaked_month[1]
+    max_peaked_month_percentage = (max_peaked_month_amount / total_income) * 100
 
     # Data for Line Chart (Daily Income Growth)
     daily_income: Dict[str, float] = {}
@@ -179,16 +200,51 @@ def income_category_summary(request):
         else:
             daily_income[day] = float(income.amount)
 
+    # Calculate growth rate over the last 3 months
+    last_3_months = sorted(monthly_income.keys(), reverse=True)[:3]
+    if len(last_3_months) >= 2:
+        latest_month_income = monthly_income[last_3_months[0]]
+        previous_month_income = monthly_income[last_3_months[1]]
+        growth_rate = ((latest_month_income - previous_month_income) / previous_month_income) * 100
+    else:
+        growth_rate = 0
+
+    # Calculate average income
+    average_income = total_income / len(monthly_income) if monthly_income else 0
+    average_income_percentage = (average_income / total_income) * 100
+
     # Get user's currency preference
     user_preference = UserPreference.objects.filter(user=request.user).first()
     currency = user_preference.currency if user_preference else "USD"
 
     return JsonResponse({
         'income_source_data': finalrep,  # For Pie Chart
+        'income_percentages': income_percentages,  # Percentages for Pie Chart
         'monthly_income_data': monthly_income,  # For Bar Chart
         'daily_income_data': daily_income,  # For Line Chart
         'currency': currency,
+        'top_3_sources': {
+            'names': top_3_sources_names,
+            'amounts': top_3_sources_amounts,
+            'percentages': top_3_sources_percentages,
+        },
+        'min_income_source': {
+            'name': min_income_source_name,
+            'amount': min_income_source_amount,
+            'percentage': min_income_source_percentage,
+        },
+        'max_peaked_month': {
+            'name': max_peaked_month_name,
+            'amount': max_peaked_month_amount,
+            'percentage': max_peaked_month_percentage,
+        },
+        'growth_rate': growth_rate,
+        'average_income': {
+            'amount': average_income,
+            'percentage': average_income_percentage,
+        },
     }, safe=False)
+
 
 @login_required(login_url='/authentication/login/')
 def income_summary(request):

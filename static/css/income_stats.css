@@ -1,0 +1,119 @@
+ /* General Styles */
+ body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #121212; /* Dark gray background */
+    color: #ffffff; /* White text for contrast */
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb-nav {
+    background-color: rgba(44, 62, 80, 0.9); /* Semi-transparent dark background */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.breadcrumb-link {
+    color: #1abc9c !important; /* Green color for breadcrumb links */
+    text-decoration: none;
+}
+
+.breadcrumb-item.active {
+    color: #ecf0f1 !important; /* Light color for active breadcrumb */
+}
+
+/* Back Button */
+.back-button {
+    background-color: #1abc9c; /* Green background for the button */
+    border: none;
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #16a085; /* Darker green on hover */
+}
+
+/* Centered Total Income */
+.income-summary-title {
+    color: #1abc9c; /* Green color for the title */
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.total-income-text {
+    color: #ffffff; /* White color for text */
+    font-size: 1.2rem;
+}
+
+.total-income-amount {
+    color: #1abc9c; /* Green color for the amount */
+    font-size: 1.5rem;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #424242; /* Darker gray for cards */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Chart Titles */
+.chart-title {
+    color: #1abc9c; /* Green color for chart titles */
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Insights Section */
+.insights-title {
+    color: #1abc9c; /* Green color for insights title */
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.insightsContainer .card {
+    background: linear-gradient(45deg, #1abc9c, #16a085); /* Gradient background for insight cards */
+    color: white; /* White text for insight cards */
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.insightsContainer .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.insightsContainer .card h6 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.insightsContainer .card p {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.insightsContainer .card small {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Icons */
+.fas {
+    opacity: 0.8;
+    margin-right: 10px;
+}

@@ -1,0 +1,51 @@
+/* Gradient Backgrounds */
+.bg-gradient-primary {
+    background: linear-gradient(45deg, #021512, #c38c16);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(45deg, #385d47, #27ae60);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(45deg,rgb(0, 0, 0),rgb(35, 17, 166));
+}
+
+.bg-gradient-info {
+    background: linear-gradient(45deg, #adb2b6, #2980b9);
+}
+
+.bg-gradient-danger {
+    background: linear-gradient(45deg, #c47b73, #c0392b);
+}
+
+/* Card Hover Effect */
+.hover-scale {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Typography */
+.card h6 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.card p {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.card small {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Icons */
+.fas {
+    opacity: 0.8;
+}

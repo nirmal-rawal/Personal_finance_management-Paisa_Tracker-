@@ -2,64 +2,88 @@
 {% load static %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/income_insight.css' %}">
+<link rel="stylesheet" href="{% static 'css/income_stats.css' %}">
+{% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> {% endcomment %}
+
 <div class="container mt-4">
-    <!-- Breadcrumb Navigation -->
-    <div class="row">
-        <div class="col-md-9">
-            <nav aria-label="breadcrumb" style="background-color: #2c3e50; padding: 10px; border-radius: 5px;">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="" style="color: #1abc9c;">Income Summary</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page" style="color: #ecf0f1;">Summary</li>
-                </ol>
-            </nav>
+    <!-- Fixed Income Summary Section -->
+    <div class="fixed-summary">
+        <!-- Breadcrumb Navigation -->
+        <div class="row">
+            <div class="col-md-9">
+                <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="" class="breadcrumb-link">Income Summary</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Summary</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-md-3">
+                <a href="{% url 'incomes' %}" class="btn btn-primary back-button">BACK</a>
+            </div>
         </div>
-        <div class="col-md-3 text-end">
-            <a href="{% url 'incomes' %}" class="btn btn-primary" style="background-color: #1abc9c; border: none;">BACK</a>
+
+        <!-- Centered Total Income -->
+        <div class="row mt-3">
+            <div class="col-md-12 text-center">
+                <h4 class="income-summary-title">Income Summary</h4>
+                <p class="total-income-text">Total Income: <strong id="totalIncome" class="total-income-amount">$0.00</strong></p>
+            </div>
         </div>
     </div>
 
-    <!-- Centered Total Income -->
-    <div class="row mt-5">
-        <div class="col-md-12 text-center">
-            <h4 style="color: #1abc9c;">Income Summary</h4>
-            <p style="color: #ecf0f1;">Total Income: <strong id="totalIncome" style="color: #1abc9c;">$0.00</strong></p>
-        </div>
-    </div>
-
+    <!-- Charts Section -->
     <div class="row mt-4">
         <div class="col-md-6">
-            <div class="card bg-dark text-white">
+            <div class="card chart-card">
                 <div class="card-body">
-                    <h5 class="card-title" style="color: #1abc9c;">Income Distribution</h5>
+                    <h5 class="card-title chart-title">Income Distribution</h5>
                     <canvas id="pieChart"></canvas>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="card bg-dark text-white">
+            <div class="card chart-card">
                 <div class="card-body">
-                    <h5 class="card-title" style="color: #1abc9c;">Monthly Income Trends</h5>
+                    <h5 class="card-title chart-title">Monthly Income Trends</h5>
                     <canvas id="barChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Line Chart Section -->
     <div class="row mt-4">
         <div class="col-md-12">
-            <div class="card bg-dark text-white">
+            <div class="card chart-card">
                 <div class="card-body">
-                    <h5 class="card-title" style="color: #1abc9c;">Daily Income Growth</h5>
+                    <h5 class="card-title chart-title">Daily Income Growth</h5>
                     <canvas id="lineChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-    <script src="{% static 'js/userincome_stats.js' %}"></script>
+    <!-- Insights Section -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card insights-card">
+                <div class="card-body">
+                    <h5 class="card-title insights-title">Income Insights</h5>
+                    <div id="insightsContainer" class="row">
+                        <!-- Insights will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script src="{% static 'js/userincome_stats.js' %}"></script>
 {% endblock %}
