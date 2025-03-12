@@ -11,11 +11,9 @@ from django.db.models import Sum
 from datetime import date, timedelta
 from typing import Dict, Any, List
 
-
 @login_required
 def profile(request):
     return render(request, 'profile.html')
-
 
 @login_required
 def edit_profile(request):
@@ -29,7 +27,6 @@ def edit_profile(request):
         form = ProfileUpdateForm(instance=request.user)
 
     return render(request, 'edit_profile.html', {'form': form})
-
 
 def search_incomes(request):
     if request.method == "POST":
@@ -51,7 +48,6 @@ def search_incomes(request):
     else:
         return JsonResponse({"error": "Invalid request method"}, status=400)
 
-
 @login_required(login_url='/authentication/login/')
 def index(request):
     sources = Source.objects.all()
@@ -68,7 +64,6 @@ def index(request):
         "currency": currency,
     }
     return render(request, 'userincome/index.html', context)
-
 
 @login_required(login_url='/authentication/login/')
 def add_income(request):
@@ -107,7 +102,6 @@ def add_income(request):
 
     return render(request, 'userincome/add_income.html', {'sources': sources})
 
-
 @login_required(login_url='/authentication/login/')
 def income_edit(request, id):
     income = get_object_or_404(Income, pk=id)
@@ -134,7 +128,6 @@ def income_edit(request, id):
 
     return render(request, 'userincome/edit-income.html', {'income': income, 'sources': sources})
 
-
 @login_required(login_url='/authentication/login/')
 def delete_income(request, id):
     income = get_object_or_404(Income, pk=id, owner=request.user)
@@ -142,13 +135,12 @@ def delete_income(request, id):
     messages.success(request, 'Income deleted successfully')
     return redirect('incomes')
 
-
 @login_required(login_url='/authentication/login/')
 def income_category_summary(request):
     todays_date = date.today()
     six_months_ago = todays_date - timedelta(days=30 * 6)
     incomes = Income.objects.filter(owner=request.user, date__gte=six_months_ago, date__lte=todays_date)
-    
+
     # Data for Pie Chart (Income Distribution by Category)
     finalrep: Dict[str, float] = {}
     for income in incomes:
@@ -162,19 +154,19 @@ def income_category_summary(request):
     total_income = sum(finalrep.values())
 
     # Calculate percentages for each income source
-    income_percentages = {source: (amount / total_income) * 100 for source, amount in finalrep.items()}
+    income_percentages = {source: (amount / total_income) * 100 for source, amount in finalrep.items()} if total_income > 0 else {}
 
     # Get top 3 income sources
-    top_3_sources = sorted(finalrep.items(), key=lambda x: x[1], reverse=True)[:3]
+    top_3_sources = sorted(finalrep.items(), key=lambda x: x[1], reverse=True)[:3] if finalrep else []
     top_3_sources_names = [source[0] for source in top_3_sources]
     top_3_sources_amounts = [source[1] for source in top_3_sources]
-    top_3_sources_percentages = [income_percentages[source[0]] for source in top_3_sources]
+    top_3_sources_percentages = [income_percentages.get(source[0], 0) for source in top_3_sources]
 
     # Get minimum income source
-    min_income_source = min(finalrep.items(), key=lambda x: x[1])
+    min_income_source = min(finalrep.items(), key=lambda x: x[1]) if finalrep else ("None", 0)
     min_income_source_name = min_income_source[0]
     min_income_source_amount = min_income_source[1]
-    min_income_source_percentage = income_percentages[min_income_source_name]
+    min_income_source_percentage = income_percentages.get(min_income_source_name, 0)
 
     # Data for Bar Chart (Monthly Income Trends)
     monthly_income: Dict[str, float] = {}
@@ -186,10 +178,10 @@ def income_category_summary(request):
             monthly_income[month] = float(income.amount)
 
     # Get maximum peaked month
-    max_peaked_month = max(monthly_income.items(), key=lambda x: x[1])
+    max_peaked_month = max(monthly_income.items(), key=lambda x: x[1]) if monthly_income else ("None", 0)
     max_peaked_month_name = max_peaked_month[0]
     max_peaked_month_amount = max_peaked_month[1]
-    max_peaked_month_percentage = (max_peaked_month_amount / total_income) * 100
+    max_peaked_month_percentage = (max_peaked_month_amount / total_income) * 100 if total_income > 0 else 0
 
     # Data for Line Chart (Daily Income Growth)
     daily_income: Dict[str, float] = {}
@@ -201,7 +193,7 @@ def income_category_summary(request):
             daily_income[day] = float(income.amount)
 
     # Calculate growth rate over the last 3 months
-    last_3_months = sorted(monthly_income.keys(), reverse=True)[:3]
+    last_3_months = sorted(monthly_income.keys(), reverse=True)[:3] if monthly_income else []
     if len(last_3_months) >= 2:
         latest_month_income = monthly_income[last_3_months[0]]
         previous_month_income = monthly_income[last_3_months[1]]
@@ -211,7 +203,7 @@ def income_category_summary(request):
 
     # Calculate average income
     average_income = total_income / len(monthly_income) if monthly_income else 0
-    average_income_percentage = (average_income / total_income) * 100
+    average_income_percentage = (average_income / total_income) * 100 if total_income > 0 else 0
 
     # Get user's currency preference
     user_preference = UserPreference.objects.filter(user=request.user).first()
@@ -244,7 +236,6 @@ def income_category_summary(request):
             'percentage': average_income_percentage,
         },
     }, safe=False)
-
 
 @login_required(login_url='/authentication/login/')
 def income_summary(request):

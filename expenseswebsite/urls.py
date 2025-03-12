@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentication/',include('authentication.urls')),
     path('preferences/',include('user_preferences.urls')),
+    path("dashboard/",include('dashboard.urls')),
 
     # path('authentication/login/', auth_views.LoginView.as_view(template_name='authentication/login.html'), name='login'),
     # path('authentication/register/', auth_views.LoginView.as_view(template_name='authentication/register.html'), name='register'),

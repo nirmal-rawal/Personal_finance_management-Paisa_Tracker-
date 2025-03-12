@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Overview Section -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Total Income</h5>
+                    <p class="card-text">{{ currency }} {{ total_income|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-danger text-white mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Total Expenses</h5>
+                    <p class="card-text">{{ currency }} {{ total_expenses|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Net Income</h5>
+                    <p class="card-text">{{ currency }} {{ net_income|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Income vs Expenses Chart -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Income vs Expenses</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="incomeExpenseChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Expense Breakdown by Category -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Expense Breakdown by Category</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="expenseBreakdownChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Spending Limit & Alerts -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Monthly Spending Limit</h5>
+                </div>
+                <div class="card-body">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ spending_progress }}%;" aria-valuenow="{{ spending_progress }}" aria-valuemin="0" aria-valuemax="100">
+                            {{ spending_progress|floatformat:2 }}%
+                        </div>
+                    </div>
+                    {% if spending_progress > 100 %}
+                        <div class="alert alert-danger mt-3">
+                            You have exceeded your budget!
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success mt-3">
+                            You’ve used {{ spending_progress|floatformat:2 }}% of your budget.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Best & Worst Spending Days -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Best Spending Day</h5>
+                </div>
+                <div class="card-body">
+                    <p>{{ best_spending_day.0 }}: {{ currency }} {{ best_spending_day.1|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Worst Spending Day</h5>
+                </div>
+                <div class="card-body">
+                    <p>{{ worst_spending_day.0 }}: {{ currency }} {{ worst_spending_day.1|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cash Flow Summary -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Cash Flow Summary</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="cashFlowChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Load Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Pass data to JavaScript -->
+<script>
+    const chartData = {
+        chartLabels: {{ chart_labels|safe }},
+        chartIncomeData: {{ chart_income_data|safe }},
+        chartExpenseData: {{ chart_expense_data|safe }},
+        expenseBreakdownLabels: {{ expense_breakdown_labels|safe }},
+        expenseBreakdownValues: {{ expense_breakdown_values|safe }},
+        netSavingsTrend: {{ net_savings_trend|safe }},
+    };
+</script>
+
+<!-- Load dashboard.js -->
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

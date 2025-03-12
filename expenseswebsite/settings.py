@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'expenses',  
     'user_preferences',
     "userincome",
+    "dashboard",
     
     
 ]
