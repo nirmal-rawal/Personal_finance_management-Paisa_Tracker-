@@ -23,8 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ],
         },
         options: {
-            responsive: true, // Ensure the chart is responsive
-            maintainAspectRatio: false, // Disable aspect ratio maintenance
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,
@@ -50,15 +50,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         color: 'white',
                     },
                 },
-                zoom: false, // Disable zoom plugin entirely
-            },
-            interaction: {
-                mode: 'index', // Disable zoom on interaction
-                intersect: false,
             },
         },
     });
-
+    
     // Expense Breakdown by Category Chart
     const ctx2 = document.getElementById('expenseBreakdownChart').getContext('2d');
     const expenseBreakdownChart = new Chart(ctx2, {
@@ -85,11 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         color: 'white',
                     },
                 },
-                zoom: false, // Disable zoom plugin entirely
-            },
-            interaction: {
-                mode: 'index', // Disable zoom on interaction
-                intersect: false,
             },
         },
     });
@@ -136,11 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         color: 'white',
                     },
                 },
-                zoom: false, // Disable zoom plugin entirely
-            },
-            interaction: {
-                mode: 'index', // Disable zoom on interaction
-                intersect: false,
             },
         },
     });

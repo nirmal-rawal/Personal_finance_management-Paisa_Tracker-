@@ -10,5 +10,5 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.edit_profile, name='edit-profile'),
     path('income-summary/', views.income_summary, name='income-summary'),
-    path('income-category-summary/', views.income_category_summary, name="income-category-summary"),  # Ensure this line is present
+    path('income-category-summary/', views.income_category_summary, name="income-category-summary"),
 ]

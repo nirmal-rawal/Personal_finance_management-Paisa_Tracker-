@@ -10,6 +10,7 @@ from .forms import ProfileUpdateForm
 import datetime
 from typing import Dict, Any, List
 
+
 @login_required
 def profile(request):
     return render(request, 'profile.html')
@@ -49,7 +50,7 @@ def search_expenses(request):
 def index(request):
     category = Category.objects.all()
     expenses = Expenses.objects.filter(owner=request.user)
-    paginator = Paginator(expenses, 4)
+    paginator = Paginator(expenses, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     user_preference, created = UserPreference.objects.get_or_create(user=request.user, defaults={"currency": "USD"})
@@ -69,6 +70,7 @@ def add_expense(request):
         category_name = request.POST.get('category')
         custom_category = request.POST.get('custom_category', '').strip()
         description = request.POST.get('description', '')
+        transaction_type = request.POST.get('transaction_type', 'Expenses')
 
         if category_name == "Other" and custom_category:
             category_name = custom_category
@@ -83,7 +85,8 @@ def add_expense(request):
             amount=amount,
             date=date,
             category=category_name,
-            description=description
+            description=description,
+            transaction_type=transaction_type
         )
         messages.success(request, 'Expense saved successfully')
         return redirect('expenses')
@@ -98,6 +101,7 @@ def expense_edit(request, id):
         description = request.POST.get('description')
         date = request.POST.get('expense_date')
         category_name = request.POST.get('category')
+        transaction_type = request.POST.get('transaction_type', 'Expenses')
 
         if not amount:
             messages.error(request, 'Amount is required')
@@ -107,6 +111,7 @@ def expense_edit(request, id):
         expense.date = date
         expense.category = category_name
         expense.description = description
+        expense.transaction_type = transaction_type
         expense.save()
         messages.success(request, 'Expense updated successfully')
         return redirect('expenses')
@@ -121,42 +126,42 @@ def delete_expense(request, id):
 
 @login_required(login_url='/authentication/login/')
 def expense_category_summary(request):
-    todays_date = datetime.date.today()
-    six_months_ago = todays_date - datetime.timedelta(days=30 * 6)
-    expenses = Expenses.objects.filter(owner=request.user, date__gte=six_months_ago, date__lte=todays_date)
+    # Get all expenses without date filtering
+    expenses = Expenses.objects.filter(owner=request.user)
+    
     finalrep: Dict[str, float] = {}
     dates_by_category: Dict[str, List[str]] = {}
 
-    def get_category(expense: Expenses) -> str:
-        return expense.category
+    # Get unique categories
+    category_list = list(set(expense.category for expense in expenses))
 
-    category_list = list(set(map(get_category, expenses)))
-
-    def get_expense_category_amount(category: str) -> float:
-        amount = 0
-        filtered_by_category = expenses.filter(category=category)
-        dates_by_category[category] = [expense.date.strftime("%Y-%m-%d") for expense in filtered_by_category]
-        for item in filtered_by_category:
-            amount += item.amount
-        return amount
-
+    # Calculate amounts per category
     for category in category_list:
-        finalrep[category] = get_expense_category_amount(category)
+        category_expenses = expenses.filter(category=category)
+        dates_by_category[category] = [
+            expense.date.strftime("%Y-%m-%d") 
+            for expense in category_expenses
+        ]
+        finalrep[category] = sum(exp.amount for exp in category_expenses)
 
+    # Get currency preference
     user_preference = UserPreference.objects.filter(user=request.user).first()
     currency = user_preference.currency if user_preference else "USD"
+    
+    # Calculate summary metrics
     total_amount = sum(finalrep.values())
-    percentages = {category: (amount / total_amount) * 100 for category, amount in finalrep.items()}
+    percentages = {
+        category: (amount / total_amount) * 100 
+        for category, amount in finalrep.items()
+    } if total_amount > 0 else {}
+    
     average_expenses = total_amount / len(category_list) if category_list else 0
 
-    # Handle empty finalrep case
+    # Find max and min categories
     max_category = max(finalrep, key=lambda k: finalrep[k]) if finalrep else None
     min_category = min(finalrep, key=lambda k: finalrep[k]) if finalrep else None
 
-    previous_period_start = six_months_ago - datetime.timedelta(days=30 * 6)
-    previous_period_expenses = Expenses.objects.filter(owner=request.user, date__gte=previous_period_start, date__lte=six_months_ago)
-    previous_total_amount = sum(exp.amount for exp in previous_period_expenses)
-    expense_trend = ((total_amount - previous_total_amount) / previous_total_amount) * 100 if previous_total_amount != 0 else 0
+    # Calculate essential vs non-essential
     essential_categories = ["Rent", "Groceries", "Utilities"]
     essential_amount = sum(finalrep.get(category, 0) for category in essential_categories)
     non_essential_amount = total_amount - essential_amount
@@ -170,9 +175,9 @@ def expense_category_summary(request):
         'average_expenses': average_expenses,
         'max_category': max_category,
         'min_category': min_category,
-        'expense_trend': expense_trend,
         'essential_amount': essential_amount,
         'non_essential_amount': non_essential_amount,
+        # Removed time-based calculations that were causing errors
     }, safe=False)
 
 @login_required(login_url='/authentication/login/')

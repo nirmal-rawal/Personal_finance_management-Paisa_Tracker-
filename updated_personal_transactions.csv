@@ -1,0 +1,807 @@
+Date,Description,Amount,Transaction Type,Category
+01/01/2018,Amazon,11.11,Expenses,Shopping
+01/02/2018,Mortgage Payment,1247.44,Expenses,Mortgage & Rent
+01/02/2018,Thai Restaurant,24.22,Expenses,Restaurants
+01/03/2018,Credit Card Payment,2298.09,Income,Credit Card Payment
+01/04/2018,Netflix,11.76,Expenses,Movies & DVDs
+01/05/2018,American Tavern,25.85,Expenses,Restaurants
+01/06/2018,Hardware Store,18.45,Expenses,Home Improvement
+01/08/2018,Gas Company,45.0,Expenses,Utilities
+01/08/2018,Hardware Store,15.38,Expenses,Home Improvement
+01/09/2018,Spotify,10.69,Expenses,Music
+01/10/2018,Phone Company,89.46,Expenses,Mobile Phone
+01/11/2018,Shell,34.87,Expenses,Gas & Fuel
+01/11/2018,Grocery Store,43.54,Expenses,Groceries
+01/12/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+01/13/2018,Pizza Place,32.91,Expenses,Fast Food
+01/13/2018,Amazon,39.05,Expenses,Shopping
+01/15/2018,Grocery Store,44.19,Expenses,Groceries
+01/15/2018,American Tavern,64.11,Expenses,Restaurants
+01/16/2018,City Water Charges,35.0,Expenses,Utilities
+01/16/2018,Power Company,60.0,Expenses,Utilities
+01/19/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+01/20/2018,Amazon,50.21,Expenses,Shopping
+01/22/2018,Credit Card Payment,554.99,Transaction Type,Category
+01/22/2018,Credit Card Payment,309.81,Income,Credit Card Payment
+01/22/2018,Credit Card Payment,554.99,Expenses,Credit Card Payment
+01/22/2018,Hardware Store,17.38,Expenses,Home Improvement
+01/23/2018,Credit Card Payment,309.81,Expenses,Credit Card Payment
+01/24/2018,Starbucks,3.0,Expenses,Coffee Shops
+01/25/2018,Internet Service Provider,69.99,Expenses,Internet
+01/29/2018,Shell,30.42,Expenses,Gas & Fuel
+01/29/2018,Thai Restaurant,25.0,Expenses,Restaurants
+01/29/2018,Brunch Restaurant,17.62,Expenses,Restaurants
+02/01/2018,Grocery Store,27.79,Expenses,Groceries
+02/01/2018,Amazon,11.11,Expenses,Shopping
+02/02/2018,Mortgage Payment,1247.44,Expenses,Mortgage & Rent
+02/02/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+02/03/2018,Japanese Restaurant,57.02,Expenses,Restaurants
+02/04/2018,Netflix,11.76,Expenses,Movies & DVDs
+02/05/2018,Credit Card Payment,145.14,Income,Credit Card Payment
+02/06/2018,Credit Card Payment,154.13,Income,Credit Card Payment
+02/07/2018,Credit Card Payment,154.13,Expenses,Credit Card Payment
+02/07/2018,Gas Company,65.0,Expenses,Utilities
+02/09/2018,Barbershop,30.0,Expenses,Haircut
+02/09/2018,Spotify,10.69,Expenses,Music
+02/10/2018,Bojangles,10.66,Expenses,Fast Food
+02/11/2018,Fancy Restaurant,106.8,Expenses,Restaurants
+02/12/2018,Shell,36.47,Expenses,Gas & Fuel
+02/12/2018,Phone Company,89.52,Expenses,Mobile Phone
+02/14/2018,Brewing Company,14.0,Expenses,Alcohol & Bars
+02/15/2018,American Tavern,10.0,Expenses,Restaurants
+02/15/2018,Power Company,60.0,Expenses,Utilities
+02/16/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+02/16/2018,Brunch Restaurant,8.0,Expenses,Restaurants
+02/16/2018,City Water Charges,35.0,Expenses,Utilities
+02/20/2018,Grocery Store,35.95,Expenses,Groceries
+02/20/2018,Mexican Restaurant,23.51,Expenses,Restaurants
+02/21/2018,Starbucks,2.0,Expenses,Coffee Shops
+02/22/2018,Starbucks,4.0,Expenses,Coffee Shops
+02/26/2018,Credit Card Payment,765.37,Income,Credit Card Payment
+02/26/2018,Credit Card Payment,156.11,Income,Credit Card Payment
+02/26/2018,Credit Card Payment,765.37,Expenses,Credit Card Payment
+02/26/2018,Internet Service Provider,74.99,Expenses,Internet
+02/26/2018,American Tavern,85.52,Expenses,Restaurants
+02/26/2018,Gas Station,32.21,Expenses,Gas & Fuel
+02/27/2018,Credit Card Payment,156.11,Expenses,Credit Card Payment
+03/01/2018,Grocery Store,32.07,Expenses,Groceries
+03/01/2018,Amazon,13.13,Expenses,Shopping
+03/02/2018,Mortgage Payment,1247.44,Expenses,Mortgage & Rent
+03/02/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+03/03/2018,Grocery Store,23.74,Expenses,Groceries
+03/04/2018,Grocery Store,10.69,Expenses,Groceries
+03/04/2018,Netflix,11.76,Expenses,Movies & DVDs
+03/04/2018,BBQ Restaurant,42.24,Expenses,Restaurants
+03/05/2018,Starbucks,3.0,Expenses,Coffee Shops
+03/05/2018,Credit Card Payment,761.59,Income,Credit Card Payment
+03/05/2018,Credit Card Payment,761.59,Expenses,Credit Card Payment
+03/07/2018,Starbucks,3.5,Expenses,Coffee Shops
+03/08/2018,BP,34.9,Expenses,Gas & Fuel
+03/08/2018,Gas Company,52.0,Expenses,Utilities
+03/09/2018,Grocery Store,20.72,Expenses,Groceries
+03/09/2018,Grocery Store,5.09,Expenses,Groceries
+03/09/2018,Spotify,10.69,Expenses,Music
+03/12/2018,Grocery Store,19.35,Expenses,Groceries
+03/12/2018,Phone Company,89.52,Expenses,Mobile Phone
+03/13/2018,Amazon,45.75,Expenses,Shopping
+03/14/2018,Grocery Store,22.5,Expenses,Groceries
+03/14/2018,Brunch Restaurant,8.49,Expenses,Restaurants
+03/15/2018,Starbucks,3.5,Expenses,Coffee Shops
+03/15/2018,Power Company,60.0,Expenses,Utilities
+03/16/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+03/17/2018,Brewing Company,19.5,Expenses,Alcohol & Bars
+03/17/2018,Pizza Place,23.34,Expenses,Fast Food
+03/19/2018,Mediterranean Restaurant,36.48,Expenses,Restaurants
+03/19/2018,City Water Charges,35.0,Expenses,Utilities
+03/20/2018,Amazon,14.97,Expenses,Shopping
+03/22/2018,BP,30.55,Expenses,Gas & Fuel
+03/23/2018,Credit Card Payment,559.91,Income,Credit Card Payment
+03/23/2018,Credit Card Payment,559.91,Expenses,Credit Card Payment
+03/23/2018,Grocery Store,11.76,Expenses,Groceries
+03/26/2018,Internet Service Provider,74.99,Expenses,Internet
+03/28/2018,Grocery Store,16.06,Expenses,Groceries
+03/28/2018,Pizza Place,24.98,Expenses,Restaurants
+03/29/2018,Steakhouse,17.64,Expenses,Restaurants
+03/30/2018,Grocery Store,9.09,Expenses,Groceries
+03/30/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+03/31/2018,Belgian Restaurant,38.32,Expenses,Restaurants
+03/31/2018,Chili's,24.74,Expenses,Restaurants
+03/31/2018,Greek Restaurant,41.16,Expenses,Restaurants
+04/01/2018,Grocery Store,80.79,Expenses,Groceries
+04/01/2018,Brewing Company,59.48,Expenses,Restaurants
+04/01/2018,Amazon,13.13,Expenses,Shopping
+04/02/2018,Credit Card Payment,817.14,Income,Credit Card Payment
+04/02/2018,Credit Card Payment,817.14,Expenses,Credit Card Payment
+04/02/2018,Grocery Store,82.36,Expenses,Groceries
+04/02/2018,Hardware Store,13.89,Expenses,Home Improvement
+04/02/2018,Mortgage Payment,1247.44,Expenses,Mortgage & Rent
+04/03/2018,Amazon Video,6.41,Expenses,Movies & DVDs
+04/04/2018,Credit Card Payment,363.08,Income,Credit Card Payment
+04/04/2018,Credit Card Payment,363.08,Expenses,Credit Card Payment
+04/04/2018,Netflix,11.76,Expenses,Movies & DVDs
+04/06/2018,Chevron,4.58,Expenses,Gas & Fuel
+04/06/2018,Tiny Deli,9.76,Expenses,Restaurants
+04/08/2018,Irish Pub,22.0,Expenses,Restaurants
+04/09/2018,Blue Sky Market,6.48,Expenses,Groceries
+04/09/2018,Spotify,10.69,Expenses,Music
+04/09/2018,Gas Company,30.0,Expenses,Utilities
+04/11/2018,Phone Company,89.52,Expenses,Mobile Phone
+04/12/2018,Starbucks,7.0,Expenses,Coffee Shops
+04/12/2018,Barbershop,30.0,Expenses,Haircut
+04/13/2018,BP,37.98,Expenses,Gas & Fuel
+04/13/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+04/13/2018,American Tavern,10.66,Expenses,Restaurants
+04/14/2018,Hardware Store,11.61,Expenses,Home Improvement
+04/14/2018,American Tavern,41.0,Expenses,Restaurants
+04/16/2018,State Farm,75.0,Expenses,Auto Insurance
+04/16/2018,City Water Charges,35.0,Expenses,Utilities
+04/18/2018,Power Company,60.0,Expenses,Utilities
+04/20/2018,Thai Restaurant,24.22,Expenses,Restaurants
+04/21/2018,Grocery Store,4.32,Expenses,Groceries
+04/21/2018,American Tavern,35.15,Expenses,Restaurants
+04/22/2018,Grocery Store,21.32,Expenses,Groceries
+04/23/2018,Hardware Store,42.7,Expenses,Home Improvement
+04/24/2018,Hardware Store,224.7,Expenses,Home Improvement
+04/24/2018,Amazon,41.34,Expenses,Shopping
+04/25/2018,Hardware Store,210.79,Expenses,Home Improvement
+04/25/2018,Internet Service Provider,74.99,Expenses,Internet
+04/26/2018,Credit Card Payment,769.72,Income,Credit Card Payment
+04/26/2018,Credit Card Payment,1216.94,Income,Credit Card Payment
+04/26/2018,Credit Card Payment,1216.94,Expenses,Credit Card Payment
+04/27/2018,Credit Card Payment,769.72,Expenses,Credit Card Payment
+04/27/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+04/28/2018,Grocery Store,22.98,Expenses,Groceries
+04/29/2018,QuikTrip,39.0,Expenses,Gas & Fuel
+04/29/2018,Grocery Store,51.05,Expenses,Groceries
+04/29/2018,Hardware Store,68.47,Expenses,Home Improvement
+04/30/2018,Grocery Store,5.09,Expenses,Groceries
+05/01/2018,Amazon,13.13,Expenses,Shopping
+05/02/2018,Mortgage Payment,1247.44,Expenses,Mortgage & Rent
+05/03/2018,Amazon,49.72,Expenses,Shopping
+05/04/2018,Grocery Store,42.23,Expenses,Groceries
+05/04/2018,Netflix,11.76,Expenses,Movies & DVDs
+05/05/2018,Bojangles,7.27,Expenses,Fast Food
+05/05/2018,Pizza Place,20.52,Expenses,Fast Food
+05/06/2018,Hardware Store,22.37,Expenses,Home Improvement
+05/06/2018,Amazon,117.69,Expenses,Shopping
+05/09/2018,Credit Card Payment,601.4,Income,Credit Card Payment
+05/09/2018,Credit Card Payment,601.4,Expenses,Credit Card Payment
+05/09/2018,Spotify,10.69,Expenses,Music
+05/09/2018,Gas Company,30.0,Expenses,Utilities
+05/10/2018,Phone Company,111.18,Expenses,Mobile Phone
+05/11/2018,Grocery Store,57.32,Expenses,Groceries
+05/11/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+05/11/2018,Mike's Construction Co.,8000.0,Expenses,Home Improvement
+05/12/2018,Liquor Store,27.77,Expenses,Alcohol & Bars
+05/12/2018,Shell,33.3,Expenses,Gas & Fuel
+05/12/2018,Fancy Restaurant,78.0,Expenses,Restaurants
+05/14/2018,Grocery Store,67.63,Expenses,Groceries
+05/15/2018,Power Company,60.0,Expenses,Utilities
+05/17/2018,Barbershop,29.0,Expenses,Haircut
+05/17/2018,City Water Charges,35.0,Expenses,Utilities
+05/18/2018,State Farm,75.0,Expenses,Auto Insurance
+05/18/2018,Amazon,6.41,Expenses,Shopping
+05/19/2018,Credit Card Payment,207.08,Income,Credit Card Payment
+05/19/2018,Grocery Store,31.0,Expenses,Groceries
+05/19/2018,Greek Restaurant,23.26,Expenses,Restaurants
+05/21/2018,Credit Card Payment,283.07,Income,Credit Card Payment
+05/21/2018,Thai Restaurant,26.04,Expenses,Restaurants
+05/21/2018,Amazon,32.5,Expenses,Shopping
+05/22/2018,Credit Card Payment,283.07,Expenses,Credit Card Payment
+05/24/2018,BP,39.44,Expenses,Gas & Fuel
+05/25/2018,Internet Service Provider,74.99,Expenses,Internet
+05/25/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+05/28/2018,Movie Theater,9.62,Expenses,Entertainment
+05/28/2018,Grocery Store,91.03,Expenses,Groceries
+05/29/2018,Movie Theater,20.0,Expenses,Movies & DVDs
+05/29/2018,Movie Theater,6.25,Expenses,Movies & DVDs
+06/01/2018,BP,38.63,Expenses,Gas & Fuel
+06/01/2018,Grocery Store,6.11,Expenses,Groceries
+06/01/2018,Amazon,13.13,Expenses,Shopping
+06/02/2018,Credit Card Payment,235.18,Income,Credit Card Payment
+06/02/2018,Credit Card Payment,466.36,Income,Credit Card Payment
+06/03/2018,Italian Restaurant,65.81,Expenses,Restaurants
+06/04/2018,Credit Card Payment,235.18,Expenses,Credit Card Payment
+06/04/2018,Grocery Store,24.12,Expenses,Groceries
+06/04/2018,Mortgage Payment,1247.44,Expenses,Mortgage & Rent
+06/04/2018,Netflix,11.76,Expenses,Movies & DVDs
+06/06/2018,Starbucks,4.0,Expenses,Coffee Shops
+06/08/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+06/08/2018,Gas Company,30.0,Expenses,Utilities
+06/09/2018,Chick-Fil-A,16.18,Expenses,Fast Food
+06/09/2018,Grocery Store,9.56,Expenses,Groceries
+06/09/2018,Spotify,10.69,Expenses,Music
+06/10/2018,Grocery Store,46.01,Expenses,Groceries
+06/12/2018,Grocery Store,12.55,Expenses,Groceries
+06/12/2018,Phone Company,89.46,Expenses,Mobile Phone
+06/14/2018,Credit Card Payment,283.44,Income,Credit Card Payment
+06/14/2018,Credit Card Payment,283.44,Expenses,Credit Card Payment
+06/14/2018,Grocery Store,7.02,Expenses,Groceries
+06/15/2018,Power Company,60.0,Expenses,Utilities
+06/16/2018,Starbucks,3.0,Expenses,Coffee Shops
+06/16/2018,Pizza Place,22.66,Expenses,Fast Food
+06/16/2018,Grocery Store,13.9,Expenses,Groceries
+06/18/2018,City Water Charges,35.0,Expenses,Utilities
+06/19/2018,Shell,38.52,Expenses,Gas & Fuel
+06/19/2018,Grocery Store,2.69,Expenses,Groceries
+06/20/2018,State Farm,75.0,Expenses,Auto Insurance
+06/20/2018,Credit Card Payment,89.45,Income,Credit Card Payment
+06/20/2018,Barbershop,30.0,Expenses,Haircut
+06/21/2018,Credit Card Payment,89.45,Expenses,Credit Card Payment
+06/22/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+06/23/2018,Brunch Restaurant,8.5,Expenses,Restaurants
+06/23/2018,Amazon,74.97,Expenses,Shopping
+06/25/2018,Credit Card Payment,942.76,Income,Credit Card Payment
+06/25/2018,Credit Card Payment,942.76,Expenses,Credit Card Payment
+06/25/2018,Internet Service Provider,74.99,Expenses,Internet
+06/26/2018,Grocery Store,9.62,Expenses,Groceries
+06/27/2018,Starbucks,3.5,Expenses,Coffee Shops
+06/27/2018,Pizza Place,22.66,Expenses,Fast Food
+06/28/2018,Grocery Store,7.57,Expenses,Groceries
+07/01/2018,Amazon,13.13,Expenses,Shopping
+07/02/2018,Mortgage Payment,1247.44,Expenses,Mortgage & Rent
+07/02/2018,Movie Theater,25.0,Expenses,Movies & DVDs
+07/02/2018,American Tavern,36.44,Expenses,Restaurants
+07/04/2018,BP,34.48,Expenses,Gas & Fuel
+07/04/2018,Netflix,11.76,Expenses,Movies & DVDs
+07/05/2018,Grocery Store,44.25,Expenses,Groceries
+07/05/2018,Amazon,212.32,Expenses,Shopping
+07/06/2018,Amazon Video,6.41,Expenses,Movies & DVDs
+07/06/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+07/08/2018,Credit Card Payment,259.87,Income,Credit Card Payment
+07/09/2018,Credit Card Payment,242.16,Income,Credit Card Payment
+07/09/2018,Credit Card Payment,259.87,Expenses,Credit Card Payment
+07/09/2018,Spotify,10.69,Expenses,Music
+07/10/2018,Credit Card Payment,242.16,Expenses,Credit Card Payment
+07/10/2018,Grocery Store,5.39,Expenses,Groceries
+07/10/2018,Gas Company,30.0,Expenses,Utilities
+07/11/2018,Phone Company,89.46,Expenses,Mobile Phone
+07/14/2018,Go Mart,33.51,Expenses,Gas & Fuel
+07/15/2018,Circle K,36.24,Expenses,Gas & Fuel
+07/17/2018,Wendy's,15.23,Expenses,Fast Food
+07/17/2018,City Water Charges,35.0,Expenses,Utilities
+07/17/2018,Power Company,60.0,Expenses,Utilities
+07/18/2018,Irish Restaurant,28.54,Expenses,Alcohol & Bars
+07/18/2018,State Farm,75.0,Expenses,Auto Insurance
+07/20/2018,Credit Card Payment,61.43,Income,Credit Card Payment
+07/20/2018,Credit Card Payment,102.88,Income,Credit Card Payment
+07/20/2018,Credit Card Payment,102.88,Expenses,Credit Card Payment
+07/20/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+07/21/2018,Grocery Store,28.93,Expenses,Groceries
+07/21/2018,Barbershop,30.0,Expenses,Haircut
+07/23/2018,Credit Card Payment,61.43,Expenses,Credit Card Payment
+07/23/2018,Starbucks,9.58,Expenses,Fast Food
+07/24/2018,American Tavern,26.59,Expenses,Restaurants
+07/25/2018,Internet Service Provider,74.99,Expenses,Internet
+07/26/2018,Conoco,33.67,Expenses,Gas & Fuel
+07/28/2018,Grocery Store,7.61,Expenses,Groceries
+07/30/2018,American Tavern,34.38,Expenses,Restaurants
+07/31/2018,Brewing Company,6.6,Expenses,Alcohol & Bars
+08/01/2018,Amazon,13.13,Expenses,Shopping
+08/02/2018,Credit Card Payment,816.27,Income,Credit Card Payment
+08/02/2018,Shell,40.44,Expenses,Gas & Fuel
+08/02/2018,Mortgage Payment,1247.44,Expenses,Mortgage & Rent
+08/03/2018,Grocery Store,6.27,Expenses,Groceries
+08/03/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+08/04/2018,Netflix,11.76,Expenses,Movies & DVDs
+08/06/2018,Amazon,76.47,Expenses,Shopping
+08/09/2018,Spotify,10.69,Expenses,Music
+08/09/2018,Gas Company,30.0,Expenses,Utilities
+08/10/2018,Phone Company,89.4,Expenses,Mobile Phone
+08/11/2018,Chick-Fil-A,13.67,Expenses,Fast Food
+08/11/2018,Valero,33.66,Expenses,Gas & Fuel
+08/15/2018,Credit Card Payment,269.56,Income,Credit Card Payment
+08/15/2018,Credit Card Payment,159.38,Income,Credit Card Payment
+08/15/2018,Shell,41.07,Expenses,Gas & Fuel
+08/15/2018,Grocery Store,5.64,Expenses,Groceries
+08/15/2018,Power Company,60.0,Expenses,Utilities
+08/16/2018,Credit Card Payment,269.56,Expenses,Credit Card Payment
+08/16/2018,City Water Charges,35.0,Expenses,Utilities
+08/17/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+08/17/2018,Amazon,14.98,Expenses,Shopping
+08/18/2018,Amazon,23.47,Expenses,Shopping
+08/20/2018,State Farm,75.0,Expenses,Auto Insurance
+08/21/2018,Credit Card Payment,34.18,Income,Credit Card Payment
+08/21/2018,Credit Card Payment,99.76,Income,Credit Card Payment
+08/21/2018,Credit Card Payment,99.76,Expenses,Credit Card Payment
+08/22/2018,Credit Card Payment,34.18,Expenses,Credit Card Payment
+08/24/2018,American Tavern,42.31,Expenses,Restaurants
+08/27/2018,Internet Service Provider,74.99,Expenses,Internet
+08/30/2018,Shell,35.65,Expenses,Gas & Fuel
+08/31/2018,Grocery Store,11.64,Expenses,Groceries
+08/31/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+09/01/2018,Brewing Company,47.4,Expenses,Alcohol & Bars
+09/01/2018,Amazon,13.13,Expenses,Shopping
+09/02/2018,Amazon,109.83,Expenses,Shopping
+09/04/2018,Credit Card Payment,687.29,Income,Credit Card Payment
+09/04/2018,Credit Card Payment,687.29,Expenses,Credit Card Payment
+09/04/2018,Mortgage Payment,1247.44,Expenses,Mortgage & Rent
+09/04/2018,Netflix,11.76,Expenses,Movies & DVDs
+09/07/2018,Gas Company,30.0,Expenses,Utilities
+09/09/2018,Brewing Company,18.0,Expenses,Alcohol & Bars
+09/09/2018,Spotify,10.69,Expenses,Music
+09/11/2018,BP,38.86,Expenses,Gas & Fuel
+09/11/2018,Grocery Store,7.87,Expenses,Groceries
+09/12/2018,Grocery Store,47.16,Expenses,Groceries
+09/12/2018,Phone Company,89.4,Expenses,Mobile Phone
+09/13/2018,Grocery Store,5.64,Expenses,Groceries
+09/14/2018,Credit Card Payment,134.34,Income,Credit Card Payment
+09/14/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+09/17/2018,Grocery Store,10.17,Expenses,Groceries
+09/17/2018,Grocery Store,8.8,Expenses,Groceries
+09/17/2018,City Water Charges,35.0,Expenses,Utilities
+09/18/2018,Grocery Store,4.32,Expenses,Groceries
+09/18/2018,Power Company,60.0,Expenses,Utilities
+09/19/2018,State Farm,75.0,Expenses,Auto Insurance
+09/19/2018,Barbershop,30.0,Expenses,Haircut
+09/20/2018,Amazon,47.38,Expenses,Shopping
+09/22/2018,Hardware Store,69.4,Expenses,Home Improvement
+09/22/2018,Hardware Store,6.83,Expenses,Home Improvement
+09/25/2018,Internet Service Provider,74.99,Expenses,Internet
+09/25/2018,Sushi Restaurant,48.64,Expenses,Restaurants
+09/26/2018,Starbucks,5.0,Expenses,Coffee Shops
+09/26/2018,Exxon,38.0,Expenses,Gas & Fuel
+09/27/2018,Valero,40.71,Expenses,Gas & Fuel
+09/28/2018,Credit Card Payment,128.12,Income,Credit Card Payment
+09/28/2018,Credit Card Payment,284.96,Income,Credit Card Payment
+09/28/2018,Credit Card Payment,284.96,Expenses,Credit Card Payment
+09/28/2018,Grocery Store,13.36,Expenses,Groceries
+09/28/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+09/29/2018,Greek Restaurant,23.26,Expenses,Restaurants
+09/29/2018,German Restaurant,46.7,Expenses,Restaurants
+10/01/2018,Starbucks,3.0,Expenses,Coffee Shops
+10/01/2018,Credit Card Payment,128.12,Expenses,Credit Card Payment
+10/01/2018,Grocery Store,15.66,Expenses,Groceries
+10/01/2018,Amazon,13.13,Expenses,Shopping
+10/02/2018,Credit Card Payment,124.03,Income,Credit Card Payment
+10/02/2018,Credit Card Payment,124.03,Expenses,Credit Card Payment
+10/02/2018,Mortgage Payment,1209.18,Expenses,Mortgage & Rent
+10/04/2018,Netflix,11.76,Expenses,Movies & DVDs
+10/06/2018,American Tavern,27.0,Expenses,Restaurants
+10/08/2018,Shell,38.06,Expenses,Gas & Fuel
+10/08/2018,Hardware Store,80.65,Expenses,Home Improvement
+10/08/2018,Hardware Store,31.2,Expenses,Home Improvement
+10/09/2018,Spotify,10.69,Expenses,Music
+10/09/2018,Amazon,19.98,Expenses,Shopping
+10/09/2018,Gas Company,30.0,Expenses,Utilities
+10/10/2018,Grocery Store,53.68,Expenses,Groceries
+10/11/2018,Phone Company,89.4,Expenses,Mobile Phone
+10/12/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+10/16/2018,Power Company,60.0,Expenses,Utilities
+10/17/2018,City Water Charges,35.0,Expenses,Utilities
+10/18/2018,State Farm,75.0,Expenses,Auto Insurance
+10/18/2018,Grocery Store,33.55,Expenses,Groceries
+10/18/2018,Hardware Store,45.24,Expenses,Home Improvement
+10/18/2018,Brunch Restaurant,8.0,Expenses,Restaurants
+10/21/2018,Credit Card Payment,544.37,Income,Credit Card Payment
+10/22/2018,Credit Card Payment,353.83,Income,Credit Card Payment
+10/22/2018,Credit Card Payment,353.83,Expenses,Credit Card Payment
+10/22/2018,BP,34.66,Expenses,Gas & Fuel
+10/23/2018,Grocery Store,7.57,Expenses,Groceries
+10/25/2018,Internet Service Provider,74.99,Expenses,Internet
+10/25/2018,Amazon,29.98,Expenses,Shopping
+10/26/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+10/27/2018,American Tavern,25.4,Expenses,Restaurants
+10/28/2018,Brewing Company,12.71,Expenses,Alcohol & Bars
+10/28/2018,Seafood Restaurant,14.75,Expenses,Food & Dining
+10/28/2018,Grocery Store,92.49,Expenses,Groceries
+10/28/2018,Italian Restaurant,54.0,Expenses,Restaurants
+10/31/2018,Grocery Store,5.64,Expenses,Groceries
+11/01/2018,Amazon,13.13,Expenses,Shopping
+11/02/2018,Credit Card Payment,262.51,Income,Credit Card Payment
+11/02/2018,Credit Card Payment,262.51,Expenses,Credit Card Payment
+11/02/2018,Mortgage Payment,1209.18,Expenses,Mortgage & Rent
+11/03/2018,Pizza Place,23.66,Expenses,Fast Food
+11/04/2018,Netflix,11.76,Expenses,Movies & DVDs
+11/05/2018,Shell,36.51,Expenses,Gas & Fuel
+11/06/2018,Amazon,53.95,Expenses,Shopping
+11/06/2018,Gas Company,30.0,Expenses,Utilities
+11/08/2018,Grocery Store,5.64,Expenses,Groceries
+11/09/2018,Spotify,10.69,Expenses,Music
+11/09/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+11/10/2018,Brewing Company,27.0,Expenses,Alcohol & Bars
+11/10/2018,Chick-Fil-A,14.19,Expenses,Fast Food
+11/10/2018,Food Truck,24.4,Expenses,Groceries
+11/12/2018,Grocery Store,10.18,Expenses,Groceries
+11/12/2018,American Tavern,22.33,Expenses,Restaurants
+11/13/2018,Grocery Store,4.8,Expenses,Groceries
+11/13/2018,Grocery Store,37.43,Expenses,Groceries
+11/13/2018,Grocery Store,10.15,Expenses,Groceries
+11/13/2018,Phone Company,89.54,Expenses,Mobile Phone
+11/14/2018,Power Company,60.0,Expenses,Utilities
+11/16/2018,City Water Charges,35.0,Expenses,Utilities
+11/17/2018,Brewing Company,22.8,Expenses,Alcohol & Bars
+11/17/2018,Hardware Store,15.47,Expenses,Home Improvement
+11/17/2018,Hardware Store,6.4,Expenses,Home Improvement
+11/17/2018,Greek Restaurant,23.26,Expenses,Restaurants
+11/19/2018,Brewing Company,20.0,Expenses,Alcohol & Bars
+11/19/2018,QuikTrip,29.15,Expenses,Gas & Fuel
+11/19/2018,Hardware Store,10.02,Expenses,Home Improvement
+11/20/2018,State Farm,75.0,Expenses,Auto Insurance
+11/20/2018,Credit Card Payment,421.96,Income,Credit Card Payment
+11/21/2018,Grocery Store,5.64,Expenses,Groceries
+11/21/2018,Hardware Store,37.41,Expenses,Home Improvement
+11/23/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+11/26/2018,American Tavern,16.8,Expenses,Alcohol & Bars
+11/26/2018,Internet Service Provider,74.99,Expenses,Internet
+11/27/2018,Movie Theater,17.0,Expenses,Movies & DVDs
+11/27/2018,American Tavern,28.4,Expenses,Restaurants
+11/29/2018,Credit Card Payment,582.99,Income,Credit Card Payment
+11/29/2018,Credit Card Payment,751.5,Income,Credit Card Payment
+11/30/2018,Credit Card Payment,582.99,Expenses,Credit Card Payment
+11/30/2018,Grocery Store,6.27,Expenses,Groceries
+12/01/2018,Grocery Store,5.64,Expenses,Groceries
+12/01/2018,Brunch Restaurant,8.0,Expenses,Restaurants
+12/01/2018,Amazon,13.13,Expenses,Shopping
+12/03/2018,BP,30.03,Expenses,Gas & Fuel
+12/03/2018,Grocery Store,148.15,Expenses,Groceries
+12/03/2018,Mortgage Payment,1209.18,Expenses,Mortgage & Rent
+12/04/2018,Starbucks,3.0,Expenses,Coffee Shops
+12/04/2018,Latin Restaurant,20.65,Expenses,Fast Food
+12/04/2018,Netflix,11.76,Expenses,Movies & DVDs
+12/06/2018,Grocery Store,21.38,Expenses,Groceries
+12/06/2018,Grocery Store,13.48,Expenses,Groceries
+12/06/2018,Gas Company,40.0,Expenses,Utilities
+12/07/2018,Barbershop,30.0,Expenses,Haircut
+12/07/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+12/08/2018,Grocery Store,12.64,Expenses,Groceries
+12/09/2018,Spotify,10.69,Expenses,Music
+12/11/2018,Brunch Restaurant,10.29,Expenses,Restaurants
+12/12/2018,Phone Company,89.54,Expenses,Mobile Phone
+12/13/2018,Thai Restaurant,27.0,Expenses,Restaurants
+12/14/2018,Grocery Store,21.39,Expenses,Groceries
+12/14/2018,Hardware Store,17.1,Expenses,Home Improvement
+12/14/2018,Power Company,60.0,Expenses,Utilities
+12/17/2018,American Tavern,63.0,Expenses,Food & Dining
+12/17/2018,BP,20.01,Expenses,Gas & Fuel
+12/17/2018,City Water Charges,35.0,Expenses,Utilities
+12/18/2018,Starbucks,3.0,Expenses,Coffee Shops
+12/18/2018,Credit Card Payment,311.02,Income,Credit Card Payment
+12/18/2018,Credit Card Payment,311.02,Expenses,Credit Card Payment
+12/18/2018,Fancy Restaurant,56.52,Expenses,Restaurants
+12/18/2018,Amazon,49.99,Expenses,Shopping
+12/18/2018,Amazon,41.72,Expenses,Shopping
+12/18/2018,Amazon,24.3,Expenses,Shopping
+12/19/2018,State Farm,75.0,Expenses,Auto Insurance
+12/19/2018,Amazon,43.01,Expenses,Shopping
+12/20/2018,Credit Card Payment,464.03,Income,Credit Card Payment
+12/20/2018,Shell,30.38,Expenses,Gas & Fuel
+12/21/2018,Credit Card Payment,464.03,Expenses,Credit Card Payment
+12/21/2018,Biweekly Paycheck,2000.0,Income,Paycheck
+12/22/2018,New York Deli,21.38,Expenses,Fast Food
+12/22/2018,Hardware Store,22.14,Expenses,Home Improvement
+12/23/2018,Hardware Store,28.0,Expenses,Home Improvement
+12/24/2018,Hardware Store,38.4,Expenses,Home Improvement
+12/26/2018,Chick-Fil-A,56.07,Expenses,Fast Food
+12/26/2018,Shell,32.47,Expenses,Gas & Fuel
+12/26/2018,Shell,7.48,Expenses,Gas & Fuel
+12/26/2018,Internet Service Provider,75.99,Expenses,Internet
+12/26/2018,Amazon,44.99,Expenses,Shopping
+12/28/2018,Brewing Company,12.0,Expenses,Alcohol & Bars
+12/29/2018,Brewing Company,14.0,Expenses,Alcohol & Bars
+12/29/2018,Credit Card Payment,860.05,Income,Credit Card Payment
+12/29/2018,Grocery Store,55.04,Expenses,Groceries
+01/01/2019,Amazon,13.09,Expenses,Shopping
+01/02/2019,Credit Card Payment,499.6,Expenses,Credit Card Payment
+01/03/2019,Mortgage Payment,1100.0,Expenses,Mortgage & Rent
+01/03/2019,Amazon,42.1,Expenses,Shopping
+01/04/2019,Biweekly Paycheck,2000.0,Income,Paycheck
+01/05/2019,American Tavern,23.49,Expenses,Restaurants
+01/08/2019,Gas Company,45.0,Expenses,Utilities
+01/09/2019,Credit Card Payment,491.45,Income,Credit Card Payment
+01/09/2019,Credit Card Payment,491.45,Expenses,Credit Card Payment
+01/09/2019,Credit Card Payment,281.84,Expenses,Credit Card Payment
+01/09/2019,Spotify,10.69,Expenses,Music
+01/10/2019,Grocery Store,58.79,Expenses,Groceries
+01/10/2019,Barbershop,30.0,Expenses,Haircut
+01/10/2019,Phone Company,65.0,Expenses,Mobile Phone
+01/14/2019,Shell,28.92,Expenses,Gas & Fuel
+01/15/2019,Grocery Store,6.06,Expenses,Groceries
+01/16/2019,City Water Charges,35.0,Expenses,Utilities
+01/16/2019,Power Company,60.0,Expenses,Utilities
+01/18/2019,State Farm,75.0,Expenses,Auto Insurance
+01/18/2019,Biweekly Paycheck,2000.0,Income,Paycheck
+01/21/2019,Credit Card Payment,277.99,Income,Credit Card Payment
+01/22/2019,Credit Card Payment,277.99,Expenses,Credit Card Payment
+01/24/2019,Grocery Store,21.06,Expenses,Groceries
+01/24/2019,Amazon,11.7,Expenses,Shopping
+01/24/2019,Amazon,4.21,Expenses,Shopping
+01/25/2019,Internet Service Provider,75.0,Expenses,Internet
+01/31/2019,Credit Card Payment,1900.0,Expenses,Credit Card Payment
+01/31/2019,Shell,31.32,Expenses,Gas & Fuel
+02/01/2019,Biweekly Paycheck,2000.0,Income,Paycheck
+02/01/2019,Roadside Diner,9.47,Expenses,Restaurants
+02/01/2019,Amazon,13.09,Expenses,Shopping
+02/04/2019,Hardware Store,86.97,Expenses,Home Improvement
+02/04/2019,Netflix,11.76,Expenses,Television
+02/05/2019,Mortgage Payment,1100.0,Expenses,Mortgage & Rent
+02/07/2019,Gas Company,65.0,Expenses,Utilities
+02/08/2019,Starbucks,3.0,Expenses,Coffee Shops
+02/08/2019,Thai Restaurant,27.47,Expenses,Restaurants
+02/09/2019,Spotify,10.69,Expenses,Music
+02/11/2019,Starbucks,3.0,Expenses,Coffee Shops
+02/11/2019,Credit Card Payment,133.95,Expenses,Credit Card Payment
+02/11/2019,BP,24.01,Expenses,Gas & Fuel
+02/12/2019,Grocery Store,30.54,Expenses,Groceries
+02/12/2019,Phone Company,65.0,Expenses,Mobile Phone
+02/13/2019,Grocery Store,8.21,Expenses,Groceries
+02/15/2019,Credit Card Payment,207.47,Income,Credit Card Payment
+02/15/2019,Credit Card Payment,207.47,Expenses,Credit Card Payment
+02/15/2019,Grocery Store,4.59,Expenses,Groceries
+02/15/2019,Biweekly Paycheck,2000.0,Income,Paycheck
+02/15/2019,Power Company,60.0,Expenses,Utilities
+02/16/2019,Brewing Company,8.0,Expenses,Alcohol & Bars
+02/16/2019,American Tavern,32.75,Expenses,Restaurants
+02/16/2019,Amazon,37.45,Expenses,Shopping
+02/19/2019,Credit Card Payment,574.84,Expenses,Credit Card Payment
+02/19/2019,City Water Charges,35.0,Expenses,Utilities
+02/20/2019,State Farm,75.0,Expenses,Auto Insurance
+02/20/2019,Credit Card Payment,292.54,Income,Credit Card Payment
+02/20/2019,Barbershop,30.0,Expenses,Haircut
+02/21/2019,Credit Card Payment,292.54,Expenses,Credit Card Payment
+02/21/2019,Grocery Store,46.96,Expenses,Groceries
+02/25/2019,BP,33.8,Expenses,Gas & Fuel
+02/25/2019,Internet Service Provider,75.0,Expenses,Internet
+02/27/2019,Roadside Diner,25.77,Expenses,Restaurants
+02/28/2019,Grocery Store,32.07,Expenses,Groceries
+03/01/2019,Biweekly Paycheck,2000.0,Income,Paycheck
+03/01/2019,Amazon,13.09,Expenses,Shopping
+03/04/2019,Grocery Store,92.04,Expenses,Groceries
+03/04/2019,Mortgage Payment,1100.0,Expenses,Mortgage & Rent
+03/04/2019,Netflix,11.76,Expenses,Television
+03/05/2019,Fancy Restaurant,7.0,Expenses,Restaurants
+03/06/2019,Credit Card Payment,491.86,Expenses,Credit Card Payment
+03/08/2019,BP,34.08,Expenses,Gas & Fuel
+03/08/2019,Amazon,27.17,Expenses,Shopping
+03/08/2019,Gas Company,49.0,Expenses,Utilities
+03/09/2019,Spotify,10.69,Expenses,Music
+03/12/2019,Phone Company,65.0,Expenses,Mobile Phone
+03/12/2019,Bakery Place,3.02,Expenses,Restaurants
+03/13/2019,Credit Card Payment,532.86,Income,Credit Card Payment
+03/13/2019,Credit Card Payment,301.79,Income,Credit Card Payment
+03/14/2019,Credit Card Payment,305.27,Expenses,Credit Card Payment
+03/14/2019,Credit Card Payment,301.79,Expenses,Credit Card Payment
+03/14/2019,Brunch Restaurant,8.0,Expenses,Restaurants
+03/15/2019,Biweekly Paycheck,2000.0,Income,Paycheck
+03/15/2019,Power Company,60.0,Expenses,Utilities
+03/18/2019,Best Buy,320.99,Expenses,Electronics & Software
+03/18/2019,Grocery Store,16.23,Expenses,Groceries
+03/19/2019,Amazon,13.84,Expenses,Shopping
+03/19/2019,City Water Charges,35.0,Expenses,Utilities
+03/20/2019,State Farm,75.0,Expenses,Auto Insurance
+03/22/2019,BP,37.51,Expenses,Gas & Fuel
+03/23/2019,Starbucks,5.2,Expenses,Coffee Shops
+03/25/2019,Internet Service Provider,75.0,Expenses,Internet
+03/26/2019,Amazon,16.04,Expenses,Shopping
+03/27/2019,Brewing Company,49.63,Expenses,Alcohol & Bars
+03/27/2019,Grocery Store,4.46,Expenses,Groceries
+03/29/2019,Biweekly Paycheck,2000.0,Income,Paycheck
+03/30/2019,Starbucks,12.84,Expenses,Coffee Shops
+03/31/2019,Credit Card Payment,957.6,Income,Credit Card Payment
+04/01/2019,Credit Card Payment,1552.65,Expenses,Credit Card Payment
+04/01/2019,Credit Card Payment,600.51,Income,Credit Card Payment
+04/01/2019,Amazon,13.09,Expenses,Shopping
+04/02/2019,Mortgage Payment,1100.0,Expenses,Mortgage & Rent
+04/04/2019,Grocery Store,5.64,Expenses,Groceries
+04/04/2019,Amazon,35.9,Expenses,Shopping
+04/04/2019,Netflix,11.76,Expenses,Television
+04/06/2019,Amazon,27.54,Expenses,Shopping
+04/08/2019,Gas Company,30.0,Expenses,Utilities
+04/09/2019,Credit Card Payment,436.75,Expenses,Credit Card Payment
+04/09/2019,Grocery Store,10.7,Expenses,Groceries
+04/09/2019,Barbershop,30.0,Expenses,Haircut
+04/09/2019,Spotify,10.69,Expenses,Music
+04/10/2019,Phone Company,65.0,Expenses,Mobile Phone
+04/12/2019,Best Buy,44.93,Expenses,Electronics & Software
+04/12/2019,Grocery Store,41.34,Expenses,Groceries
+04/12/2019,Biweekly Paycheck,2000.0,Income,Paycheck
+04/13/2019,QuikTrip,38.94,Expenses,Gas & Fuel
+04/13/2019,Grocery Store,16.87,Expenses,Groceries
+04/13/2019,Vietnamese Restaurant,20.64,Expenses,Restaurants
+04/15/2019,Power Company,60.0,Expenses,Utilities
+04/16/2019,City Water Charges,35.0,Expenses,Utilities
+04/18/2019,State Farm,75.0,Expenses,Auto Insurance
+04/18/2019,Credit Card Payment,604.32,Income,Credit Card Payment
+04/18/2019,Credit Card Payment,458.1,Income,Credit Card Payment
+04/19/2019,Credit Card Payment,604.32,Expenses,Credit Card Payment
+04/19/2019,Grocery Store,10.89,Expenses,Groceries
+04/22/2019,Brewing Company,14.4,Expenses,Alcohol & Bars
+04/22/2019,Greek Restaurant,64.52,Expenses,Restaurants
+04/23/2019,Hardware Store,29.56,Expenses,Home Improvement
+04/25/2019,Internet Service Provider,75.0,Expenses,Internet
+04/26/2019,Biweekly Paycheck,2000.0,Income,Paycheck
+04/27/2019,Brewing Company,40.0,Expenses,Alcohol & Bars
+04/27/2019,Credit Card Payment,268.96,Income,Credit Card Payment
+04/27/2019,American Tavern,14.74,Expenses,Restaurants
+04/29/2019,Credit Card Payment,268.96,Expenses,Credit Card Payment
+04/29/2019,Grocery Store,5.64,Expenses,Groceries
+04/30/2019,BP,39.08,Expenses,Gas & Fuel
+05/01/2019,Amazon,13.09,Expenses,Shopping
+05/02/2019,Mortgage Payment,1100.0,Expenses,Mortgage & Rent
+05/03/2019,Credit Card Payment,758.07,Expenses,Credit Card Payment
+05/04/2019,Netflix,13.9,Expenses,Television
+05/06/2019,Amazon,16.94,Expenses,Shopping
+05/07/2019,Amazon,38.56,Expenses,Shopping
+05/09/2019,Best Buy,331.69,Expenses,Electronics & Software
+05/09/2019,Spotify,10.69,Expenses,Music
+05/09/2019,Target,3.2,Expenses,Shopping
+05/09/2019,Gas Company,30.0,Expenses,Utilities
+05/10/2019,Best Buy,21.39,Expenses,Electronics & Software
+05/10/2019,Phone Company,65.0,Expenses,Mobile Phone
+05/10/2019,Biweekly Paycheck,2000.0,Income,Paycheck
+05/13/2019,Credit Card Payment,480.88,Expenses,Credit Card Payment
+05/13/2019,QuikTrip,35.24,Expenses,Gas & Fuel
+05/13/2019,Fancy Restaurant,98.19,Expenses,Restaurants
+05/13/2019,Greek Restaurant,23.11,Expenses,Restaurants
+05/14/2019,Grocery Store,2.02,Expenses,Groceries
+05/15/2019,Power Company,60.0,Expenses,Utilities
+05/17/2019,Credit Card Payment,575.33,Income,Credit Card Payment
+05/17/2019,City Water Charges,35.0,Expenses,Utilities
+05/20/2019,State Farm,75.0,Expenses,Auto Insurance
+05/20/2019,Credit Card Payment,415.47,Expenses,Credit Card Payment
+05/20/2019,American Tavern,32.53,Expenses,Restaurants
+05/24/2019,Credit Card Payment,765.68,Income,Credit Card Payment
+05/24/2019,Hardware Store,27.96,Expenses,Home Improvement
+05/24/2019,Biweekly Paycheck,2000.0,Income,Paycheck
+05/24/2019,Brunch Restaurant,8.0,Expenses,Restaurants
+05/25/2019,QuikTrip,36.76,Expenses,Gas & Fuel
+05/25/2019,Hardware Store,30.99,Expenses,Home Improvement
+05/27/2019,Mexican Restaurant,34.33,Expenses,Restaurants
+05/28/2019,Credit Card Payment,765.68,Expenses,Credit Card Payment
+05/30/2019,Internet Service Provider,75.0,Expenses,Internet
+05/30/2019,American Tavern,34.82,Expenses,Restaurants
+06/01/2019,Amazon,13.09,Expenses,Shopping
+06/03/2019,Starbucks,2.75,Expenses,Coffee Shops
+06/03/2019,Credit Card Payment,260.95,Income,Credit Card Payment
+06/03/2019,Mortgage Payment,1100.0,Expenses,Mortgage & Rent
+06/04/2019,Barbershop,30.0,Expenses,Haircut
+06/04/2019,Netflix,13.9,Expenses,Television
+06/05/2019,Grocery Store,23.0,Expenses,Groceries
+06/05/2019,Mexican Restaurant,23.24,Expenses,Restaurants
+06/06/2019,Starbucks,3.75,Expenses,Coffee Shops
+06/06/2019,Grocery Store,5.64,Expenses,Groceries
+06/07/2019,Credit Card Payment,458.56,Expenses,Credit Card Payment
+06/07/2019,Biweekly Paycheck,2000.0,Income,Paycheck
+06/07/2019,Gas Company,30.0,Expenses,Utilities
+06/09/2019,Spotify,10.69,Expenses,Music
+06/12/2019,Phone Company,65.0,Expenses,Mobile Phone
+06/13/2019,Credit Card Payment,152.72,Income,Credit Card Payment
+06/13/2019,Credit Card Payment,152.72,Expenses,Credit Card Payment
+06/14/2019,Grocery Store,10.69,Expenses,Groceries
+06/15/2019,BP,33.16,Expenses,Gas & Fuel
+06/17/2019,City Water Charges,35.0,Expenses,Utilities
+06/17/2019,Power Company,60.0,Expenses,Utilities
+06/18/2019,Brewing Company,15.0,Expenses,Alcohol & Bars
+06/18/2019,Shell,41.83,Expenses,Gas & Fuel
+06/19/2019,State Farm,75.0,Expenses,Auto Insurance
+06/20/2019,Credit Card Payment,375.26,Expenses,Credit Card Payment
+06/20/2019,Mike's Construction Co.,9200.0,Expenses,Home Improvement
+06/20/2019,Credit Card Payment,100.68,Income,Credit Card Payment
+06/21/2019,Credit Card Payment,100.68,Expenses,Credit Card Payment
+06/21/2019,Biweekly Paycheck,2000.0,Income,Paycheck
+06/24/2019,Brewing Company,15.0,Expenses,Alcohol & Bars
+06/28/2019,BP,30.64,Expenses,Gas & Fuel
+06/30/2019,Internet Service Provider,75.0,Expenses,Internet
+07/01/2019,Starbucks,7.0,Expenses,Coffee Shops
+07/01/2019,Grocery Store,99.47,Expenses,Groceries
+07/01/2019,Hawaiian Grill,24.97,Expenses,Restaurants
+07/01/2019,Thai Restaurant,24.0,Expenses,Restaurants
+07/01/2019,Amazon,13.09,Expenses,Shopping
+07/02/2019,Hardware Store,229.9,Expenses,Home Improvement
+07/02/2019,Mortgage Payment,1100.0,Expenses,Mortgage & Rent
+07/04/2019,Netflix,13.9,Expenses,Television
+07/05/2019,Brewing Company,19.0,Expenses,Alcohol & Bars
+07/05/2019,Biweekly Paycheck,2250.0,Income,Paycheck
+07/06/2019,Credit Card Payment,220.08,Income,Credit Card Payment
+07/06/2019,Grocery Store,92.98,Expenses,Groceries
+07/06/2019,Greek Restaurant,23.26,Expenses,Restaurants
+07/07/2019,Hardware Store,103.14,Expenses,Home Improvement
+07/08/2019,Credit Card Payment,305.28,Expenses,Credit Card Payment
+07/08/2019,Credit Card Payment,220.08,Expenses,Credit Card Payment
+07/09/2019,Credit Card Payment,549.72,Income,Credit Card Payment
+07/09/2019,Spotify,10.69,Expenses,Music
+07/10/2019,Phone Company,65.0,Expenses,Mobile Phone
+07/10/2019,Gas Company,30.0,Expenses,Utilities
+07/15/2019,Grocery Store,87.14,Expenses,Groceries
+07/16/2019,Amazon,89.99,Expenses,Shopping
+07/16/2019,Power Company,60.0,Expenses,Utilities
+07/17/2019,City Water Charges,35.0,Expenses,Utilities
+07/18/2019,State Farm,75.0,Expenses,Auto Insurance
+07/18/2019,Credit Card Payment,814.5,Expenses,Credit Card Payment
+07/18/2019,BP,36.42,Expenses,Gas & Fuel
+07/18/2019,Grocery Store,29.83,Expenses,Groceries
+07/18/2019,Brunch Restaurant,8.82,Expenses,Restaurants
+07/19/2019,Credit Card Payment,115.52,Income,Credit Card Payment
+07/19/2019,Biweekly Paycheck,2250.0,Income,Paycheck
+07/19/2019,Mexican Restaurant,28.0,Expenses,Restaurants
+07/22/2019,Credit Card Payment,257.08,Income,Credit Card Payment
+07/22/2019,Thai Restaurant,26.67,Expenses,Restaurants
+07/23/2019,Credit Card Payment,257.08,Expenses,Credit Card Payment
+07/24/2019,Starbucks,2.5,Expenses,Coffee Shops
+07/27/2019,Barbershop,30.0,Expenses,Haircut
+07/28/2019,Hardware Store,44.31,Expenses,Home Improvement
+07/29/2019,Grocery Store,5.35,Expenses,Groceries
+07/29/2019,Fancy Restaurant,44.92,Expenses,Restaurants
+07/30/2019,Grocery Store,15.77,Expenses,Groceries
+07/30/2019,Internet Service Provider,75.0,Expenses,Internet
+08/01/2019,Amazon,13.09,Expenses,Shopping
+08/02/2019,Mortgage Payment,1100.0,Expenses,Mortgage & Rent
+08/02/2019,Biweekly Paycheck,2250.0,Income,Paycheck
+08/03/2019,BP,36.36,Expenses,Gas & Fuel
+08/03/2019,Grocery Store,3.96,Expenses,Groceries
+08/03/2019,American Tavern,23.47,Expenses,Restaurants
+08/04/2019,Netflix,13.9,Expenses,Television
+08/05/2019,Brewing Company,18.0,Expenses,Alcohol & Bars
+08/05/2019,Credit Card Payment,349.28,Income,Credit Card Payment
+08/05/2019,Credit Card Payment,117.65,Income,Credit Card Payment
+08/06/2019,Credit Card Payment,521.17,Expenses,Credit Card Payment
+08/06/2019,Credit Card Payment,117.65,Expenses,Credit Card Payment
+08/06/2019,Hardware Store,125.0,Expenses,Home Improvement
+08/08/2019,Grocery Store,11.72,Expenses,Groceries
+08/09/2019,Spotify,10.69,Expenses,Music
+08/09/2019,Gas Company,30.0,Expenses,Utilities
+08/12/2019,Phone Company,65.0,Expenses,Mobile Phone
+08/12/2019,Thai Restaurant,26.67,Expenses,Restaurants
+08/14/2019,Starbucks,2.75,Expenses,Coffee Shops
+08/15/2019,Credit Card Payment,335.2,Expenses,Credit Card Payment
+08/15/2019,Power Company,60.0,Expenses,Utilities
+08/16/2019,Biweekly Paycheck,2250.0,Income,Paycheck
+08/16/2019,City Water Charges,35.0,Expenses,Utilities
+08/17/2019,Credit Card Payment,87.17,Income,Credit Card Payment
+08/17/2019,Grocery Store,33.15,Expenses,Groceries
+08/17/2019,Barbershop,19.0,Expenses,Haircut
+08/17/2019,American Tavern,3.5,Expenses,Restaurants
+08/19/2019,Credit Card Payment,1248.95,Expenses,Credit Card Payment
+08/20/2019,State Farm,75.0,Expenses,Auto Insurance
+08/20/2019,Starbucks,2.75,Expenses,Coffee Shops
+08/21/2019,Shell,34.69,Expenses,Gas & Fuel
+08/23/2019,Starbucks,2.75,Expenses,Coffee Shops
+08/25/2019,Brunch Restaurant,39.43,Expenses,Restaurants
+08/26/2019,Hardware Store,66.75,Expenses,Home Improvement
+08/29/2019,Starbucks,3.0,Expenses,Coffee Shops
+08/30/2019,Starbucks,2.75,Expenses,Coffee Shops
+08/30/2019,Internet Service Provider,75.0,Expenses,Internet
+08/30/2019,Biweekly Paycheck,2250.0,Income,Paycheck
+08/31/2019,Hardware Store,68.04,Expenses,Home Improvement
+08/31/2019,BBQ Restaurant,41.78,Expenses,Restaurants
+09/01/2019,Amazon,13.09,Expenses,Shopping
+09/03/2019,Mortgage Payment,1100.0,Expenses,Mortgage & Rent
+09/03/2019,Fancy Restaurant,41.24,Expenses,Restaurants
+09/04/2019,Netflix,13.9,Expenses,Television
+09/05/2019,Starbucks,3.75,Expenses,Coffee Shops
+09/06/2019,Credit Card Payment,1390.37,Income,Credit Card Payment
+09/06/2019,Credit Card Payment,1390.37,Expenses,Credit Card Payment
+09/06/2019,Credit Card Payment,502.75,Expenses,Credit Card Payment
+09/07/2019,Brewing Company,12.87,Expenses,Alcohol & Bars
+09/08/2019,Brewing Company,19.3,Expenses,Alcohol & Bars
+09/09/2019,Shell,28.77,Expenses,Gas & Fuel
+09/09/2019,Grocery Store,65.09,Expenses,Groceries
+09/09/2019,Hardware Store,26.25,Expenses,Home Improvement
+09/09/2019,Spotify,10.69,Expenses,Music
+09/09/2019,Gas Company,30.0,Expenses,Utilities
+09/11/2019,Credit Card Payment,360.56,Income,Credit Card Payment
+09/11/2019,Phone Company,65.0,Expenses,Mobile Phone
+09/12/2019,Credit Card Payment,360.56,Expenses,Credit Card Payment
+09/13/2019,Starbucks,2.75,Expenses,Coffee Shops
+09/13/2019,Biweekly Paycheck,2250.0,Income,Paycheck
+09/14/2019,Grocery Store,46.44,Expenses,Groceries
+09/15/2019,Amazon,47.66,Expenses,Shopping
+09/16/2019,Credit Card Payment,90.57,Expenses,Credit Card Payment
+09/16/2019,Credit Card Payment,90.57,Income,Credit Card Payment
+09/16/2019,City Water Charges,35.0,Expenses,Utilities
+09/17/2019,Credit Card Payment,186.13,Income,Credit Card Payment
+09/17/2019,Power Company,60.0,Expenses,Utilities
+09/18/2019,State Farm,75.0,Expenses,Auto Insurance
+09/18/2019,Credit Card Payment,1606.46,Expenses,Credit Card Payment
+09/19/2019,Brewing Company,40.81,Expenses,Alcohol & Bars
+09/19/2019,Starbucks,2.75,Expenses,Coffee Shops
+09/20/2019,Credit Card Payment,9.43,Income,Credit Card Payment
+09/22/2019,Seafood Restaurant,131.1,Expenses,Restaurants
+09/23/2019,Credit Card Payment,9.43,Expenses,Credit Card Payment
+09/23/2019,Grocery Store,27.71,Expenses,Groceries
+09/23/2019,Amazon,24.63,Expenses,Shopping
+09/27/2019,Biweekly Paycheck,2250.0,Income,Paycheck
+09/28/2019,BP,33.46,Expenses,Gas & Fuel
+09/28/2019,Sheetz,4.27,Expenses,Gas & Fuel
+09/30/2019,Starbucks,1.75,Expenses,Coffee Shops
+09/30/2019,Internet Service Provider,75.0,Expenses,Internet

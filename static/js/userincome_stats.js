@@ -2,26 +2,22 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch("/incomes/income-category-summary/")
         .then((response) => response.json())
         .then((result) => {
-            console.log("Income Summary Data:", result); // Debug: Log the response
+            console.log("Income Summary Data:", result);
 
-            // Check if the required data exists
             if (!result || !result.income_source_data || !result.currency) {
                 console.error("Invalid or incomplete data received from the server.");
                 return;
             }
 
-            // Set default values for missing data
             const incomeSourceData = result.income_source_data || {};
             const incomePercentages = result.income_percentages || {};
             const monthlyIncomeData = result.monthly_income_data || {};
             const dailyIncomeData = result.daily_income_data || {};
             const currency = result.currency || "USD";
 
-            // Calculate total income
             const totalIncome = Object.values(incomeSourceData).reduce((sum, amount) => sum + amount, 0);
             document.getElementById("totalIncome").textContent = `${currency} ${totalIncome.toFixed(2)}`;
 
-            // Display insights dynamically
             const insightsContainer = document.getElementById("insightsContainer");
             insightsContainer.innerHTML = `
                 <div class="col-md-6 mb-4">
@@ -90,9 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `;
 
-            // Render charts only if data exists
             if (Object.keys(incomeSourceData).length > 0) {
-                // Render Pie Chart
                 const pieChartCtx = document.getElementById("pieChart").getContext("2d");
                 new Chart(pieChartCtx, {
                     type: "pie",
@@ -139,7 +133,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error("No data available to render the pie chart.");
             }
 
-            // Render Bar Chart (Monthly Income Trends)
             if (Object.keys(monthlyIncomeData).length > 0) {
                 const barChartCtx = document.getElementById("barChart").getContext("2d");
                 new Chart(barChartCtx, {
@@ -190,7 +183,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                     label: function (context) {
                                         const label = context.label || "";
                                         const value = context.raw || 0;
-                                        return `${label}: ${currency} ${value.toFixed(2)}`;
+                                        const percentage = ((value / totalIncome) * 100).toFixed(2);
+                                        return `${label}: ${currency} ${value.toFixed(2)} (${percentage}%)`;
                                     },
                                 },
                             },
@@ -201,7 +195,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error("No data available to render the bar chart.");
             }
 
-            // Render Line Chart (Daily Income Growth)
             if (Object.keys(dailyIncomeData).length > 0) {
                 const lineChartCtx = document.getElementById("lineChart").getContext("2d");
                 new Chart(lineChartCtx, {
@@ -252,7 +245,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                     label: function (context) {
                                         const label = context.label || "";
                                         const value = context.raw || 0;
-                                        return `${label}: ${currency} ${value.toFixed(2)}`;
+                                        const percentage = ((value / totalIncome) * 100).toFixed(2);
+                                        const source = result.daily_income_source?.[label] || "Unknown Source";
+                                        return `${label}: ${currency} ${value.toFixed(2)} (${percentage}%) - Source: ${source}`;
                                     },
                                 },
                             },

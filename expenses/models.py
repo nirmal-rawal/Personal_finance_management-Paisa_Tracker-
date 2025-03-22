@@ -8,6 +8,7 @@ class Expenses(models.Model):
     description = models.TextField()
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     category = models.CharField(max_length=256)
+    transaction_type = models.CharField(max_length=10, choices=[('Expenses', 'Expenses'), ('Income', 'Income')])
 
     def __str__(self) -> str:
         return self.category
