@@ -1,0 +1,107 @@
+ /* Recent Transactions Table */
+ .recent-transactions-table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.recent-transactions-table thead th {
+    border-bottom: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+}
+/* Add this to your chartdashboard.css */
+.card-header.bg-white h5 {
+    color: #212529; /* Dark black color */
+    font-weight: 600; /* Make it slightly bolder */
+}
+
+/* Optional: If you want to make all card headers more visible */
+.card-header.bg-white {
+    border-bottom: 1px solid #e9ecef; /* Adds a subtle border */
+    padding: 1rem 1.25rem; /* Ensures proper padding */
+}
+
+.recent-transactions-table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.recent-transactions-table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+    transform: translateY(-1px);
+}
+
+.transaction-type-badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.transaction-category-badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    color: #495057;
+}
+    .dashboard-container {
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+    
+    .dashboard-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+        border-radius: 8px;
+        color: white;
+    }
+    
+    .card {
+        border: none;
+        border-radius: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
+    
+    .progress-thick {
+        height: 20px;
+    }
+    
+    .icon-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .bg-primary-light {
+        background-color: rgba(13, 110, 253, 0.1);
+    }
+    
+    .bg-danger-light {
+        background-color: rgba(220, 53, 69, 0.1);
+    }
+    
+    .bg-success-light {
+        background-color: rgba(25, 135, 84, 0.1);
+    }
+    
+    .transaction-badge {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
