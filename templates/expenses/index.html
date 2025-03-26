@@ -4,24 +4,26 @@
 <link rel="stylesheet" href="{% static 'css/expenses_search.css' %}">
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-4" style="background-color: #2c2a2c; color: #f8f9fa; padding: 20px; border-radius: 10px;">
     <div class="row">
         <div class="col-md-9">
-            <nav aria-label="breadcrumb" style="background-color: #dee2e6; padding: 10px; border-radius: 5px;">
-                <ol class="breadcrumb">
+            <nav aria-label="breadcrumb" style="background-color: #3a383a; padding: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                <ol class="breadcrumb" style="margin-bottom: 0;">
                     <li class="breadcrumb-item">
-                        <a href=""style="color:rgb(236, 236, 240);">Expenses</a>
+                        <a href="" style="color: #4e9af1; text-decoration: none;">Expenses</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">My Expenses</li>
+                    <li class="breadcrumb-item active" aria-current="page" style="color: #e0e0e0;">My Expenses</li>
                 </ol>
             </nav>
         </div>
-        <div class="col-md-3">
-            <a href="{% url 'add-expense' %}" class="btn btn-primary">Add expenses</a>
+        <div class="col-md-3 text-right">
+            <a href="{% url 'add-expense' %}" class="btn btn-primary" style="background-color: #4e9af1; border-color: #4e9af1; font-weight: 500; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                <i class="fas fa-plus-circle"></i> Add Expense
+            </a>
         </div>
     </div>  
 
-    <div class="container">
+    <div class="container mt-4">
         {% include 'partials/_messages.html' %}
         {% if expenses %}
         <!-- Search Bar -->
@@ -30,9 +32,10 @@
             <div class="col-md-4">
                 <!-- Update search form to send GET request -->
                 <form method="get" action="{% url 'expenses' %}">
-                    <div class="search-box">
-                        <input type="text" class="form-control search-input" id="searchField" name="search" placeholder="Search" value="{{ search_query }}">
-                        <i class="fas fa-search search-icon"></i>
+                    <div class="search-box" style="position: relative;">
+                        <input type="text" class="form-control search-input" id="searchField" name="search" placeholder="Search expenses..." value="{{ search_query }}" 
+                               style="background-color: #3a383a; border: 1px solid #4e4b4e; color: #f8f9fa; padding-left: 35px;">
+                        <i class="fas fa-search search-icon" style="position: absolute; left: 12px; top: 10px; color: #a0a0a0;"></i>
                     </div>
                 </form>
             </div>
@@ -40,26 +43,34 @@
        
         <!-- Main Table -->
         <div class="app-table">
-            <table class="table table-striped table-hover">
-                <thead>
+            <table class="table table-striped table-hover" style="background-color: #3a383a; color: #f8f9fa;">
+                <thead style="background-color: #4e4b4e;">
                     <tr>
-                        <th>Amount ({{currency}})</th>
-                        <th>Category</th>
-                        <th>Description</th>
-                        <th>Date</th>
-                        <th>Actions</th>
+                        <th style="color: #ffffff;">Amount ({{currency}})</th>
+                        <th style="color: #ffffff;">Category</th>
+                        <th style="color: #ffffff;">Description</th>
+                        <th style="color: #ffffff;">Date</th>
+                        <th style="color: #ffffff;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for expense in expenses %}
-                    <tr>
-                        <td>{{ expense.amount }}</td>
-                        <td>{{ expense.category }}</td>
-                        <td>{{ expense.description }}</td>
-                        <td>{{ expense.date }}</td>
+                    <tr style="border-bottom: 1px solid #4e4b4e;">
+                        <td style="color: #4e9af1; font-weight: 500;">{{ expense.amount }}</td>
                         <td>
-                            <a href="{% url 'expense-edit' expense.id %}" class="btn btn-secondary btn-sm">Edit</a>
-                            <a href="{% url 'expense-delete' expense.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this expense?')">Delete</a>
+                            <span class="badge" style="background-color: #5a3d5a; color: #f8f9fa;">
+                                {{ expense.category }}
+                            </span>
+                        </td>
+                        <td>{{ expense.description|truncatechars:30 }}</td>
+                        <td style="color: #a0a0a0;">{{ expense.date|date:"M d, Y" }}</td>
+                        <td>
+                            <a href="{% url 'expense-edit' expense.id %}" class="btn btn-sm" style="background-color: #5a5a5a; color: #f8f9fa; margin-right: 5px;">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'expense-delete' expense.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this expense?')">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -69,14 +80,14 @@
 
         <!-- Search Results Table -->
         <div class="table-output">
-            <table class="table table-striped table-hover">
-                <thead>
+            <table class="table table-striped table-hover" style="background-color: #3a383a; color: #f8f9fa;">
+                <thead style="background-color: #4e4b4e;">
                     <tr>
-                        <th>Amount ({{currency}})</th>
-                        <th>Category</th>
-                        <th>Description</th>
-                        <th>Date</th>
-                        <th>Actions</th>
+                        <th style="color: #ffffff;">Amount ({{currency}})</th>
+                        <th style="color: #ffffff;">Category</th>
+                        <th style="color: #ffffff;">Description</th>
+                        <th style="color: #ffffff;">Date</th>
+                        <th style="color: #ffffff;">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="table-body"></tbody>
@@ -84,36 +95,48 @@
         </div>
 
         <!-- Pagination -->
-        <div class="pagination-container">
-            <div class="">
+        <div class="pagination-container mt-4">
+            <div class="text-muted mb-2" style="color: #a0a0a0 !important;">
                 Showing page {{page_obj.number}} of {{page_obj.paginator.num_pages}}
             </div>
             <nav>
                 <ul class="pagination justify-content-center">
                     {% if expenses.has_previous %}
                         <li class="page-item">
-                            <a class="page-link" href="?page=1">First</a>
+                            <a class="page-link" href="?page=1" style="background-color: #3a383a; border-color: #4e4b4e; color: #4e9af1;">
+                                First
+                            </a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ expenses.previous_page_number }}">Previous</a>
+                            <a class="page-link" href="?page={{ expenses.previous_page_number }}" style="background-color: #3a383a; border-color: #4e4b4e; color: #4e9af1;">
+                                Previous
+                            </a>
                         </li>
                     {% endif %}
                     <li class="page-item disabled">
-                        <span class="page-link">Page {{ expenses.number }} of {{ expenses.paginator.num_pages }}</span>
+                        <span class="page-link" style="background-color: #4e4b4e; border-color: #4e4b4e; color: #f8f9fa;">
+                            Page {{ expenses.number }} of {{ expenses.paginator.num_pages }}
+                        </span>
                     </li>
                     {% if expenses.has_next %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ expenses.next_page_number }}">Next</a>
+                            <a class="page-link" href="?page={{ expenses.next_page_number }}" style="background-color: #3a383a; border-color: #4e4b4e; color: #4e9af1;">
+                                Next
+                            </a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ expenses.paginator.num_pages }}">Last</a>
+                            <a class="page-link" href="?page={{ expenses.paginator.num_pages }}" style="background-color: #3a383a; border-color: #4e4b4e; color: #4e9af1;">
+                                Last
+                            </a>
                         </li>
                     {% endif %}
                 </ul>
             </nav>
         </div>
         {% else %}
-        <p>No expenses found.</p>
+        <div class="alert alert-info" style="background-color: #3a383a; border-color: #4e4b4e; color: #f8f9fa;">
+            <i class="fas fa-info-circle"></i> No expenses found.
+        </div>
         {% endif %}
     </div>
 </div>
@@ -121,4 +144,5 @@
     const csrfToken = "{{ csrf_token }}";
 </script>
 <script src="{% static 'js/searchExpenses.js' %}"></script>
-{% endblock content %}
+
+{% endblock content %}  

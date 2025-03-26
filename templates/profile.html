@@ -1,20 +1,197 @@
 {% extends "base.html" %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}Profile - {{ user.username }}{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h4>User Profile</h4>
+<div class="container py-5">
+    <!-- Profile Header with Cover Photo -->
+    <div class="profile-header mb-4">
+        <div class="cover-photo" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 200px; border-radius: 12px; position: relative;">
+            <div class="profile-avatar" style="position: absolute; bottom: -50px; left: 30px;">
+                <div class="avatar-circle" style="width: 100px; height: 100px; background-color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 4px solid #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <span style="font-size: 40px; color: #764ba2; font-weight: bold;">{{ user.username|first|upper }}</span>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <p><strong>Username:</strong> {{ user.username }}</p>
-            <p><strong>Email:</strong> {{ user.email }}</p>
-            <p><strong>Preferred Currency:</strong> {{ user.userpreference.currency }}</p>
+    </div>
 
-            <a href="{% url 'edit-profile' %}" class="btn btn-warning">Edit Profile</a>
+    <!-- Main Profile Content -->
+    <div class="row mt-5">
+        <!-- Left Column - Profile Info -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center pt-5">
+                    <h3 class="mb-3">{{ user.username }}</h3>
+                    <p class="text-muted mb-4">{{ user.email }}</p>
+                    
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="px-3 text-center">
+                            <div class="text-primary font-weight-bold">12</div>
+                            <div class="text-muted small">Projects</div>
+                        </div>
+                        <div class="px-3 text-center">
+                            <div class="text-primary font-weight-bold">86</div>
+                            <div class="text-muted small">Connections</div>
+                        </div>
+                        <div class="px-3 text-center">
+                            <div class="text-primary font-weight-bold">5</div>
+                            <div class="text-muted small">Years</div>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="text-left">
+                        <h6 class="mb-3">Details</h6>
+                        <div class="mb-2">
+                            <span class="text-muted">Preferred Currency:</span>
+                            <span class="float-right font-weight-bold">{{ user.userpreference.currency }}</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="text-muted">Member Since:</span>
+                            <span class="float-right font-weight-bold">Jan 2023</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="text-muted">Last Active:</span>
+                            <span class="float-right font-weight-bold">2 hours ago</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{% url 'edit-profile' %}" class="btn btn-primary btn-block">
+                        <i class="fas fa-edit mr-2"></i>Edit Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Column - Activity and Stats -->
+        <div class="col-lg-8">
+            <!-- Quick Actions -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-4 mb-3">
+                            <a href="#" class="btn btn-light btn-icon rounded-circle p-3">
+                                <i class="fas fa-cog text-primary"></i>
+                            </a>
+                            <div class="mt-2 small">Settings</div>
+                        </div>
+                        <div class="col-4 mb-3">
+                            <a href="#" class="btn btn-light btn-icon rounded-circle p-3">
+                                <i class="fas fa-bell text-primary"></i>
+                            </a>
+                            <div class="mt-2 small">Notifications</div>
+                        </div>
+                        <div class="col-4 mb-3">
+                            <a href="#" class="btn btn-light btn-icon rounded-circle p-3">
+                                <i class="fas fa-share-alt text-primary"></i>
+                            </a>
+                            <div class="mt-2 small">Share</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Recent Activity</h5>
+                        <a href="#" class="small">View All</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-badge bg-primary"></div>
+                            <div class="timeline-content">
+                                <div class="d-flex justify-content-between">
+                                    <span class="font-weight-bold">Profile Updated</span>
+                                    <small class="text-muted">2 hours ago</small>
+                                </div>
+                                <p class="small mb-0">You updated your profile information</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-badge bg-success"></div>
+                            <div class="timeline-content">
+                                <div class="d-flex justify-content-between">
+                                    <span class="font-weight-bold">New Connection</span>
+                                    <small class="text-muted">1 day ago</small>
+                                </div>
+                                <p class="small mb-0">You connected with Sarah Johnson</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-badge bg-info"></div>
+                            <div class="timeline-content">
+                                <div class="d-flex justify-content-between">
+                                    <span class="font-weight-bold">Project Completed</span>
+                                    <small class="text-muted">3 days ago</small>
+                                </div>
+                                <p class="small mb-0">You marked "Dashboard UI" as complete</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<style>
+    .profile-header {
+        position: relative;
+    }
+    
+    .avatar-circle {
+        transition: all 0.3s ease;
+    }
+    
+    .avatar-circle:hover {
+        transform: scale(1.05);
+    }
+    
+    .timeline {
+        position: relative;
+        padding-left: 20px;
+    }
+    
+    .timeline-item {
+        position: relative;
+        padding-bottom: 20px;
+    }
+    
+    .timeline-badge {
+        position: absolute;
+        left: -10px;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+    }
+    
+    .timeline-content {
+        padding-left: 30px;
+    }
+    
+    .btn-icon:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .card {
+        border: none;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+</style>
 {% endblock %}

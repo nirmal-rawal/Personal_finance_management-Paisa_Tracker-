@@ -6,10 +6,19 @@ from django.core.paginator import Paginator
 import json
 from django.http import JsonResponse
 from user_preferences.models import UserPreference
-from .forms import ProfileUpdateForm
+from .forms import ProfileUpdateForm, ExpenseForm
 import datetime
 from typing import Dict, Any, List
+from .receipt_scanner import ReceiptScanner
+from django.views.decorators.csrf import csrf_exempt
+from django.db import transaction
 
+# Common categories that should always be available
+DEFAULT_CATEGORIES = [
+    'groceries', 'dining', 'transportation', 
+    'shopping', 'utilities', 'health', 'entertainment',
+    'rent', 'education', 'travel'
+]
 
 @login_required
 def profile(request):
@@ -60,37 +69,89 @@ def index(request):
         "currency": currency,
     }
     return render(request, 'expenses/index.html', context)
-
 @login_required(login_url='/authentication/login/')
 def add_expense(request):
     categories = Category.objects.all()
+    
     if request.method == "POST":
-        amount = request.POST.get('amount')
-        date = request.POST.get('expense_date')
-        category_name = request.POST.get('category')
-        custom_category = request.POST.get('custom_category', '').strip()
-        description = request.POST.get('description', '')
-        transaction_type = request.POST.get('transaction_type', 'Expenses')
+        # Handle AJAX scan request
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and 'receipt' in request.FILES:
+            return scan_receipt_api(request)
+            
+        # Handle form submission
+        form_data = request.POST.copy()
+        
+        # Handle custom category if 'Other' is selected
+        if form_data.get('category') == 'Other' and form_data.get('custom_category'):
+            form_data['category'] = form_data['custom_category']
+        
+        form = ExpenseForm(form_data, request.FILES)
+        
+        if form.is_valid():
+            try:
+                with transaction.atomic():
+                    expense = form.save(commit=False)
+                    expense.owner = request.user
+                    
+                    # Ensure category exists
+                    category_name = expense.category
+                    if not Category.objects.filter(name=category_name).exists():
+                        Category.objects.create(
+                            name=category_name,
+                            type='EXPENSE' if expense.transaction_type == 'Expense' else 'INCOME'
+                        )
+                    
+                    expense.save()
+                    messages.success(request, 'Expense saved successfully')
+                    return redirect('expenses')
+            except Exception as e:
+                messages.error(request, f'Error saving expense: {str(e)}')
+        else:
+            # Print form errors to console for debugging
+            print("Form errors:", form.errors)
+            messages.error(request, 'Please correct the errors below')
+    else:
+        form = ExpenseForm(initial={
+            'date': datetime.date.today(),
+            'transaction_type': 'Expense'
+        })
+    
+    return render(request, 'expenses/add_expense.html', {
+        'categories': categories,
+        'form': form,
+        'default_categories': DEFAULT_CATEGORIES
+    })
 
-        if category_name == "Other" and custom_category:
-            category_name = custom_category
-            Category.objects.get_or_create(name=custom_category)
+@csrf_exempt
+@login_required
+def scan_receipt_api(request):
+    if request.method == 'POST' and request.FILES.get('receipt'):
+        try:
+            receipt_file = request.FILES['receipt']
+            
+            # Validate file
+            if receipt_file.size > 5 * 1024 * 1024:
+                return JsonResponse({'error': 'File too large (max 5MB)'}, status=400)
+            
+            if not receipt_file.content_type.startswith('image/'):
+                return JsonResponse({'error': 'Only image files allowed'}, status=400)
 
-        if not amount:
-            messages.error(request, 'Amount is required')
-            return render(request, 'expenses/add_expense.html', {'categories': categories})
-
-        Expenses.objects.create(
-            owner=request.user,
-            amount=amount,
-            date=date,
-            category=category_name,
-            description=description,
-            transaction_type=transaction_type
-        )
-        messages.success(request, 'Expense saved successfully')
-        return redirect('expenses')
-    return render(request, 'expenses/add_expense.html', {'categories': categories})
+            scanner = ReceiptScanner()
+            result = scanner.scan_receipt(receipt_file)
+            
+            if result and 'error' not in result:
+                return JsonResponse(result)
+            
+            error_msg = result.get('error', 'No receipt data found')
+            return JsonResponse({'error': error_msg}, status=400)
+            
+        except Exception as e:
+            return JsonResponse({
+                'error': 'Processing failed',
+                'details': str(e)
+            }, status=500)
+    
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 @login_required(login_url='/authentication/login/')
 def expense_edit(request, id):
@@ -126,7 +187,6 @@ def delete_expense(request, id):
 
 @login_required(login_url='/authentication/login/')
 def expense_category_summary(request):
-    # Get all expenses without date filtering
     expenses = Expenses.objects.filter(owner=request.user)
     
     finalrep: Dict[str, float] = {}
@@ -162,7 +222,7 @@ def expense_category_summary(request):
     min_category = min(finalrep, key=lambda k: finalrep[k]) if finalrep else None
 
     # Calculate essential vs non-essential
-    essential_categories = ["Rent", "Groceries", "Utilities"]
+    essential_categories = ["rent", "groceries", "utilities", "health"]
     essential_amount = sum(finalrep.get(category, 0) for category in essential_categories)
     non_essential_amount = total_amount - essential_amount
 
@@ -177,7 +237,6 @@ def expense_category_summary(request):
         'min_category': min_category,
         'essential_amount': essential_amount,
         'non_essential_amount': non_essential_amount,
-        # Removed time-based calculations that were causing errors
     }, safe=False)
 
 @login_required(login_url='/authentication/login/')

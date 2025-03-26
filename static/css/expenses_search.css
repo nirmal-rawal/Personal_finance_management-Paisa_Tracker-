@@ -69,3 +69,27 @@
 .btn-secondary:hover {
     background-color: #23272b;
 }
+
+/* Additional styles for better hover effects */
+.table-hover tbody tr:hover {
+    background-color: #4e4b4e !important;
+    transform: translateX(2px);
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+.search-input:focus {
+    border-color: #4e9af1 !important;
+    box-shadow: 0 0 0 0.2rem rgba(78, 154, 241, 0.25);
+}
+
+.badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+}

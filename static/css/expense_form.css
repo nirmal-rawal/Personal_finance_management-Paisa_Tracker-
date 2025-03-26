@@ -1,0 +1,268 @@
+/* CSS Variables for consistent theming */
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --accent-color: #4895ef;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --success-color: #4cc9f0;
+    --danger-color: #f72585;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+/* Main container styling */
+.expense-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Card styling */
+.expense-card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.expense-card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Card header with gradient background */
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 1.5rem;
+    border-bottom: none;
+}
+
+/* Card body padding */
+.card-body {
+    padding: 2rem;
+}
+
+/* Form label styling */
+.form-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Form input and select styling */
+.form-control, .form-select {
+    border-radius: var(--border-radius);
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+    transition: var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+}
+
+/* Scan button styling */
+.btn-scan {
+    background-color: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-scan:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-scan i {
+    margin-right: 0.5rem;
+}
+
+/* Submit button styling */
+.btn-submit {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-submit:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+/* Cancel button styling */
+.btn-cancel {
+    border-radius: var(--border-radius);
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: var(--transition);
+    border: 2px solid #6c757d;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-cancel:hover {
+    background-color: #6c757d;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-cancel i {
+    margin-right: 0.5rem;
+}
+
+/* Form actions container */
+.form-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+/* Scan section styling */
+.scan-section {
+    background-color: rgba(67, 97, 238, 0.05);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px dashed var(--primary-color);
+}
+
+/* Drag and drop area styling */
+.drag-drop-area {
+    border: 2px dashed var(--accent-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 1rem;
+    background-color: rgba(72, 149, 239, 0.05);
+}
+
+.drag-drop-area:hover {
+    background-color: rgba(72, 149, 239, 0.1);
+}
+
+.drag-drop-area i {
+    font-size: 2.5rem;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+
+.drag-drop-text {
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+.drag-drop-hint {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+}
+
+/* Form group spacing */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* Checkbox/radio button styling */
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-label {
+    margin-left: 0.5rem;
+}
+
+/* Custom category input spacing */
+.custom-category-input {
+    margin-top: 1rem;
+}
+
+/* Scanning animation */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.scanning-animation {
+    animation: pulse 1.5s infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .expense-container {
+        padding: 0 0.5rem;
+    }
+    .card-body {
+        padding: 1.5rem;
+    }
+}
+
+/* Stack buttons on mobile */
+@media (max-width: 576px) {
+    .form-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .btn-cancel,
+    .btn-submit {
+        width: 100%;
+    }
+}
+/* Ensure form controls have proper contrast */
+.form-control, .form-select {
+    background-color: #2c2a2c !important;
+    color: white !important;
+    border-color: #555;
+}
+
+/* Style for placeholders */
+.form-control::placeholder {
+    color: #aaa !important;
+}
+
+/* Date input picker styling */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+/* For white date picker calendar */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: none;
+}
+
+.btn-cancel {
+    background-color: #dc3545; /* Bootstrap danger color */
+    color: white;
+    border: none;
+}
+.btn-cancel:hover {
+    background-color: #bb2d3b;
+}
+.expense-card {
+    background-color: white;
+    color: black; /* Ensure text is visible */
+    border: 1px solid #ddd; /* Optional: adds a light border */
+    padding: 10px; /* Optional: adds some spacing */
+    border-radius: 8px; /* Optional: rounded corners */
+}   

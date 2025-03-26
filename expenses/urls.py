@@ -11,4 +11,5 @@ urlpatterns = [
     path('profile/edit/', views.edit_profile, name='edit-profile'),
     path('expense_category_summary/', views.expense_category_summary, name="expense_category_summary"),
     path('stats/', views.stats_view, name="stats"),
+    path('scan-receipt/', views.scan_receipt_api, name='scan-receipt'),
 ]

@@ -256,3 +256,8 @@ class CompletePasswordReset(View):
         except Exception as e:
             messages.error(request, 'Something went wrong, please try again')
             return render(request, 'authentication/set_newpassword.html', context)
+        
+
+def account_view(request):
+    # Your view logic here
+    return render(request, 'profile.html')  # or whatever your template name is
