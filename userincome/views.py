@@ -10,6 +10,10 @@ from .forms import ProfileUpdateForm
 from django.db.models import Sum
 from datetime import date, timedelta
 from typing import Dict, Any, List
+from django.views.decorators.csrf import csrf_exempt
+from .receipt_scanner import IncomeReceiptScanner
+import datetime
+from django.db import transaction
 
 @login_required
 def profile(request):
@@ -64,12 +68,14 @@ def index(request):
         "currency": currency,
     }
     return render(request, 'userincome/index.html', context)
-
 @login_required(login_url='/authentication/login/')
 def add_income(request):
     sources = Source.objects.all()
 
     if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and 'receipt' in request.FILES:
+            return scan_income_receipt_api(request)
+            
         amount = request.POST.get('amount')
         date = request.POST.get('income_date')
         source_name = request.POST.get('source')
@@ -93,7 +99,7 @@ def add_income(request):
 
         Income.objects.create(
             owner=request.user,
-            amount=float(amount),  # Ensure amount is a float
+            amount=float(amount),
             date=date,
             source=source_name,
             description=description,
@@ -102,7 +108,10 @@ def add_income(request):
         messages.success(request, 'Income saved successfully')
         return redirect('incomes')
 
-    return render(request, 'userincome/add_income.html', {'sources': sources})
+    return render(request, 'userincome/add_income.html', {
+        'sources': sources,
+        'default_date': datetime.date.today().strftime('%Y-%m-%d')
+    })
 
 @login_required(login_url='/authentication/login/')
 def income_edit(request, id):
@@ -230,6 +239,36 @@ def income_category_summary(request):
             'percentage': average_income_percentage,
         },
     }, safe=False)
+
+@csrf_exempt
+@login_required
+def scan_income_receipt_api(request):
+    if request.method == 'POST' and request.FILES.get('receipt'):
+        try:
+            receipt_file = request.FILES['receipt']
+            
+            if receipt_file.size > 5 * 1024 * 1024:
+                return JsonResponse({'error': 'File too large (max 5MB)'}, status=400)
+            
+            if not receipt_file.content_type.startswith('image/'):
+                return JsonResponse({'error': 'Only image files allowed'}, status=400)
+
+            scanner = IncomeReceiptScanner()
+            result = scanner.scan_receipt(receipt_file)
+            
+            if result and 'error' not in result:
+                return JsonResponse(result)
+            
+            error_msg = result.get('error', 'No receipt data found')
+            return JsonResponse({'error': error_msg}, status=400)
+            
+        except Exception as e:
+            return JsonResponse({
+                'error': 'Processing failed',
+                'details': str(e)
+            }, status=500)
+    
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 @login_required(login_url='/authentication/login/')
 def income_summary(request):

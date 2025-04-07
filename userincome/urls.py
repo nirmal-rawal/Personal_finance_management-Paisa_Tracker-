@@ -11,4 +11,5 @@ urlpatterns = [
     path('profile/edit/', views.edit_profile, name='edit-profile'),
     path('income-summary/', views.income_summary, name='income-summary'),
     path('income-category-summary/', views.income_category_summary, name="income-category-summary"),
+    path('scan-income-receipt/', views.scan_income_receipt_api, name='scan-income-receipt'),
 ]

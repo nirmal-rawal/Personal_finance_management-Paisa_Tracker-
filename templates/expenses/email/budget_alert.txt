@@ -1,0 +1,13 @@
+Budget Alert
+
+Hello {{ user.username }},
+
+You've used {{ percentage_used|floatformat:0 }}% of your monthly budget.
+
+Budget: {{ currency }}{{ budget_amount|floatformat:2 }}
+Expenses so far: {{ currency }}{{ total_expenses|floatformat:2 }}
+Remaining: {{ currency }}{{ remaining_budget|floatformat:2 }}
+
+Consider reviewing your spending to stay within your budget for the rest of the month.
+
+View your budget: {{ site_url }}/stats/

@@ -1,0 +1,24 @@
+{% extends "expenses/email/base.html" %}
+{% load static %}
+
+{% block content %}
+<h2>Budget Alert</h2>
+
+<p>Hello {{ user.username }},</p>
+
+<p>You've used <strong>{{ percentage_used|floatformat:0 }}%</strong> of your monthly budget.</p>
+
+<div style="margin: 20px 0; padding: 15px; background-color: #fff8e1; border-left: 4px solid #ffc107;">
+    <p><strong>Budget:</strong> {{ currency }}{{ budget_amount|floatformat:2 }}</p>
+    <p><strong>Expenses so far:</strong> {{ currency }}{{ total_expenses|floatformat:2 }}</p>
+    <p><strong>Remaining:</strong> {{ currency }}{{ remaining_budget|floatformat:2 }}</p>
+</div>
+
+<p>Consider reviewing your spending to stay within your budget for the rest of the month.</p>
+
+<p style="margin-top: 30px;">
+    <a href="{{ site_url }}/stats/" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+        View Your Budget
+    </a>
+</p>
+{% endblock %}

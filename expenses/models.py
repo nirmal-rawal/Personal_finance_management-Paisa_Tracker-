@@ -12,14 +12,13 @@ class Expenses(models.Model):
     description = models.TextField()
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     category = models.CharField(max_length=256)
-    transaction_type = models.CharField(max_length=10, choices=[('Expense', 'Expense'), ('Income', 'Income')])  # Changed from 'Expenses' to 'Expense'
+    transaction_type = models.CharField(max_length=50, choices=[('Expense', 'Expense'), ('Income', 'Income')])
     receipt = models.ImageField(upload_to='receipts/', null=True, blank=True)
 
     def __str__(self) -> str:
         return self.category
     
     def save(self, *args, **kwargs):
-        # Compress receipt image before saving
         if self.receipt:
             super().save(*args, **kwargs)
             try:
@@ -39,7 +38,7 @@ class Expenses(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    type = models.CharField(max_length=10, choices=[('EXPENSE', 'Expense'), ('INCOME', 'Income')], default='EXPENSE')
+    type = models.CharField(max_length=50, choices=[('EXPENSE', 'Expense'), ('INCOME', 'Income')], default='EXPENSE')
 
     class Meta:
         verbose_name_plural = "Categories"
@@ -48,10 +47,36 @@ class Category(models.Model):
         return self.name
 
 class Budget(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Changed to OneToOneField
     amount = models.FloatField(default=0)
+    last_alert_sent = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.user.username}'s Budget: {self.amount}"
+
+class NotificationManager(models.Manager):
+    def unread(self):
+        return self.filter(is_read=False)
+
+class Notification(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    notification_type = models.CharField(max_length=50, choices=[
+        ('budget_alert', 'Budget Alert'),
+        ('monthly_report', 'Monthly Report'),
+        ('general', 'General')
+    ])
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    related_url = models.CharField(max_length=255, blank=True, null=True)
+
+    objects = NotificationManager()
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.notification_type}"

@@ -86,8 +86,19 @@
                                 {% for category in categories %}
                                     <option value="{{ category.name }}">{{ category.name }}</option>
                                 {% endfor %}
+                                <option value="Other">Other</option>
                             </select>
                             <label for="category">Category</label>
+                        </div>
+                    </div>
+
+                    <!-- Custom Category Field (Hidden by default) -->
+                    <div class="col-md-6" id="customCategoryGroup" style="display: none;">
+                        <div class="form-floating">
+                            <input type="text" class="form-control form-control-lg" id="custom_category" 
+                                   name="custom_category" placeholder="Enter custom category">
+                            <label for="custom_category">Custom Category Name</label>
+                            <div class="form-text">Enter a new category name</div>
                         </div>
                     </div>
 
@@ -126,21 +137,57 @@
         maxDate: "today"
     });
 
-    // Form validation
+    // Category selection handler
+    document.getElementById('category').addEventListener('change', function() {
+        const customCategoryGroup = document.getElementById('customCategoryGroup');
+        if (this.value === 'Other') {
+            customCategoryGroup.style.display = 'block';
+            document.getElementById('custom_category').setAttribute('required', 'required');
+        } else {
+            customCategoryGroup.style.display = 'none';
+            document.getElementById('custom_category').removeAttribute('required');
+        }
+    });
+
+    // Form validation and submission handler
     (function() {
         'use strict';
-        const forms = document.querySelectorAll('.needs-validation');
+        const form = document.querySelector('.needs-validation');
         
-        Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-                if (!form.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Check if "Other" is selected and custom category is filled
+            const categorySelect = document.getElementById('category');
+            const customCategoryInput = document.getElementById('custom_category');
+            
+            if (categorySelect.value === 'Other' && !customCategoryInput.value.trim()) {
+                customCategoryInput.setCustomValidity('Please enter a custom category name');
+                customCategoryInput.reportValidity();
+                return;
+            } else {
+                customCategoryInput.setCustomValidity('');
+            }
+            
+            if (form.checkValidity()) {
+                // If "Other" is selected, use the custom category value
+                if (categorySelect.value === 'Other') {
+                    // Create a hidden input to send the custom category
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'category';
+                    hiddenInput.value = customCategoryInput.value.trim();
+                    form.appendChild(hiddenInput);
+                    
+                    // Disable the original select to prevent it from being submitted
+                    categorySelect.disabled = true;
                 }
                 
-                form.classList.add('was-validated');
-            }, false);
-        });
+                form.submit();
+            }
+            
+            form.classList.add('was-validated');
+        }, false);
     })();
 
     // Amount field formatting
@@ -148,6 +195,23 @@
         const value = parseFloat(this.value);
         if (!isNaN(value)) {
             this.value = value.toFixed(2);
+        }
+    });
+
+    // Initialize the form based on current category
+    document.addEventListener('DOMContentLoaded', function() {
+        const categorySelect = document.getElementById('category');
+        const customCategoryGroup = document.getElementById('customCategoryGroup');
+        
+        // Check if current category is not in the predefined list
+        const options = Array.from(categorySelect.options).map(opt => opt.value);
+        if (!options.includes('{{ expense.category }}') && '{{ expense.category }}' !== 'Other') {
+            // Add current category as an option
+            const option = document.createElement('option');
+            option.value = '{{ expense.category }}';
+            option.textContent = '{{ expense.category }}';
+            option.selected = true;
+            categorySelect.insertBefore(option, categorySelect.lastChild);
         }
     });
 </script>

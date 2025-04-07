@@ -28,18 +28,42 @@ searchField.addEventListener('keyup', (e) => {
             tableOutput.style.display = "block";
 
             if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5">No results found</td></tr>';
+                tableBody.innerHTML = `
+                    <tr style="border-bottom: 1px solid #4e4b4e;">
+                        <td colspan="5" style="color: #f8f9fa; text-align: center; padding: 15px;">
+                            <i class="fas fa-search" style="margin-right: 8px;"></i>No expenses match your search
+                        </td>
+                    </tr>`;
             } else {
                 data.forEach((item) => {
+                    const description = item.description.length > 30 ? 
+                        item.description.substring(0, 30) + '...' : 
+                        item.description;
+                    
+                    const date = new Date(item.date);
+                    const formattedDate = date.toLocaleDateString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric', 
+                        year: 'numeric' 
+                    });
+
                     tableBody.innerHTML += `
-                        <tr>
-                            <td>${item.amount}</td>
-                            <td>${item.category}</td>
-                            <td>${item.description}</td>
-                            <td>${item.date}</td>
+                        <tr style="border-bottom: 1px solid #4e4b4e;">
+                            <td style="color: #ff6b6b; font-weight: 500;">${item.amount}</td>
                             <td>
-                                <a href="/expense-edit/${item.id}/" class="btn btn-secondary btn-sm">Edit</a>
-                                <a href="/expense-delete/${item.id}/" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this expense?')">Delete</a>
+                                <span class="badge" style="background-color: #5a3d5a; color: #f8f9fa;">
+                                    ${item.category}
+                                </span>
+                            </td>
+                            <td style="color: #f8f9fa;">${description}</td>
+                            <td style="color: #a0a0a0;">${formattedDate}</td>
+                            <td>
+                                <a href="/expense-edit/${item.id}/" class="btn btn-sm" style="background-color: #5a5a5a; color: #f8f9fa; margin-right: 5px;">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="/expense-delete/${item.id}/" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this expense?')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
                             </td>
                         </tr>`;
                 });
@@ -47,6 +71,12 @@ searchField.addEventListener('keyup', (e) => {
         })
         .catch((error) => {
             console.error("Error:", error);
+            tableBody.innerHTML = `
+                <tr style="border-bottom: 1px solid #4e4b4e;">
+                    <td colspan="5" style="color: #f8f9fa; text-align: center; padding: 15px;">
+                        <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>Error loading search results
+                    </td>
+                </tr>`;
         });
     } else {
         tableOutput.style.display = "none";

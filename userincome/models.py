@@ -9,6 +9,7 @@ class Income(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     source = models.CharField(max_length=256)
     transaction_type = models.CharField(max_length=10, choices=[('Income', 'Income')])
+    receipt = models.ImageField(upload_to='income_receipts/', null=True, blank=True)
 
     def __str__(self) -> str:
         return self.source

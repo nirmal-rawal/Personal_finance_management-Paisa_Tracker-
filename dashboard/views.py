@@ -9,7 +9,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
 from expenses.forms import BudgetForm
-from django.db import models  # Add this import
+from django.db import models
 from itertools import chain
 
 @login_required(login_url='/authentication/login/')
@@ -25,15 +25,15 @@ def dashboard(request):
     # Calculate net income
     net_income = total_income - total_expenses
 
+    # Calculate savings rate
+    savings_rate = (net_income / total_income * 100) if total_income > 0 else 0
+
     # Fetch user's currency preference
     user_preference = UserPreference.objects.filter(user=request.user).first()
     currency = user_preference.currency if user_preference else "USD"
 
-    # Get or create budget
-    budget, created = Budget.objects.get_or_create(
-        user=request.user,
-        defaults={'amount': 0}
-    )
+    # Handle budget - get or create single budget per user
+    budget, created = Budget.objects.get_or_create(user=request.user, defaults={'amount': 0})
 
     # Calculate current month expenses
     today = datetime.now()
@@ -42,9 +42,8 @@ def dashboard(request):
         owner=request.user,
         date__gte=first_day_of_month,
         date__lte=today,
-        transaction_type='Expenses'
-    ).aggregate(total=models.Sum('amount'))['total'] or 0  # Now this will work
-
+        transaction_type='Expense'
+    ).aggregate(total=models.Sum('amount'))['total'] or 0
 
     # Calculate budget usage percentage
     budget_percentage = 0
@@ -60,6 +59,30 @@ def dashboard(request):
     # Recent transactions (last 5)
     recent_incomes = incomes.order_by('-date')[:5]
     recent_expenses = expenses.order_by('-date')[:5]
+
+    # Prepare recent transactions with proper type and category/source
+    recent_transactions = []
+    for income in recent_incomes:
+        recent_transactions.append({
+            'date': income.date,
+            'description': income.description,
+            'category': income.source,
+            'transaction_type': 'Income',
+            'amount': income.amount
+        })
+    
+    for expense in recent_expenses:
+        recent_transactions.append({
+            'date': expense.date,
+            'description': expense.description,
+            'category': expense.category,
+            'transaction_type': 'Expense',
+            'amount': expense.amount
+        })
+
+    # Sort all transactions by date (newest first)
+    recent_transactions.sort(key=lambda x: x['date'], reverse=True)
+    recent_transactions = recent_transactions[:5]
 
     # Top categories for expenses
     expense_categories = {}
@@ -116,17 +139,6 @@ def dashboard(request):
     # Cash flow summary (net savings trend)
     net_savings_trend = [monthly_income[month] - monthly_expenses[month] for month in sorted_months]
 
-        # Get recent transactions (both income and expenses)
-    recent_incomes = Income.objects.filter(owner=request.user).order_by('-date')[:5]
-    recent_expenses = Expenses.objects.filter(owner=request.user).order_by('-date')[:5]
-    
-    # Combine and sort transactions
-    recent_transactions = sorted(
-        chain(recent_incomes, recent_expenses),
-        key=lambda x: x.date, 
-        reverse=True
-    )[:5]
-
     context = {
         'total_income': total_income,
         'total_expenses': total_expenses,
@@ -136,8 +148,7 @@ def dashboard(request):
         'current_month_expenses': current_month_expenses,
         'budget_percentage': budget_percentage,
         'budget_form': budget_form,
-        'recent_incomes': recent_incomes,
-        'recent_expenses': recent_expenses,
+        'recent_transactions': recent_transactions,
         'top_expense_categories': top_expense_categories,
         'top_income_sources': top_income_sources,
         'chart_labels': chart_labels,
@@ -148,7 +159,7 @@ def dashboard(request):
         'best_spending_day': best_spending_day,
         'worst_spending_day': worst_spending_day,
         'net_savings_trend': net_savings_trend,
-        'recent_transactions': recent_transactions,
+        'savings_rate': savings_rate,
     }
     return render(request, 'dashboard/index.html', context)
 

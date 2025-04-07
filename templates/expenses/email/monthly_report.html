@@ -1,0 +1,37 @@
+{% extends "expenses/email/base.html" %}
+{% load static %}
+
+{% block content %}
+<h2 style="color: #2c3e50;">Your Monthly Financial Report - {{ month }}</h2>
+
+<div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
+    <h3 style="color: #2c3e50;">Summary</h3>
+    <p><strong>Total Income:</strong> {{ stats.currency }}{{ stats.totalIncome|floatformat:2 }}</p>
+    <p><strong>Total Expenses:</strong> {{ stats.currency }}{{ stats.totalExpenses|floatformat:2 }}</p>
+    <p><strong>Net Income:</strong> {{ stats.currency }}{{ net_income|floatformat:2 }}</p>
+</div>
+
+<div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
+    <h3 style="color: #2c3e50;">Expense Breakdown</h3>
+    <ul>
+        {% for category, amount in stats.byCategory.items %}
+        <li>{{ category }}: {{ stats.currency }}{{ amount|floatformat:2 }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
+    <h3 style="color: #2c3e50;">Wealth Insights</h3>
+    <ul>
+        {% for insight in insights %}
+        <li>{{ insight }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<p style="margin-top: 30px; text-align: center;">
+    <a href="{{ site_url }}/stats/" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
+        View Detailed Stats
+    </a>
+</p>
+{% endblock %}

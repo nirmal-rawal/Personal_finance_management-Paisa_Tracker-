@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from django.contrib import messages
+from dotenv import load_dotenv
+# Load environment variables from .env file
+load_dotenv()
 # from decouple import Config
 # config = Config()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,11 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'authentication',  # Add your authentication app if you have one
+    'authentication',  
     'expenses',  
     'user_preferences',
     "userincome",
     "dashboard",
+    'django_celery_results',
+    'expenses.templatetags.custom_filters',
     
     
 ]
@@ -64,7 +69,7 @@ ROOT_URLCONF = 'expenseswebsite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Ensure this path is correct
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,6 +78,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'custom_filters': 'expenses.templatetags.custom_filters',
+            },
         },
     },
 ]
@@ -162,11 +170,39 @@ MESSAGE_TAGS={
 
 }
 
+from celery.schedules import crontab  # Add this import at the top
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+# Celery settings
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
-EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+# Celery Beat Schedule
+CELERY_BEAT_SCHEDULE = {
+    'generate-monthly-reports': {
+        'task': 'expenses.tasks.generate_monthly_reports',
+        'schedule': crontab(day_of_month='1', hour='0', minute='0'),
+    },
+    'check-budget-alerts': {
+        'task': 'expenses.tasks.check_budget_alerts',
+        'schedule': crontab(hour='*/6'),  # Run every 6 hours
+    },
+}
+
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+SITE_URL = os.getenv('SITE_URL', 'http://localhost:8000')
+
+CELERY_BROKER_URL = 'sqla+sqlite:///celery.sqlite'
+CELERY_RESULT_BACKEND = 'django-db'
+
+SITE_URL = os.getenv('SITE_URL', 'http://localhost:8000')

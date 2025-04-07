@@ -1,0 +1,22 @@
+{% extends "expenses/email/base.txt" %}
+{% block content %}
+Monthly Financial Report - {{ month }}
+
+Financial Summary:
+- Total Income: {{ stats.currency }}{{ stats.totalIncome|floatformat:2 }}
+- Total Expenses: {{ stats.currency }}{{ stats.totalExpenses|floatformat:2 }}
+- Net Savings: {{ stats.currency }}{{ net_income|floatformat:2 }}
+
+Expense Breakdown:
+{% for category, amount in stats.byCategory.items %}
+- {{ category }}: {{ stats.currency }}{{ amount|floatformat:2 }} ({{ amount|div:stats.totalExpenses|floatformat:"0" }}%)
+{% endfor %}
+
+AI-Powered Insights:
+1. {{ insights.0 }}
+2. {{ insights.1 }}
+3. {{ insights.2 }}
+4. {{ insights.3 }}
+
+View detailed statistics: {{ site_url }}/stats/
+{% endblock %}
