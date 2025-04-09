@@ -14,6 +14,11 @@ class Expenses(models.Model):
     category = models.CharField(max_length=256)
     transaction_type = models.CharField(max_length=50, choices=[('Expense', 'Expense'), ('Income', 'Income')])
     receipt = models.ImageField(upload_to='receipts/', null=True, blank=True)
+    source = models.CharField(max_length=20, choices=[
+        ('manual', 'Manual Entry'),
+        ('csv', 'CSV Import'),
+        ('receipt', 'Receipt Scan')
+    ], default='manual')
 
     def __str__(self) -> str:
         return self.category

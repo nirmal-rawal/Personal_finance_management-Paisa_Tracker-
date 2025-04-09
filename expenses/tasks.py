@@ -8,7 +8,7 @@ from .models import Expenses, Budget, Notification
 from user_preferences.models import UserPreference
 from django.contrib.auth.models import User
 import json
-from google.generativeai import configure
+from google.generativeai.client import configure
 from google.generativeai.generative_models import GenerativeModel
 import os
 from django.db.models import Sum

@@ -9,7 +9,7 @@ from django.db.models import Sum
 import json
 from datetime import datetime
 import os
-from google.generativeai import configure
+from google.generativeai.client import configure
 from google.generativeai.generative_models import GenerativeModel
 from smtplib import SMTPAuthenticationError
 

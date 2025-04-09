@@ -1,15 +1,16 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from expenses.models import Expenses, Notification
+from userincome.models import Income
 from user_preferences.models import UserPreference
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
-from django.db.models import Sum
+from django.db.models import Sum, Q
 import json
 from datetime import datetime
 import os
-from google.generativeai import configure
+from google.generativeai.client import configure
 from google.generativeai.generative_models import GenerativeModel
 from smtplib import SMTPAuthenticationError
 
@@ -39,21 +40,49 @@ class Command(BaseCommand):
             user_preference = UserPreference.objects.filter(user=user).first()
             currency = user_preference.currency if user_preference else "USD"
             
-            # Get expenses and incomes for the specified month
+            # Debug: Print query parameters
+            self.stdout.write(f"\nQuerying finances for {year}-{month:02d} for user {username}")
+            
+            # Get all financial data for the specified month
             expenses = Expenses.objects.filter(
-                owner=user,
-                date__year=year,
-                date__month=month,
-                transaction_type='Expense'
+                Q(owner=user),
+                Q(date__year=year),
+                Q(date__month=month),
+                ~Q(transaction_type='Income')  # Exclude income records
             )
             
-            incomes = Expenses.objects.filter(
+            incomes = Income.objects.filter(
                 owner=user,
                 date__year=year,
-                date__month=month,
-                transaction_type='Income'
+                date__month=month
+            )
+
+            # Alternative query if the above doesn't work
+            all_transactions = Expenses.objects.filter(
+                owner=user,
+                date__year=year,
+                date__month=month
             )
             
+            self.stdout.write(f"Found {expenses.count()} expenses and {incomes.count()} incomes")
+            self.stdout.write(f"Alternative query found {all_transactions.count()} transactions")
+            
+            # If no expenses found, try a more flexible query
+            if expenses.count() == 0:
+                expenses = all_transactions.exclude(transaction_type='Income')
+                self.stdout.write(f"Using alternative query found {expenses.count()} expenses")
+                
+                # If still no results, check for date format issues
+                if expenses.count() == 0:
+                    first_day = datetime(year, month, 1).date()
+                    last_day = datetime(year, month+1, 1).date() if month < 12 else datetime(year+1, 1, 1).date()
+                    expenses = Expenses.objects.filter(
+                        owner=user,
+                        date__gte=first_day,
+                        date__lt=last_day
+                    ).exclude(transaction_type='Income')
+                    self.stdout.write(f"Date range query found {expenses.count()} expenses")
+
             # Calculate totals
             total_expenses = expenses.aggregate(total=Sum('amount'))['total'] or 0
             total_income = incomes.aggregate(total=Sum('amount'))['total'] or 0
@@ -75,9 +104,6 @@ class Command(BaseCommand):
                 'currency': currency
             }
             
-            # Generate AI insights
-            insights = self.generate_financial_insights(stats, f"{month:02d}/{year}")
-            
             # Print report to console
             self.stdout.write(f"\nFinancial Report for {user.username} - {month:02d}/{year}")
             self.stdout.write("=" * 50)
@@ -88,6 +114,9 @@ class Command(BaseCommand):
             self.stdout.write("Expense Categories:")
             for category, amount in by_category.items():
                 self.stdout.write(f"- {category}: {currency}{amount:.2f}")
+            
+            # Generate AI insights
+            insights = self.generate_financial_insights(stats, f"{month:02d}/{year}")
             
             self.stdout.write("\nAI Insights:")
             for insight in insights:
@@ -153,14 +182,6 @@ class Command(BaseCommand):
             - Total Expenses: {stats['currency']}{stats['totalExpenses']:.2f}
             - Net Income: {stats['currency']}{(stats['totalIncome'] - stats['totalExpenses']):.2f}
             - Expense Categories: {', '.join([f"{category}: {stats['currency']}{amount:.2f}" for category, amount in stats['byCategory'].items()])}
-
-            Spending Pattern Recognition: Identify recurring expenses and highlight any unnecessary spending.
-
-            Trend Forecasting: Predict future expenses and income trends based on historical data.
-
-            Personalized Financial Insights: Provide tailored advice and budgeting strategies, considering the user's unique spending behavior.
-
-            Actionable Insights: Offer specific, practical advice that the user can act on to improve their financial health.
 
             Format the response as a JSON array of strings, like this:
             ["insight 1", "insight 2", "insight 3"]
