@@ -64,7 +64,7 @@ def generate_monthly_reports():
                 'currency': currency
             }
             
-            # Generate AI insights with your exact prompt format
+            # Generate AI insights with Nepal investment context
             insights = generate_financial_insights(stats, last_month.strftime("%B %Y"))
             
             # Prepare email content
@@ -117,10 +117,9 @@ def generate_financial_insights(stats, month):
         configure(api_key=api_key)
         model = GenerativeModel('gemini-1.5-flash')
         
-        # Your exact prompt format
         prompt = f"""
         Analyze this financial data and provide 3 concise, actionable insights.
-        Focus on spending patterns and practical advice.
+        Focus on spending patterns, practical advice, and investment opportunities in Nepal's share market when appropriate.
         Keep it friendly and conversational.
 
         Financial Data for {month}:
@@ -129,13 +128,16 @@ def generate_financial_insights(stats, month):
         - Net Income: {stats['currency']}{stats['totalIncome'] - stats['totalExpenses']}
         - Expense Categories: {', '.join([f"{category}: {stats['currency']}{amount}" for category, amount in stats['byCategory'].items()])}
 
-        Spending Pattern Recognition: Identify recurring expenses and highlight any unnecessary spending.
+        Provide insights in this order:
+        1. Spending analysis and savings opportunities
+        2. Budgeting recommendations
+        3. Investment advice (if net income is positive, suggest Nepal's share market with specific sectors)
 
-        Trend Forecasting: Predict future expenses and income trends based on historical data.
-
-        Personalized Financial Insights: Provide tailored advice and budgeting strategies, considering the user's unique spending behavior.
-
-        Actionable Insights: Offer specific, practical advice that the user can act on to improve their financial health.
+        For investment advice in Nepal:
+        - Mention NEPSE (Nepal Stock Exchange)
+        - Highlight promising sectors (hydropower, commercial banks, microfinance)
+        - Recommend starting with blue-chip stocks if new to investing
+        - Suggest consulting with a licensed broker
 
         Format the response as a JSON array of strings, like this:
         ["insight 1", "insight 2", "insight 3"]
@@ -145,13 +147,29 @@ def generate_financial_insights(stats, month):
         text = response.text
         cleaned_text = text.replace('```json', '').replace('```', '').strip()
         
-        return json.loads(cleaned_text)
+        insights = json.loads(cleaned_text)
+        
+        # Add Nepal-specific investment advice if net income is positive
+        net_income = stats['totalIncome'] - stats['totalExpenses']
+        if net_income > 10000:  # Only suggest if substantial surplus
+            nepse_advice = (
+                "With your positive cash flow, consider investing in Nepal's stock market (NEPSE). "
+                "Sectors like hydropower and commercial banks show strong growth potential. "
+                "Start with blue-chip stocks and consult a SEBON-licensed broker."
+            )
+            if len(insights) >= 3:
+                insights[-1] = nepse_advice  # Replace last insight
+            else:
+                insights.append(nepse_advice)
+        
+        return insights
+        
     except Exception as e:
         print(f"Error generating insights: {str(e)}")
         return [
-            "Your highest expense category this month might need attention.",
-            "Consider setting up a budget for better financial management.",
-            "Track your recurring expenses to identify potential savings.",
+            f"Your highest spending category was {max(stats['byCategory'].items(), key=lambda x: x[1])[0]} at {stats['currency']}{max(stats['byCategory'].values())}",
+            "Consider setting up specific budget limits for your top spending categories",
+            "With surplus funds, Nepal's share market offers investment opportunities in hydropower and banking sectors"
         ]
 
 @shared_task

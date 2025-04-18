@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Currency Exchange Tool</h4>
+                    <a href="{% url 'preferences' %}" class="btn btn-light btn-sm">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form id="currencyConverterForm">
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount</label>
+                            <input type="number" class="form-control" id="amount" placeholder="Enter amount" required>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="fromCurrency" class="form-label">From</label>
+                                <select class="form-select" id="fromCurrency">
+                                    {% for currency in currencies %}
+                                        <option value="{{ currency.code }}">{{ currency.code }} - {{ currency.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="toCurrency" class="form-label">To</label>
+                                <select class="form-select" id="toCurrency">
+                                    {% for currency in currencies %}
+                                        <option value="{{ currency.code }}">{{ currency.code }} - {{ currency.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-success w-100 mb-3" onclick="convertCurrency()">
+                            <i class="bi bi-arrow-repeat"></i> Convert
+                        </button>
+                        <div class="form-group">
+                            <label for="result" class="form-label">Result</label>
+                            <input type="text" class="form-control" id="result" readonly>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const exchangeRates = {{ exchange_rates|safe }};
+
+    function convertCurrency() {
+        const amount = parseFloat(document.getElementById('amount').value);
+        const fromCurrency = document.getElementById('fromCurrency').value;
+        const toCurrency = document.getElementById('toCurrency').value;
+
+        if (isNaN(amount) || amount <= 0) {
+            alert('Please enter a valid amount.');
+            return;
+        }
+
+        if (!exchangeRates[fromCurrency] || !exchangeRates[toCurrency]) {
+            alert('Currency conversion data not available.');
+            return;
+        }
+
+        const convertedAmount = (amount / exchangeRates[fromCurrency]) * exchangeRates[toCurrency];
+        document.getElementById('result').value = convertedAmount.toFixed(2) + ' ' + toCurrency;
+    }
+</script>
+{% endblock %}

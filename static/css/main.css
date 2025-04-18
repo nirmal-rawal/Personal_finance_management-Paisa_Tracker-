@@ -11,6 +11,32 @@
     font-size: 3.5rem;
   }
 }
+/* Style for the settings cards */
+.settings-card {
+  transition: transform 0.2s;
+}
+
+.settings-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Style for the back button */
+.btn-back {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Style for the currency select dropdown */
+.form-select {
+  padding: 0.5rem 1rem;
+}
+
+/* Style for the result input */
+#result {
+  font-weight: bold;
+  font-size: 1.2rem;
+  background-color: #f8f9fa;
+}
 
 .b-example-divider {
   width: 100%;

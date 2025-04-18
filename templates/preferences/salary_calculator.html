@@ -1,0 +1,132 @@
+<!-- templates/preferences/salary_calculator.html -->
+{% extends "base.html" %}
+{% block content %}
+<style>
+    /* Add to your main CSS file */
+.results .card {
+    border-radius: 0.5rem;
+}
+
+.results .card-header {
+    font-weight: 600;
+}
+
+.results p {
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .results .row > div {
+        margin-bottom: 1rem;
+    }
+}
+</style>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Nepal Salary Calculator</h4>
+                    <a href="{% url 'tools' %}" class="btn btn-light btn-sm">
+                        <i class="bi bi-arrow-left"></i> Back to Tools
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="basic_salary" class="form-label">Basic Salary (NPR)</label>
+                            <input type="number" class="form-control" id="basic_salary" name="basic_salary" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="allowances" class="form-label">Allowances (NPR)</label>
+                            <input type="number" class="form-control" id="allowances" name="allowances" value="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bonus" class="form-label">Bonus (NPR)</label>
+                            <input type="number" class="form-control" id="bonus" name="bonus" value="0">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-calculator"></i> Calculate
+                        </button>
+                    </form>
+
+                    {% if calculated %}
+                    <hr>
+                    <div class="results mt-4">
+                        <h5 class="text-center mb-4">Salary Breakdown</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0">Earnings</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="d-flex justify-content-between">
+                                            <span>Basic Salary:</span>
+                                            <span>NPR {{ basic_salary|floatformat:2 }}</span>
+                                        </p>
+                                        <p class="d-flex justify-content-between">
+                                            <span>Allowances:</span>
+                                            <span>NPR {{ allowances|floatformat:2 }}</span>
+                                        </p>
+                                        <p class="d-flex justify-content-between">
+                                            <span>Bonus:</span>
+                                            <span>NPR {{ bonus|floatformat:2 }}</span>
+                                        </p>
+                                        <hr>
+                                        <p class="d-flex justify-content-between fw-bold">
+                                            <span>Gross Salary:</span>
+                                            <span>NPR {{ gross_salary|floatformat:2 }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0">Deductions</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="d-flex justify-content-between">
+                                            <span>Taxable Income:</span>
+                                            <span>NPR {{ taxable_income|floatformat:2 }}</span>
+                                        </p>
+                                        <p class="d-flex justify-content-between">
+                                            <span>Income Tax:</span>
+                                            <span>NPR {{ tax|floatformat:2 }}</span>
+                                        </p>
+                                        <p class="d-flex justify-content-between">
+                                            <span>SSF Contribution:</span>
+                                            <span>NPR {{ ssf_contribution|floatformat:2 }}</span>
+                                        </p>
+                                        <p class="d-flex justify-content-between">
+                                            <span>PF Contribution:</span>
+                                            <span>NPR {{ pf_contribution|floatformat:2 }}</span>
+                                        </p>
+                                        <hr>
+                                        <p class="d-flex justify-content-between fw-bold">
+                                            <span>Total Deductions:</span>
+                                            <span>NPR {{ total_deductions|floatformat:2 }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border-success">
+                            <div class="card-header bg-success text-white">
+                                <h6 class="mb-0">Net (In-hand) Salary</h6>
+                            </div>
+                            <div class="card-body text-center">
+                                <h3 class="text-success">NPR {{ net_salary|floatformat:2 }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
