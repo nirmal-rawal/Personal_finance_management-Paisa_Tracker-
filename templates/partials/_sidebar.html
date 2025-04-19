@@ -51,24 +51,30 @@
     </ul>
     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-uppercase text-muted">
       <span>Settings</span>
-    </h6>
-    <ul class="nav flex-column mb-auto">
+  </h6>
+  <ul class="nav flex-column mb-auto">
       <li class="nav-item">
-        <a class="nav-link d-flex align-items-center gap-2 text-white py-3" href="{% url 'preferences' %}">
-          <i class="bi bi-gear"></i>
-          General Settings
-        </a>
+          <a class="nav-link d-flex align-items-center gap-2 text-white py-3" href="{% url 'preferences' %}">
+              <i class="bi bi-gear"></i>
+              General Settings
+          </a>
       </li>
+      {% comment %} <li class="nav-item">
+          <a class="nav-link d-flex align-items-center gap-2 text-white py-3" href="{% url 'tools' %}">
+              <i class="bi bi-tools"></i>
+              Tools
+          </a>
+      </li> {% endcomment %}
       <li class="nav-item">
-        <a class="nav-link d-flex align-items-center gap-2 text-white py-3" href="{% url 'account' %}">
-          <i class="bi bi-person"></i>
-          Account
-        </a>
+          <a class="nav-link d-flex align-items-center gap-2 text-white py-3" href="{% url 'account' %}">
+              <i class="bi bi-person"></i>
+              Account
+          </a>
       </li>
-    </ul>
+  </ul>
     
     <!-- Account Display Section -->
-    <div class="mt-auto p-3 border-top border-secondary">
+    {% comment %} <div class="mt-auto p-3 border-top border-secondary">
       <div class="d-flex align-items-center gap-3">
         <div class="flex-shrink-0">
           <img src="{% static 'img/default-avatar.png' %}" alt="User" width="32" height="32" class="rounded-circle">
@@ -83,7 +89,7 @@
           </a>
         </div>
       </div>
-    </div>
+    </div> {% endcomment %}
   </div>
 </div>
 

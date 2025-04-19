@@ -8,4 +8,5 @@ urlpatterns = [
     path('tools/', views.tools_main, name='tools'),
     path('tools/currency-exchange/', views.currency_exchange, name='currency_exchange'),
     path('tools/salary-calculator/', views.salary_calculator, name='salary_calculator'),
+    path('tools/generate-report/', views.generate_report, name='generate_report'),
 ]

@@ -1,3 +1,4 @@
+# expenses/tasks.py
 from celery import shared_task
 from django.utils import timezone
 from datetime import datetime, timedelta
@@ -118,28 +119,31 @@ def generate_financial_insights(stats, month):
         model = GenerativeModel('gemini-1.5-flash')
         
         prompt = f"""
-        Analyze this financial data and provide 3 concise, actionable insights.
-        Focus on spending patterns, practical advice, and investment opportunities in Nepal's share market when appropriate.
-        Keep it friendly and conversational.
+        Analyze this financial data and provide 3-4 concise, conversational insights in the following style:
+        
+        Example style:
+        "Whoa, that home improvement project (NPR 8022.37!) really threw your budget off this month..."
+        "Your spending on restaurants adds up. Could you reduce these costs by even a little?"
+        "You're spending more than you're earning. Let's prioritize creating a budget..."
 
         Financial Data for {month}:
         - Total Income: {stats['currency']}{stats['totalIncome']}
         - Total Expenses: {stats['currency']}{stats['totalExpenses']}
         - Net Income: {stats['currency']}{stats['totalIncome'] - stats['totalExpenses']}
-        - Expense Categories: {', '.join([f"{category}: {stats['currency']}{amount}" for category, amount in stats['byCategory'].items()])}
+        - Expense Categories: {json.dumps(stats['byCategory'], indent=2)}
 
-        Provide insights in this order:
-        1. Spending analysis and savings opportunities
-        2. Budgeting recommendations
-        3. Investment advice (if net income is positive, suggest Nepal's share market with specific sectors)
+        Provide insights that:
+        1. Start with an engaging observation about the largest expense
+        2. Suggest specific, actionable improvements
+        3. Mention any concerning patterns (like overspending)
+        4. If net income is positive, suggest Nepal investment options (hydropower, banks, etc.)
 
-        For investment advice in Nepal:
-        - Mention NEPSE (Nepal Stock Exchange)
-        - Highlight promising sectors (hydropower, commercial banks, microfinance)
-        - Recommend starting with blue-chip stocks if new to investing
-        - Suggest consulting with a licensed broker
+        For Nepal context:
+        - Use {stats['currency']} currency
+        - Mention NEPSE if suggesting investments
+        - Keep advice practical for Nepali investors
 
-        Format the response as a JSON array of strings, like this:
+        Return the insights as a JSON array of strings, like this:
         ["insight 1", "insight 2", "insight 3"]
         """
         
@@ -149,27 +153,37 @@ def generate_financial_insights(stats, month):
         
         insights = json.loads(cleaned_text)
         
+        # Ensure we have at least 3 insights
+        if len(insights) < 3:
+            max_category, max_amount = max(stats['byCategory'].items(), key=lambda x: x[1])
+            default_insights = [
+                f"Whoa, that {max_category} expense ({stats['currency']}{max_amount:.2f}) was your biggest spending this month!",
+                f"Your total expenses ({stats['currency']}{stats['totalExpenses']:.2f}) exceeded income ({stats['currency']}{stats['totalIncome']:.2f}). Let's find ways to balance this.",
+                "Consider setting weekly spending limits to control discretionary expenses"
+            ]
+            insights.extend(default_insights[len(insights):])
+        
         # Add Nepal-specific investment advice if net income is positive
         net_income = stats['totalIncome'] - stats['totalExpenses']
         if net_income > 10000:  # Only suggest if substantial surplus
             nepse_advice = (
-                "With your positive cash flow, consider investing in Nepal's stock market (NEPSE). "
+                f"With your positive cash flow ({stats['currency']}{net_income:.2f}), consider Nepal's stock market (NEPSE). "
                 "Sectors like hydropower and commercial banks show strong growth potential. "
-                "Start with blue-chip stocks and consult a SEBON-licensed broker."
+                "Start with blue-chip stocks like NABIL or NTC for stability."
             )
-            if len(insights) >= 3:
-                insights[-1] = nepse_advice  # Replace last insight
-            else:
-                insights.append(nepse_advice)
+            insights.append(nepse_advice)
         
         return insights
         
     except Exception as e:
         print(f"Error generating insights: {str(e)}")
+        # Fallback insights with conversational style
+        max_category, max_amount = max(stats['byCategory'].items(), key=lambda x: x[1])
         return [
-            f"Your highest spending category was {max(stats['byCategory'].items(), key=lambda x: x[1])[0]} at {stats['currency']}{max(stats['byCategory'].values())}",
-            "Consider setting up specific budget limits for your top spending categories",
-            "With surplus funds, Nepal's share market offers investment opportunities in hydropower and banking sectors"
+            f"Whoa, that {max_category} expense ({stats['currency']}{max_amount:.2f}) was your biggest spending this month!",
+            f"Your total expenses ({stats['currency']}{stats['totalExpenses']:.2f}) exceeded income ({stats['currency']}{stats['totalIncome']:.2f}). Let's find ways to balance this.",
+            "Consider setting weekly spending limits to control discretionary expenses",
+            "With surplus funds, Nepal's NEPSE offers investment opportunities in hydropower and banking sectors"
         ]
 
 @shared_task

@@ -1,0 +1,94 @@
+<!-- templates/preferences/generate_report.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="bi bi-file-earmark-text me-2"></i>Generate Financial Report</h4>
+                </div>
+                <div class="card-body" style="background-color: white;">
+                    <form method="POST" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Month/Year Picker - Enhanced Visibility -->
+                        <div class="mb-4">
+                            <label for="monthYearInput" class="form-label fw-bold" style="color: black;">
+                                <i class="bi bi-calendar-month me-2"></i>Select Month and Year
+                            </label>
+                            <div class="input-group">
+                                <input type="month" 
+                                       class="form-control form-control-lg" 
+                                       id="monthYearInput" 
+                                       name="reportDate"
+                                       required
+                                       style="background-color: white; color: black; border: 1px solid #ced4da;"
+                                       aria-describedby="dateHelp">
+                                <button class="btn btn-outline-secondary" type="button" id="datePickerButton" style="background-color: #f8f9fa; color: black; border: 1px solid #ced4da;">
+                                    <i class="bi bi-calendar3"></i>
+                                </button>
+                            </div>
+                            <div id="dateHelp" class="form-text" style="color: black;">
+                                Select any month to generate its financial report
+                            </div>
+                            <div class="invalid-feedback">
+                                Please select a valid month and year.
+                            </div>
+                        </div>
+                        
+                        <!-- Email Option -->
+                        <div class="mb-4 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="send_email" name="send_email" style="background-color: #6c757d;">
+                            <label class="form-check-label" for="send_email" style="color: black;">
+                                <i class="bi bi-envelope me-2"></i>Send report to my email
+                            </label>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="{% url 'tools' %}" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-file-earmark-text me-2"></i>Generate Report
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Set default value to current month and year
+    const now = new Date();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const year = now.getFullYear();
+    const monthYearInput = document.getElementById('monthYearInput');
+    monthYearInput.value = `${year}-${month}`;
+    
+    // Make the calendar button trigger the date picker
+    document.getElementById('datePickerButton').addEventListener('click', function() {
+        monthYearInput.showPicker();
+    });
+    
+    // Form validation
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+    }, false);
+});
+</script>
+{% endblock %}
