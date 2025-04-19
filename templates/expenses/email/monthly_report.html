@@ -1,37 +1,97 @@
 {% extends "expenses/email/base.html" %}
 {% load static %}
+{% load mathfilters %}
 
 {% block content %}
-<h2 style="color: #2c3e50;">Your Monthly Financial Report - {{ month }}</h2>
+<div style="max-width: 600px; margin: 0 auto; font-family: 'Arial', sans-serif; color: #333;">
+    <!-- Header -->
+    <div style="background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%); padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
+        <h1 style="color: white; margin: 0; font-size: 24px;">💰 Your {{ month }} Financial Report</h1>
+        <p style="color: rgba(255,255,255,0.8); margin: 5px 0 0;">Generated for {{ user.first_name|default:"Valued User" }}</p>
+    </div>
 
-<div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
-    <h3 style="color: #2c3e50;">Summary</h3>
-    <p><strong>Total Income:</strong> {{ stats.currency }}{{ stats.totalIncome|floatformat:2 }}</p>
-    <p><strong>Total Expenses:</strong> {{ stats.currency }}{{ stats.totalExpenses|floatformat:2 }}</p>
-    <p><strong>Net Income:</strong> {{ stats.currency }}{{ net_income|floatformat:2 }}</p>
+    <!-- Summary Card -->
+    <div style="background: white; margin: 20px 0; padding: 25px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+        <h2 style="color: #2c3e50; margin-top: 0; border-bottom: 2px solid #f1f1f1; padding-bottom: 10px; display: flex; align-items: center;">
+            <span style="background: #4b6cb7; width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 10px;"></span>
+            Financial Snapshot
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; text-align: center;">
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 6px;">
+                <p style="margin: 0 0 5px; font-size: 13px; color: #7f8c8d;">Total Income</p>
+                <p style="margin: 0; font-size: 18px; font-weight: bold; color: #27ae60;">{{ stats.currency }}{{ stats.totalIncome|floatformat:2 }}</p>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 6px;">
+                <p style="margin: 0 0 5px; font-size: 13px; color: #7f8c8d;">Total Expenses</p>
+                <p style="margin: 0; font-size: 18px; font-weight: bold; color: #e74c3c;">{{ stats.currency }}{{ stats.totalExpenses|floatformat:2 }}</p>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 6px;">
+                <p style="margin: 0 0 5px; font-size: 13px; color: #7f8c8d;">Net Savings</p>
+                <p style="margin: 0; font-size: 18px; font-weight: bold; color: {% if net_income > 0 %}#27ae60{% else %}#e74c3c{% endif %};">{{ stats.currency }}{{ net_income|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Expense Breakdown -->
+    <div style="background: white; margin: 20px 0; padding: 25px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+        <h2 style="color: #2c3e50; margin-top: 0; border-bottom: 2px solid #f1f1f1; padding-bottom: 10px; display: flex; align-items: center;">
+            <span style="background: #e74c3c; width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 10px;"></span>
+            Expense Breakdown
+        </h2>
+        
+        <div style="margin-top: 15px;">
+            {% for category, amount in stats.byCategory.items %}
+            <div style="margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span style="font-weight: 500;">{{ category|title }}</span>
+                    <span>{{ stats.currency }}{{ amount|floatformat:2 }}</span>
+                </div>
+                <div style="height: 8px; background: #ecf0f1; border-radius: 4px; overflow: hidden;">
+                    <div style="height: 100%; width: {% widthratio amount stats.totalExpenses 100 %}%; background: #e74c3c;"></div>
+                </div>
+                <div style="text-align: right; font-size: 12px; color: #7f8c8d; margin-top: 3px;">
+                    {% widthratio amount stats.totalExpenses 100 %}% of expenses
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- AI Insights -->
+    <div style="background: white; margin: 20px 0; padding: 25px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+        <h2 style="color: #2c3e50; margin-top: 0; border-bottom: 2px solid #f1f1f1; padding-bottom: 10px; display: flex; align-items: center;">
+            <span style="background: #3498db; width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 10px;"></span>
+            AI-Powered Insights
+        </h2>
+        
+        <div style="margin-top: 15px;">
+            {% for insight in insights %}
+            <div style="display: flex; margin-bottom: 15px; padding-left: 15px; position: relative;">
+                <div style="position: absolute; left: 0; top: 5px; width: 6px; height: 6px; background: #3498db; border-radius: 50%;"></div>
+                <div>
+                    <p style="margin: 0; font-size: 15px; line-height: 1.4;">{{ insight }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- CTA & Footer -->
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{{ site_url }}/stats/" style="background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%); color: white; padding: 12px 30px; text-decoration: none; border-radius: 30px; display: inline-block; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(75, 108, 183, 0.3);">
+            View Detailed Statistics
+        </a>
+        
+        {% if net_income > 0 %}
+        <p style="margin-top: 25px; padding: 15px; background: #e8f5e9; border-radius: 6px; color: #27ae60; font-weight: 500;">
+            🎉 Great job! You're saving money this month!
+        </p>
+        {% else %}
+        <p style="margin-top: 25px; padding: 15px; background: #ffebee; border-radius: 6px; color: #e74c3c; font-weight: 500;">
+            💡 Tip: Review your discretionary spending for savings opportunities
+        </p>
+        {% endif %}
+    </div>
 </div>
-
-<div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
-    <h3 style="color: #2c3e50;">Expense Breakdown</h3>
-    <ul>
-        {% for category, amount in stats.byCategory.items %}
-        <li>{{ category }}: {{ stats.currency }}{{ amount|floatformat:2 }}</li>
-        {% endfor %}
-    </ul>
-</div>
-
-<div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
-    <h3 style="color: #2c3e50;">Wealth Insights</h3>
-    <ul>
-        {% for insight in insights %}
-        <li>{{ insight }}</li>
-        {% endfor %}
-    </ul>
-</div>
-
-<p style="margin-top: 30px; text-align: center;">
-    <a href="{{ site_url }}/stats/" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
-        View Detailed Stats
-    </a>
-</p>
 {% endblock %}

@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "dashboard",
     'django_celery_results',
     'expenses.templatetags.custom_filters',
+    'mathfilters',
     
     
 ]
