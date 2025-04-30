@@ -14,6 +14,15 @@ from django.views.decorators.csrf import csrf_exempt
 from .receipt_scanner import IncomeReceiptScanner
 import datetime
 from django.db import transaction
+from django.http import HttpResponse
+import csv
+import datetime
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from io import BytesIO
+
+
+
 
 @login_required
 def profile(request):
@@ -273,3 +282,54 @@ def scan_income_receipt_api(request):
 @login_required(login_url='/authentication/login/')
 def income_summary(request):
     return render(request, 'userincome/income_stats.html')
+
+
+def export_income_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=Incomes_' + str(datetime.datetime.now().strftime('%Y-%m-%d')) + '.csv'
+
+    writer = csv.writer(response)
+    writer.writerow(['Amount', 'Description', 'Source', 'Date'])
+
+    incomes = Income.objects.filter(owner=request.user)
+    for income in incomes:
+        writer.writerow([income.amount, income.description, income.source, income.date])
+
+    return response
+
+def export_income_pdf(request):
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    p.setTitle(f"Incomes Report - {datetime.datetime.now().strftime('%Y-%m-%d')}")
+
+    # Set up PDF content
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(100, 750, "Incomes Report")
+    p.setFont("Helvetica", 12)
+    p.drawString(100, 730, f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    
+    # Table headers
+    y = 700
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(100, y, "Amount")
+    p.drawString(180, y, "Description")
+    p.drawString(330, y, "Source")
+    p.drawString(430, y, "Date")
+    
+    # Table content
+    p.setFont("Helvetica", 10)
+    incomes = Income.objects.filter(owner=request.user)
+    for income in incomes:
+        y -= 20
+        p.drawString(100, y, str(income.amount))
+        p.drawString(180, y, income.description)
+        p.drawString(330, y, income.source)
+        p.drawString(430, y, str(income.date))
+
+    p.showPage()
+    p.save()
+    
+    buffer.seek(0)
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename=Incomes_{datetime.datetime.now().strftime("%Y-%m-%d")}.pdf'
+    return response

@@ -4,7 +4,7 @@ from .models import Category, Expenses, Notification
 from django.contrib import messages
 from django.core.paginator import Paginator
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from user_preferences.models import UserPreference
 from .forms import ProfileUpdateForm, ExpenseForm
 import datetime
@@ -13,6 +13,13 @@ from .receipt_scanner import ReceiptScanner
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from django.template import Template, Context
+import csv
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from io import BytesIO
+
+
 
 # Common categories that should always be available
 DEFAULT_CATEGORIES = [
@@ -337,3 +344,53 @@ def get_unread_notifications(request):
 @login_required(login_url='/authentication/login/')
 def stats_view(request):
     return render(request, 'expenses/stats.html')
+
+def export_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=Expenses_' + str(datetime.datetime.now().strftime('%Y-%m-%d')) + '.csv'
+
+    writer = csv.writer(response)
+    writer.writerow(['Amount', 'Description', 'Category', 'Date'])
+
+    expenses = Expenses.objects.filter(owner=request.user)
+    for expense in expenses:
+        writer.writerow([expense.amount, expense.description, expense.category, expense.date])
+
+    return response
+
+def export_pdf(request):
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    p.setTitle(f"Expenses Report - {datetime.datetime.now().strftime('%Y-%m-%d')}")
+
+    # Set up PDF content
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(100, 750, "Expenses Report")
+    p.setFont("Helvetica", 12)
+    p.drawString(100, 730, f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    
+    # Table headers
+    y = 700
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(100, y, "Amount")
+    p.drawString(180, y, "Description")
+    p.drawString(330, y, "Category")
+    p.drawString(430, y, "Date")
+    
+    # Table content
+    p.setFont("Helvetica", 10)
+    expenses = Expenses.objects.filter(owner=request.user)
+    for expense in expenses:
+        y -= 20
+        p.drawString(100, y, str(expense.amount))
+        p.drawString(180, y, expense.description)
+        p.drawString(330, y, expense.category)
+        p.drawString(430, y, str(expense.date))
+
+    p.showPage()
+    p.save()
+    
+    buffer.seek(0)
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename=Expenses_{datetime.datetime.now().strftime("%Y-%m-%d")}.pdf'
+    return response

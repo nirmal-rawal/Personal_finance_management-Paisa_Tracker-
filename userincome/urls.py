@@ -12,4 +12,6 @@ urlpatterns = [
     path('income-summary/', views.income_summary, name='income-summary'),
     path('income-category-summary/', views.income_category_summary, name="income-category-summary"),
     path('scan-income-receipt/', views.scan_income_receipt_api, name='scan-income-receipt'),
+    path('export_income_csv', views.export_income_csv, name='export_income_csv'),
+    path('export_income_pdf', views.export_income_pdf, name='export_income_pdf'),
 ]

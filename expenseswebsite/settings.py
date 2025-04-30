@@ -208,32 +208,32 @@ CELERY_RESULT_BACKEND = 'django-db'
 
 
 
-import os
+# import os
 
-# WeasyPrint configuration
-WEASYPRINT_OPTIONS = {
-    'encoding': 'utf-8',
-    'stylesheets': [
-        # You can add CSS files here if needed
-    ],
-    'presentational_hints': True,  # Better HTML5/CSS3 support
-}
+# # WeasyPrint configuration
+# WEASYPRINT_OPTIONS = {
+#     'encoding': 'utf-8',
+#     'stylesheets': [
+#         # You can add CSS files here if needed
+#     ],
+#     'presentational_hints': True,  # Better HTML5/CSS3 support
+# }
 
-# PDF Configuration - Windows specific
-WKHTMLTOPDF_PATH = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+# # PDF Configuration - Windows specific
+# WKHTMLTOPDF_PATH = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
 
-if os.path.exists(WKHTMLTOPDF_PATH):
-    PDFKIT_CONFIG = {
-        'wkhtmltopdf': WKHTMLTOPDF_PATH
-    }
-else:
-    # Fallback to portable version in project directory
-    PDFKIT_CONFIG = {
-        'wkhtmltopdf': os.path.join(BASE_DIR, 'bin', 'wkhtmltopdf.exe')
-    }
+# if os.path.exists(WKHTMLTOPDF_PATH):
+#     PDFKIT_CONFIG = {
+#         'wkhtmltopdf': WKHTMLTOPDF_PATH
+#     }
+# else:
+#     # Fallback to portable version in project directory
+#     PDFKIT_CONFIG = {
+#         'wkhtmltopdf': os.path.join(BASE_DIR, 'bin', 'wkhtmltopdf.exe')
+#     }
 
-# Debug output
-print("Using wkhtmltopdf path:", PDFKIT_CONFIG['wkhtmltopdf'])
-print("Path exists:", os.path.exists(PDFKIT_CONFIG['wkhtmltopdf']))
+# # Debug output
+# print("Using wkhtmltopdf path:", PDFKIT_CONFIG['wkhtmltopdf'])
+# print("Path exists:", os.path.exists(PDFKIT_CONFIG['wkhtmltopdf']))
 
 SITE_URL = os.getenv('SITE_URL', 'http://localhost:8000')

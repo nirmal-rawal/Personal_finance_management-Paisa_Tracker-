@@ -27,20 +27,55 @@
     <div class="container mt-4">
         {% include 'partials/_messages.html' %}
         {% if expenses %}
+
+        
         <!-- Search Bar -->
-        <div class="row my-3">
-            <div class="col-md-8"></div>
-            <div class="col-md-4">
-                <!-- Update search form to send GET request -->
-                <form method="get" action="{% url 'expenses' %}">
-                    <div class="search-box" style="position: relative;">
-                        <input type="text" class="form-control search-input" id="searchField" name="search" placeholder="Search expenses..." value="{{ search_query }}" 
-                               style="background-color: #3a383a; border: 1px solid #4e4b4e; color: #f8f9fa; padding-left: 35px;">
-                        <i class="fas fa-search search-icon" style="position: absolute; left: 12px; top: 10px; color: #a0a0a0;"></i>
-                    </div>
-                </form>
+        <div class="col-md-4">
+            <div class="d-flex align-items-center mb-3">
+                <!-- Export Buttons with confirmation dialogs -->
+                <div class="btn-group" role="group">
+                    <button onclick="confirmExport('pdf')" class="btn btn-danger">
+                        <i class="fas fa-file-pdf mr-2"></i> Export PDF
+                    </button>
+                    <button onclick="confirmExport('csv')" class="btn btn-success">
+                        <i class="fas fa-file-csv mr-2"></i> Export CSV
+                    </button>
+                </div>
             </div>
+        
+            <!-- Search form -->
+            <form method="get" action="{% url 'expenses' %}">
+                <div class="search-box" style="position: relative;">
+                    <input type="text" class="form-control search-input" id="searchField" name="search" 
+                           placeholder="Search expenses..." value="{{ search_query }}" 
+                           style="background-color: #3a383a; border: 1px solid #4e4b4e; color: #f8f9fa; padding-left: 35px;">
+                    <i class="fas fa-search search-icon" style="position: absolute; left: 12px; top: 10px; color: #a0a0a0;"></i>
+                </div>
+            </form>
         </div>
+        
+        <script>
+        function confirmExport(type) {
+            Swal.fire({
+                title: 'Export Data?',
+                text: `Do you want to export your ${type.toUpperCase()} data?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, export it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (type === 'pdf') {
+                        window.location.href = "{% url 'export_pdf' %}";
+                    } else if (type === 'csv') {
+                        window.location.href = "{% url 'export_csv' %}";
+                    }
+                }
+            });
+        }
+        </script>
+
        
         <!-- Main Table -->
         <div class="app-table">

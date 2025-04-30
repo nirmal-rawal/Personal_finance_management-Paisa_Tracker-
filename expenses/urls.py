@@ -18,4 +18,7 @@ urlpatterns = [
     path('notifications/unread/', views.get_unread_notifications, name='unread_notifications'),
     path('notifications/mark-all-read/', views.mark_all_notifications_read, name='mark_all_notifications_read'),
     path('notifications/mark-all-read/', views.mark_all_notifications_read, name='mark_all_notifications_read'),
+    path('export_csv',views.export_csv,name='export_csv'),
+    path('export_pdf', views.export_pdf, name='export_pdf'),
+
 ]
