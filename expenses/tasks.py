@@ -225,24 +225,32 @@ def check_budget_alerts():
                     'site_url': settings.SITE_URL
                 })
                 
-                send_mail(
-                    subject=subject,
-                    message='',
-                    html_message=html_message,
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[budget.user.email],
-                    fail_silently=False
-                )
-                
-                Notification.objects.create(
-                    user=budget.user,
-                    message=f"Budget Alert: You've used {percentage_used:.0f}% of your monthly budget",
-                    notification_type='budget_alert',
-                    related_url='/stats/'
-                )
-                
-                budget.last_alert_sent = timezone.now()
-                budget.save()
+                try:
+                    send_mail(
+                        subject=subject,
+                        message='',
+                        html_message=html_message,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[budget.user.email],
+                        fail_silently=False
+                    )
+                    
+                    # Create notification
+                    Notification.objects.create(
+                        user=budget.user,
+                        message=f"Budget Alert: You've used {percentage_used:.0f}% of your monthly budget",
+                        notification_type='budget_alert',
+                        related_url='/stats/'
+                    )
+                    
+                    budget.last_alert_sent = timezone.now()
+                    budget.save()
+                    
+                    print(f"Budget alert sent to {budget.user.email}")
+                except SMTPAuthenticationError as e:
+                    print(f"Email authentication failed for {budget.user.email}: {str(e)}")
+                except Exception as e:
+                    print(f"Error sending email to {budget.user.email}: {str(e)}")
                 
         except Exception as e:
             print(f"Error checking budget for {budget.user.username}: {str(e)}")

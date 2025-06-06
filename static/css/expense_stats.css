@@ -1,0 +1,130 @@
+/* Container Styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Fixed Summary Section */
+.fixed-summary {
+    background-color: #2c2a2c;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb-nav {
+    background-color: #3a383a;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.breadcrumb {
+    margin-bottom: 0;
+    background-color: transparent;
+}
+
+.breadcrumb-link {
+    color: #4e9af1;
+    text-decoration: none;
+}
+
+.breadcrumb-item.active {
+    color: #e0e0e0;
+}
+
+/* Back Button */
+.back-button {
+    background-color: #4e9af1;
+    border-color: #4e9af1;
+    color: white;
+    font-weight: 500;
+    padding: 8px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #3d7bc8;
+    border-color: #3d7bc8;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Summary Title */
+.expense-summary-title {
+    color: #f8f9fa;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.total-expense-text {
+    color: #a0a0a0;
+    font-size: 1.2rem;
+}
+
+.total-expense-amount {
+    color: #ff6b6b;
+    font-size: 1.4rem;
+}
+
+/* Chart Cards */
+.chart-card {
+    background-color: #2c2a2c;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.chart-card:hover {
+    transform: translateY(-5px);
+}
+
+.chart-title {
+    color: #f8f9fa;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+/* Insights Card */
+.insights-card {
+    background-color: #2c2a2c;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.insights-title {
+    color: #f8f9fa;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .chart-card {
+        margin-bottom: 15px;
+    }
+    
+    .expense-summary-title {
+        font-size: 1.5rem;
+    }
+    
+    .total-expense-text {
+        font-size: 1rem;
+    }
+    
+    .total-expense-amount {
+        font-size: 1.2rem;
+    }
+} 

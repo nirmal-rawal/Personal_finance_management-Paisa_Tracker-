@@ -1,8 +1,33 @@
+// Get CSRF token from cookie
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrfToken = getCookie('csrftoken');
+
+// Get DOM elements
 const searchField = document.querySelector('#searchField');
 const tableOutput = document.querySelector('.table-output');
 const appTable = document.querySelector('.app-table');
 const paginationContainer = document.querySelector('.pagination-container');
 const tableBody = document.querySelector('.table-body');
+
+// Check if all required elements exist
+if (!searchField || !tableOutput || !appTable || !paginationContainer || !tableBody) {
+    console.error('Required DOM elements not found');
+    return;
+}
 
 tableOutput.style.display = 'none';
 
@@ -58,7 +83,7 @@ searchField.addEventListener('keyup', (e) => {
                             <td style="color: #f8f9fa;">${description}</td>
                             <td style="color: #a0a0a0;">${formattedDate}</td>
                             <td>
-                                <a href="/income-edit/${item.id}/" class="btn btn-sm" style="background-color: #5a5a5a; color: #f8f9fa; margin-right: 5px;">
+                                <a href="/edit-income/${item.id}/" class="btn btn-sm" style="background-color: #5a5a5a; color: #f8f9fa; margin-right: 5px;">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <a href="/income-delete/${item.id}/" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this income?')">

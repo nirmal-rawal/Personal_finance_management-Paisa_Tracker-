@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from userincome.models import Income
-from expenses.models import Expenses, Budget
+from expenses.models import Expenses, Budget, Notification
 from user_preferences.models import UserPreference
 from datetime import date, timedelta, datetime
 from collections import defaultdict
@@ -11,6 +11,11 @@ from django.contrib import messages
 from expenses.forms import BudgetForm
 from django.db import models
 from itertools import chain
+from django.http import JsonResponse
+from .models import ChatMessage
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Sum
 
 @login_required(login_url='/authentication/login/')
 def dashboard(request):
@@ -84,14 +89,14 @@ def dashboard(request):
     recent_transactions.sort(key=lambda x: x['date'], reverse=True)
     recent_transactions = recent_transactions[:5]
 
-    # Top categories for expenses
+    # Top categories for expenses (now top 5 instead of top 3)
     expense_categories = {}
     for expense in expenses:
         if expense.category in expense_categories:
             expense_categories[expense.category] += expense.amount
         else:
             expense_categories[expense.category] = expense.amount
-    top_expense_categories = sorted(expense_categories.items(), key=lambda x: x[1], reverse=True)[:3]
+    top_expense_categories = sorted(expense_categories.items(), key=lambda x: x[1], reverse=True)[:5]
 
     # Top sources for income
     income_sources = {}
@@ -122,9 +127,16 @@ def dashboard(request):
     chart_income_data = [monthly_income[month] for month in sorted_months]
     chart_expense_data = [monthly_expenses[month] for month in sorted_months]
 
-    # Expense breakdown by category
+    # Expense breakdown by category (top 5 + others grouped as "Other")
+    top_categories = dict(sorted(expense_categories.items(), key=lambda x: x[1], reverse=True)[:5])
+    other_amount = sum(amount for category, amount in expense_categories.items() if category not in top_categories)
+    
     expense_breakdown = {category: (amount / total_expenses) * 100 if total_expenses > 0 else 0 
-                        for category, amount in expense_categories.items()}
+                        for category, amount in top_categories.items()}
+    
+    if other_amount > 0:
+        expense_breakdown['Other'] = (other_amount / total_expenses) * 100 if total_expenses > 0 else 0
+    
     expense_breakdown_labels = list(expense_breakdown.keys())
     expense_breakdown_values = list(expense_breakdown.values())
 
@@ -182,6 +194,14 @@ def send_budget_alert_email(user, budget_amount, spent_amount, currency):
         [user.email],
         fail_silently=True,
     )
+    
+    # Create session notification
+    Notification.objects.create(
+        user=user,
+        message=f"Budget Alert: You've used {percentage_used:.0f}% of your monthly budget",
+        notification_type='budget_alert',
+        related_url='/stats/'
+    )
 
 @login_required
 def update_budget(request):
@@ -194,3 +214,148 @@ def update_budget(request):
         else:
             messages.error(request, 'Error updating budget. Please enter a valid amount.')
     return redirect('dashboard')
+
+@csrf_exempt
+@login_required
+def chat_bot(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        
+        # Handle clear chat request
+        if data.get('clear_chat'):
+            ChatMessage.objects.filter(user=request.user).delete()
+            return JsonResponse({'status': 'success', 'message': 'Chat history cleared'})
+        
+        # Handle normal chat message
+        user_message = data.get('message', '').lower()
+        
+        # Get user's financial data
+        expenses = Expenses.objects.filter(owner=request.user)
+        incomes = Income.objects.filter(owner=request.user)
+        
+        # Generate response based on user's message
+        response = generate_chat_response(user_message, request.user, expenses, incomes)
+        
+        # Save the chat interaction
+        ChatMessage.objects.create(
+            user=request.user,
+            message=user_message,
+            response=response
+        )
+        
+        return JsonResponse({'response': response})
+    
+    # Get chat history
+    chat_history = ChatMessage.objects.filter(user=request.user).order_by('-timestamp')[:10]
+    return JsonResponse({'history': list(chat_history.values())})
+
+def generate_chat_response(message, user, expenses, incomes):
+    message = message.lower().strip()
+    
+    # Help command
+    if 'help' in message:
+        return (
+            '1. Financial Information\n'
+            '- "Show my total expenses"\n'
+            '- "What are my monthly expenses?"\n'
+            '- "Show my total income"\n'
+            '- "What are my savings?"\n\n'
+            '2. Financial Analysis\n'
+            '- "How can I improve my finances?"\n'
+            '- "Analyze my spending"\n'
+            '- "Show my biggest expenses"\n\n'
+            '3. Budget Information\n'
+            '- "Show my budget"\n'
+            '- "Am I over budget?"'
+        )
+    
+    # Basic expense analysis
+    if any(phrase in message for phrase in ['total expenses', 'all expenses', 'how much did i spend']):
+        total = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
+        return f"Your total expenses are ${total:.2f}"
+    
+    elif any(phrase in message for phrase in ['monthly expenses', 'this month', 'spending this month']):
+        current_month = datetime.now().month
+        monthly_expenses = expenses.filter(date__month=current_month).aggregate(Sum('amount'))['amount__sum'] or 0
+        return f"Your expenses this month are ${monthly_expenses:.2f}"
+    
+    elif any(phrase in message for phrase in ['income', 'how much do i earn', 'my earnings']):
+        total_income = incomes.aggregate(Sum('amount'))['amount__sum'] or 0
+        return f"Your total income is ${total_income:.2f}"
+    
+    elif any(phrase in message for phrase in ['savings', 'how much did i save', 'money saved']):
+        total_income = incomes.aggregate(Sum('amount'))['amount__sum'] or 0
+        total_expenses = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
+        savings = total_income - total_expenses
+        return f"Your total savings are ${savings:.2f}"
+    
+    # Budget-related queries
+    elif any(phrase in message for phrase in ['show my budget', 'what is my budget', 'budget amount']):
+        budget = Budget.objects.filter(user=user).first()
+        if budget:
+            return f"Your monthly budget is ${budget.amount:.2f}"
+        else:
+            return "You haven't set up a budget yet. You can set one from your dashboard."
+    
+    elif any(phrase in message for phrase in ['am i over budget', 'budget status', 'budget progress']):
+        budget = Budget.objects.filter(user=user).first()
+        if not budget:
+            return "You haven't set up a budget yet. You can set one from your dashboard."
+        
+        current_month = datetime.now().month
+        monthly_expenses = expenses.filter(date__month=current_month).aggregate(Sum('amount'))['amount__sum'] or 0
+        budget_percentage = (monthly_expenses / budget.amount * 100) if budget.amount > 0 else 0
+        
+        if budget_percentage > 100:
+            return f"You are over budget! You've spent ${monthly_expenses:.2f}, which is {budget_percentage:.1f}% of your ${budget.amount:.2f} budget."
+        elif budget_percentage > 80:
+            return f"You're close to your budget limit. You've spent ${monthly_expenses:.2f}, which is {budget_percentage:.1f}% of your ${budget.amount:.2f} budget."
+        else:
+            return f"You're within your budget. You've spent ${monthly_expenses:.2f}, which is {budget_percentage:.1f}% of your ${budget.amount:.2f} budget."
+    
+    # Financial improvement advice
+    elif any(phrase in message for phrase in ['improve', 'better finances', 'financial advice', 'how to save']):
+        # Get some basic financial metrics
+        total_income = incomes.aggregate(Sum('amount'))['amount__sum'] or 0
+        total_expenses = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
+        savings = total_income - total_expenses
+        
+        # Get top expense categories
+        expense_categories = {}
+        for expense in expenses:
+            if expense.category in expense_categories:
+                expense_categories[expense.category] += expense.amount
+            else:
+                expense_categories[expense.category] = expense.amount
+        
+        top_expenses = sorted(expense_categories.items(), key=lambda x: x[1], reverse=True)[:3]
+        
+        advice = [
+            "Here are some personalized financial tips:",
+            f"1. Your top 3 expense categories are: {', '.join([f'{cat} (${amt:.2f})' for cat, amt in top_expenses])}",
+            "2. Consider setting a budget for these categories to control spending.",
+            f"3. Your current savings rate is {(savings/total_income * 100):.1f}% of your income.",
+            "4. Aim to save at least 20% of your income if possible.",
+            "5. Track your expenses regularly and look for areas to cut back.",
+            "\nWould you like more specific advice about any of these areas?"
+        ]
+        return "\n".join(advice)
+    
+    # Analyze spending patterns
+    elif any(phrase in message for phrase in ['analyze', 'spending pattern', 'where do i spend']):
+        expense_categories = {}
+        for expense in expenses:
+            if expense.category in expense_categories:
+                expense_categories[expense.category] += expense.amount
+            else:
+                expense_categories[expense.category] = expense.amount
+        
+        analysis = ["Here's an analysis of your spending:"]
+        for category, amount in sorted(expense_categories.items(), key=lambda x: x[1], reverse=True)[:5]:
+            percentage = (amount / sum(expense_categories.values())) * 100
+            analysis.append(f"- {category}: ${amount:.2f} ({percentage:.1f}% of total spending)")
+        
+        return "\n".join(analysis)
+    
+    else:
+        return "I'm not sure about that. Type 'help' to see what I can help you with!"

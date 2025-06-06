@@ -4,91 +4,206 @@
 
 {% block content %}
 <div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0"><i class="bi bi-file-earmark-text me-2"></i>Generate Financial Report</h4>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Generate Financial Report</h4>
                 </div>
-                <div class="card-body" style="background-color: white;">
-                    <form method="POST" class="needs-validation" novalidate>
+                <div class="card-body">
+                    <form method="post">
                         {% csrf_token %}
-                        
-                        <!-- Month/Year Picker - Enhanced Visibility -->
-                        <div class="mb-4">
-                            <label for="monthYearInput" class="form-label fw-bold" style="color: black;">
-                                <i class="bi bi-calendar-month me-2"></i>Select Month and Year
-                            </label>
-                            <div class="input-group">
-                                <input type="month" 
-                                       class="form-control form-control-lg" 
-                                       id="monthYearInput" 
-                                       name="reportDate"
-                                       required
-                                       style="background-color: white; color: black; border: 1px solid #ced4da;"
-                                       aria-describedby="dateHelp">
-                                <button class="btn btn-outline-secondary" type="button" id="datePickerButton" style="background-color: #f8f9fa; color: black; border: 1px solid #ced4da;">
-                                    <i class="bi bi-calendar3"></i>
-                                </button>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="year">Year</label>
+                                    <select class="form-control" id="year" name="year" required>
+                                        {% for year in available_years %}
+                                            <option value="{{ year }}">{{ year }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
-                            <div id="dateHelp" class="form-text" style="color: black;">
-                                Select any month to generate its financial report
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="month">Month</label>
+                                    <select class="form-control" id="month" name="month" required>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="invalid-feedback">
-                                Please select a valid month and year.
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="send_email">Send to Email</label>
+                                    <div class="custom-control custom-switch mt-2">
+                                        <input type="checkbox" class="custom-control-input" id="send_email" name="send_email">
+                                        <label class="custom-control-label" for="send_email">Email me this report</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        
-                        <!-- Email Option -->
-                        <div class="mb-4 form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="send_email" name="send_email" style="background-color: #6c757d;">
-                            <label class="form-check-label" for="send_email" style="color: black;">
-                                <i class="bi bi-envelope me-2"></i>Send report to my email
-                            </label>
-                        </div>
-                        
-                        <!-- Action Buttons -->
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <a href="{% url 'tools' %}" class="btn btn-outline-secondary me-md-2">
-                                <i class="bi bi-x-circle me-2"></i>Cancel
-                            </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-file-earmark-text me-2"></i>Generate Report
-                            </button>
-                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Generate Report</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
-{% endblock %}
 
-{% block scripts %}
-{{ block.super }}
+    {% if report %}
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">💰 Financial Report for {{ report.month_name }} {{ report.year }}</h4>
+                </div>
+                <div class="card-body">
+                    {% if no_data %}
+                        <div class="alert alert-info">
+                            <h5 class="alert-heading">No Data Available</h5>
+                            <p>Sorry, no financial data was found for {{ month }} {{ year }}. Please select a different month or year.</p>
+                        </div>
+                    {% else %}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Total Income</h5>
+                                        <h3 class="text-primary">{{ report.currency }}{{ report.total_income|floatformat:2 }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Total Expenses</h5>
+                                        <h3 class="text-danger">{{ report.currency }}{{ report.total_expenses|floatformat:2 }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Net Savings</h5>
+                                        <h3 class="{% if report.net_savings < 0 %}text-danger{% else %}text-success{% endif %}">
+                                            {{ report.currency }}{{ report.net_savings|floatformat:2 }}
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5>Expense Breakdown</h5>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Amount</th>
+                                            <th>Percentage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for expense in report.expenses %}
+                                        <tr>
+                                            <td>{{ expense.name }}</td>
+                                            <td>{{ report.currency }}{{ expense.amount|floatformat:2 }}</td>
+                                            <td>{{ expense.percentage|floatformat:1 }}%</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5>AI-Powered Insights</h5>
+                            <div class="list-group">
+                                {% for insight in report.insights %}
+                                <div class="list-group-item">
+                                    <i class="fas fa-lightbulb text-warning mr-2"></i>
+                                    {{ insight }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Set default value to current month and year
+    // Set current month and year as default
     const now = new Date();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
-    const year = now.getFullYear();
-    const monthYearInput = document.getElementById('monthYearInput');
-    monthYearInput.value = `${year}-${month}`;
+    const monthSelect = document.getElementById('month');
+    const yearSelect = document.getElementById('year');
     
-    // Make the calendar button trigger the date picker
-    document.getElementById('datePickerButton').addEventListener('click', function() {
-        monthYearInput.showPicker();
-    });
+    if (monthSelect) {
+        monthSelect.value = (now.getMonth() + 1).toString();
+    }
     
-    // Form validation
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function(event) {
-        if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-    }, false);
+    if (yearSelect && yearSelect.options.length > 0) {
+        yearSelect.value = now.getFullYear().toString();
+    }
 });
 </script>
+
+<style>
+.expense-item {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.expense-item:hover {
+    background-color: #e9ecef;
+    transform: translateX(5px);
+}
+
+.insights-list .alert {
+    border-left: 4px solid #17a2b8;
+}
+
+/* Add some styling for the dropdowns */
+.form-control {
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 8px 12px;
+    width: 100%;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* Style for the month dropdown */
+#month {
+    font-size: 1rem;
+    height: calc(1.5em + .75rem + 2px);
+}
+
+/* Style for the custom switch */
+.custom-control-input:checked ~ .custom-control-label::before {
+    border-color: #007bff;
+    background-color: #007bff;
+}
+</style>
 {% endblock %}

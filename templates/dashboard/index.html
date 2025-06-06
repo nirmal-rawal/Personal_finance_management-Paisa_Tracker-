@@ -227,10 +227,10 @@
         </div>
 
         <!-- Expense Breakdown Chart -->
-        <div class="col-lg-4">
+        <div class="col-lg-4">c
             <div class="card shadow-sm h-100">
                 <div class="card-header bg-white">
-                    <h5 class="mb-0">Expense Breakdown</h5>
+                    <h5 class="mb-0">Top 5 Expenses</h5>
                 </div>
                 <div class="card-body">
                     <div class="chart-container">
@@ -332,7 +332,7 @@
                 <h5 class="modal-title" id="budgetModalLabel">Set Monthly Budget</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post" action="{% url 'update_budget' %}">
+            <form method="post" action="{% url 'dashboard:update_budget' %}">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="mb-3">
@@ -377,4 +377,261 @@
 
 <!-- Include dashboard JavaScript -->
 <script src="{% static 'js/dashboard.js' %}"></script>
+
+<!-- Chat Container -->
+<div class="chat-container" style="position: fixed; bottom: 20px; right: 20px; width: 350px; z-index: 1000;">
+    <!-- Chat Icon when collapsed -->
+    <div id="chatIcon" class="chat-icon-container" style="display: block; cursor: pointer;">
+        <div class="chat-bot-icon">
+            <svg viewBox="0 0 100 100" width="100%" height="100%">
+                <circle cx="50" cy="50" r="45" fill="black"/>
+                <circle cx="50" cy="50" r="42" fill="white"/>
+                <circle cx="50" cy="50" r="38" fill="black"/>
+                <!-- Eyes -->
+                <circle cx="35" cy="45" r="6" fill="white"/>
+                <circle cx="65" cy="45" r="6" fill="white"/>
+                <!-- Smile -->
+                <path d="M35 60 Q50 70 65 60" stroke="white" stroke-width="3" fill="none"/>
+                <!-- Antenna -->
+                <circle cx="35" cy="25" r="4" fill="black"/>
+                <circle cx="65" cy="25" r="4" fill="black"/>
+                <line x1="35" y1="25" x2="35" y2="15" stroke="black" stroke-width="3"/>
+                <line x1="65" y1="25" x2="65" y2="15" stroke="black" stroke-width="3"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="card chat-window" style="display: none;">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <button class="btn btn-sm btn-light" id="clearChat" title="Clear Conversation">
+                <i class="fas fa-trash"></i>
+            </button>
+            <span class="fw-bold">Finance Assistant</span>
+            <button class="btn btn-sm btn-light" id="toggleChat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="chatBody" class="card-body">
+            <div id="chatMessages" class="chat-messages"></div>
+        </div>
+        <div class="card-footer">
+            <div class="input-group">
+                <input type="text" id="userMessage" class="form-control" placeholder="Type your message...">
+                <button class="btn btn-primary" id="sendMessage">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .chat-container {
+        font-family: 'Inter', sans-serif;
+    }
+    
+    .chat-icon-container {
+        width: 60px;
+        height: 60px;
+        margin-left: auto;
+        background: transparent;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+    }
+
+    .chat-icon-container:hover {
+        transform: scale(1.1);
+    }
+
+    .chat-bot-icon {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .robot-icon,
+    .pulse {
+        display: none;
+    }
+
+    .chat-window {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .chat-messages {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .chat-message {
+        padding: 12px 16px;
+        border-radius: 18px;
+        max-width: 85%;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .user-message {
+        margin-left: auto;
+        background-color: #0084ff;
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+
+    .bot-message {
+        margin-right: auto;
+        background-color: #e9ecef;
+        color: #212529;
+        border-bottom-left-radius: 4px;
+    }
+
+    .card-footer {
+        background-color: #fff;
+        border-top: 1px solid #e9ecef;
+        padding: 12px;
+    }
+
+    #userMessage {
+        border-radius: 20px;
+        border: 1px solid #dee2e6;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    #sendMessage {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 8px;
+    }
+
+    .card-header {
+        background-color: #fff !important;
+        border-bottom: 1px solid #e9ecef;
+        padding: 12px 16px;
+    }
+
+    .card-header span {
+        font-weight: 600;
+        color: #212529;
+    }
+
+    #chatBody {
+        height: 400px;
+        background-color: #fff;
+        overflow-y: auto;
+        padding: 16px;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chatIcon = document.getElementById('chatIcon');
+    const chatWindow = document.querySelector('.chat-window');
+    const toggleChat = document.getElementById('toggleChat');
+    const chatMessages = document.getElementById('chatMessages');
+    const userMessage = document.getElementById('userMessage');
+    const sendMessage = document.getElementById('sendMessage');
+    const clearChat = document.getElementById('clearChat');
+    
+    // Toggle chat window
+    function toggleChatWindow() {
+        if (chatWindow.style.display === 'none') {
+            chatIcon.style.display = 'none';
+            chatWindow.style.display = 'block';
+            if (!chatMessages.hasChildNodes()) {
+                appendMessage("Hi! I'm your Finance Assistant. type 'help' for any help related to your finances", false);
+            }
+            userMessage.focus();
+        } else {
+            chatWindow.style.display = 'none';
+            chatIcon.style.display = 'block';
+        }
+    }
+
+    chatIcon.addEventListener('click', toggleChatWindow);
+    toggleChat.addEventListener('click', toggleChatWindow);
+    
+    // Send message
+    function sendUserMessage() {
+        const message = userMessage.value.trim();
+        if (message) {
+            appendMessage(message, true);
+            userMessage.value = '';
+            
+            fetch('/dashboard/chat/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                appendMessage(data.response, false);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                appendMessage('Sorry, there was an error processing your request.', false);
+            });
+        }
+    }
+    
+    // Append message to chat
+    function appendMessage(message, isUser) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${isUser ? 'user-message' : 'bot-message'}`;
+        messageDiv.textContent = message;
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    // Event listeners
+    sendMessage.addEventListener('click', sendUserMessage);
+    userMessage.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendUserMessage();
+        }
+    });
+    
+    // Clear chat
+    clearChat.addEventListener('click', function() {
+        if (confirm('Are you sure you want to clear the conversation?')) {
+            fetch('/dashboard/chat/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ clear_chat: true })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    chatMessages.innerHTML = '';
+                    appendMessage("Hi! I'm your Finance Assistant. How can I help you today?", false);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                appendMessage('Failed to clear chat history.', false);
+            });
+        }
+    });
+});
+</script>
     {% endblock %}

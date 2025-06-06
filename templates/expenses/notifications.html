@@ -19,7 +19,7 @@
             {% if notifications %}
             <div class="list-group">
                 {% for notification in notifications %}
-                <a href="{{ notification.related_url|default:'#' }}" 
+                <a href="{% if notification.related_url %}{{ notification.related_url }}{% else %}#{% endif %}" 
                    class="list-group-item list-group-item-action notification-item {% if not notification.is_read %}list-group-item-primary{% endif %}"
                    data-id="{{ notification.id }}">
                     <div class="d-flex w-100 justify-content-between">

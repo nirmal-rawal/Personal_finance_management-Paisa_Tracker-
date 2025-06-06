@@ -20,6 +20,7 @@ import datetime
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from io import BytesIO
+from django.db import models
 
 
 
@@ -41,6 +42,7 @@ def edit_profile(request):
 
     return render(request, 'edit_profile.html', {'form': form})
 
+@csrf_exempt
 def search_incomes(request):
     if request.method == "POST":
         try:
@@ -54,12 +56,11 @@ def search_incomes(request):
             ) | Income.objects.filter(
                 source__icontains=search_str, owner=request.user
             )
-            data = list(incomes.values('id', 'amount', 'date', 'description', 'source'))
+            data = list(incomes.values())
             return JsonResponse(data, safe=False)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
-    else:
-        return JsonResponse({"error": "Invalid request method"}, status=400)
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 @login_required(login_url='/authentication/login/')
 def index(request):
